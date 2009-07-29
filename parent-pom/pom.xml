@@ -4,13 +4,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.google.code.socofo</groupId>
+	<groupId>com.googlecode.socofo</groupId>
 	<artifactId>socofo-parent</artifactId>
 	<name>SoCoFo Parent POM</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<description>The parent pom</description>
-	<url>http://socofo.appspot.com/</url>
+	<url>http://socofo.googlecode.com/</url>
 	<inceptionYear>2009</inceptionYear>
 	<developers>
 		<developer>
@@ -26,9 +26,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:hg:http://socofo.googlecode.com/hg</connection>
+		<connection>scm:hg:https://socofo.googlecode.com/hg</connection>
 		<developerConnection>scm:hg:https://socofo.googlecode.com/hg</developerConnection>
-		<url>http://socofo.googlecode.com/browse</url>
+		<url>http://code.google.com/p/socofo/source/browse/</url>
 	</scm>
 	<organization>
 		<name>DS/2</name>
