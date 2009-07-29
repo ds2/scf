@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE t PUBLIC "pubIdHere" "t.dtd">
+<t
+	attr="value"
+	xmlns:a="http://www.test/bla"
+	a:test="23"
+>
+	<empty />
+	Starting text inside t
+	<t1>Text inside t1</t1>
+	<t1><![CDATA[This line should not break]]></t1>
+</t>
