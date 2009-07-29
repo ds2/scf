@@ -1,14 +1,50 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.google.code.socofo</groupId>
-  <artifactId>socofo-parent</artifactId>
-  <name>SoCoFo Parent POM</name>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <description>The parent pom</description>
-  <inceptionYear>2009</inceptionYear>
-  <organization>
-  	<name>DS/2</name>
-  	<url>http://ds-2.de/</url>
-  </organization>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.google.code.socofo</groupId>
+	<artifactId>socofo-parent</artifactId>
+	<name>SoCoFo Parent POM</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<description>The parent pom</description>
+	<url>http://socofo.appspot.com/</url>
+	<inceptionYear>2009</inceptionYear>
+	<developers>
+		<developer>
+			<id>lexxy23</id>
+			<name>Dirk Strauss</name>
+			<email>lexxy23@gmail.com</email>
+			<url>http://ds-2.de/</url>
+			<organization>DS/2</organization>
+			<organizationUrl>http://ds-2.de/</organizationUrl>
+			<roles>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:hg:http://socofo.googlecode.com/hg</connection>
+		<developerConnection>scm:hg:https://socofo.googlecode.com/hg</developerConnection>
+		<url>http://socofo.googlecode.com/browse</url>
+	</scm>
+	<organization>
+		<name>DS/2</name>
+		<url>http://ds-2.de/</url>
+	</organization>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
