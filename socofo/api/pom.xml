@@ -10,6 +10,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>socofo-api</artifactId>
+	<name>SoCoFo API</name>
 	<description>The base api of the project</description>
 	<dependencies>
 		<dependency>

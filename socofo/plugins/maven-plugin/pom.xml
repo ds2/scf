@@ -11,7 +11,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>socofo-maven-plugin</artifactId>
-	<name>SoCoFo Maven Plugin</name>
+	<name>SoCoFo Plugins - Maven</name>
 	<dependencies>
 		<dependency>
 			<groupId>ds2.socofo</groupId>

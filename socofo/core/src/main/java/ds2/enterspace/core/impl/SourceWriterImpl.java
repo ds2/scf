@@ -3,6 +3,8 @@
  */
 package ds2.enterspace.core.impl;
 
+import java.util.logging.Logger;
+
 import ds2.enterspace.core.api.SourceWriter;
 import ds2.enterspace.rules.api.CommonAttributes;
 
@@ -18,6 +20,8 @@ public class SourceWriterImpl implements SourceWriter {
 	private StringBuffer currentLine = null;
 	private CommonAttributes ca = null;
 	private String NEWLINE = "\n";
+	private static final transient Logger log = Logger
+			.getLogger(SourceWriterImpl.class.getName());
 
 	/**
 	 * Inits the source buffer
@@ -33,9 +37,11 @@ public class SourceWriterImpl implements SourceWriter {
 	@Override
 	public boolean addLine(int indents, String s) {
 		clearBuffer(currentLine);
-		for (int i = 0; i < indents; i++) {
-			sb.append(ca.getIndentSequence());
+		if (indents < 0) {
+			log.severe("Indents of " + indents + " are impossible!");
+			return false;
 		}
+		addIndents(sb, indents);
 		sb.append(s);
 		sb.append(NEWLINE);
 		return false;

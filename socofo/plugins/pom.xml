@@ -7,6 +7,7 @@
   </parent>
   <artifactId>socofo-plugins</artifactId>
   <packaging>pom</packaging>
+  <name>SoCoFo Plugins</name>
   <modules>
   	<module>netbeans-plugin</module>
   	<module>eclipse-plugin</module>

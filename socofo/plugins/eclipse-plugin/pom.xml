@@ -6,5 +6,6 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
   <artifactId>socofo-eclipse-plugin</artifactId>
+  <name>SoCoFo Plugins - Eclipse</name>
   <description>The eclipse plugin</description>
 </project>
