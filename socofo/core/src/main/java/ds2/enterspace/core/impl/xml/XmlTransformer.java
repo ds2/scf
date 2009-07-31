@@ -84,7 +84,17 @@ public class XmlTransformer implements SourceTransformer {
 	@Override
 	public void performTranslation() {
 		log.entering(XmlTransformer.class.getName(), "performTranslation");
+		if (sw == null) {
+			log.severe("No source writer has been injected!");
+			return;
+		}
+		log.finer("preparing source writer");
 		sw.prepare();
+		if (rules == null || rules.getCommonAttributes() == null) {
+			log.severe("No rules have been loaded!");
+			return;
+		}
+		log.finer("Setting rules and attributes");
 		sw.setCommonAttributes(rules.getCommonAttributes());
 		Token token;
 		int currentIndent = 0;
@@ -103,7 +113,7 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.GENERIC_ID: // attribute or element name
 				break;
 			default:
-				log.warning("unknown token: " + token.getType()
+				log.warning("unknown token: type=" + token.getType()
 						+ " with content " + token.getText());
 			}
 		}

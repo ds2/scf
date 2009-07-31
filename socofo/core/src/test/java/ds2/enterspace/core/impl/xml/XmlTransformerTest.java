@@ -63,7 +63,7 @@ public class XmlTransformerTest {
 				new RulesInjectionPlan(), new CoreInjectionPlan());
 		rulesLoader = ij.getInstance(RulesLoader.class);
 		formatRules = rulesLoader.loadFormatRules(getClass()
-				.getResourceAsStream("/xmlconfig"));
+				.getResourceAsStream("/xmlconfig.xml"));
 		to.loadRules(new RuleSet() {
 
 			@Override
@@ -125,6 +125,7 @@ public class XmlTransformerTest {
 		String xmlSample = sr.getContent();
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
+		to.performTranslation();
 		String result = to.getResult();
 		assertNotNull(result);
 		assertTrue(result.length() > 0);
