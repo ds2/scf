@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,6 +34,8 @@ import ds2.enterspace.rules.modules.RulesInjectionPlan;
  * 
  */
 public class XmlTransformerTest {
+	private static final transient Logger log = Logger
+			.getLogger(XmlTransformerTest.class.getName());
 	private XmlTransformer to = null;
 	private RulesLoader rulesLoader = null;
 	private XmlFormatRules formatRules = null;
@@ -129,6 +133,7 @@ public class XmlTransformerTest {
 		String result = to.getResult();
 		assertNotNull(result);
 		assertTrue(result.length() > 0);
+		log.info("Result is " + result);
 	}
 
 }

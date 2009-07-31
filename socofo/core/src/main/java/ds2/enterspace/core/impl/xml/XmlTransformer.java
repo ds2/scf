@@ -98,6 +98,7 @@ public class XmlTransformer implements SourceTransformer {
 		sw.setCommonAttributes(rules.getCommonAttributes());
 		Token token;
 		int currentIndent = 0;
+		log.finer("Starting token run");
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + "): " + token.getText());
 			switch (token.getType()) {
@@ -111,12 +112,14 @@ public class XmlTransformer implements SourceTransformer {
 				sw.addLine(currentIndent, " ");
 				break;
 			case XmlGrammar.GENERIC_ID: // attribute or element name
+				sw.addLine(currentIndent, token.getText());
 				break;
 			default:
 				log.warning("unknown token: type=" + token.getType()
 						+ " with content " + token.getText());
 			}
 		}
+		log.finer("finishing the result");
 		sw.finish();
 		log.exiting(XmlTransformer.class.getName(), "performTranslation");
 	}

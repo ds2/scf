@@ -48,7 +48,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	@Override
 	public boolean addLine(int indents, String s) {
-		clearBuffer(currentLine);
+		commitLine(false);
 		if (indents < 0) {
 			log.severe("Indents of " + indents + " are impossible!");
 			return false;
@@ -100,7 +100,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 *            the count of indents to add
 	 */
 	private void addIndents(StringBuffer s, int count) {
-		if (count <= 0) {
+		if (count < 0) {
 			log.warning("Count is too low: " + count);
 			return;
 		}
@@ -169,6 +169,13 @@ public class SourceWriterImpl implements SourceWriter {
 	 *            the buffer to clear
 	 */
 	private void clearBuffer(StringBuffer s) {
+		if (s == null) {
+			log.warning("No buffer given!");
+			return;
+		}
+		if (s.length() > 0) {
+			log.warning("This content will be cleared now: " + s.toString());
+		}
 		s.delete(0, s.length());
 	}
 
