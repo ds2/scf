@@ -4,12 +4,10 @@
 package ds2.enterspace.core.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ds2.enterspace.rules.api.CommonAttributes;
@@ -19,21 +17,10 @@ import ds2.enterspace.rules.api.CommonAttributes;
  * 
  */
 public class SourceWriterImplTest {
+	/**
+	 * The test object
+	 */
 	private SourceWriterImpl to = null;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	/**
 	 * @throws java.lang.Exception
@@ -45,6 +32,11 @@ public class SourceWriterImplTest {
 		to.prepare();
 	}
 
+	/**
+	 * Returns some attributes to use
+	 * 
+	 * @return the common attributes
+	 */
 	private CommonAttributes getAttributes() {
 		return new CommonAttributes() {
 
@@ -61,13 +53,6 @@ public class SourceWriterImplTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
 	 * Test method for
 	 * {@link ds2.enterspace.core.impl.SourceWriterImpl#addLine(int, java.lang.String)}
 	 * 
@@ -76,6 +61,9 @@ public class SourceWriterImplTest {
 	public final void testAddLine() {
 		to.addLine(-1, null);
 		assertEquals("", to.getResult());
+		to.addLine(0, "hello");
+		to.finish();
+		assertEquals("hello\n", to.getResult());
 	}
 
 	/**
@@ -85,17 +73,16 @@ public class SourceWriterImplTest {
 	 */
 	@Test
 	public final void testAddToLineString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link ds2.enterspace.core.impl.SourceWriterImpl#writeLine(java.lang.String)}
-	 * .
-	 */
-	@Test
-	public final void testWriteLine() {
-		fail("Not yet implemented"); // TODO
+		assertFalse(to.addToLine(null));
+		to.finish();
+		assertEquals("", to.getResult());
+		assertTrue(to.addToLine("hi"));
+		assertEquals("hi", to.getCurrentLine());
+		to.prepare();
+		assertTrue(to.addToLine("hello, "));
+		assertTrue(to.addToLine("world"));
+		to.commitLine(true);
+		assertEquals("hello, world\n", to.getResult());
 	}
 
 	/**
@@ -105,7 +92,9 @@ public class SourceWriterImplTest {
 	 */
 	@Test
 	public final void testAddToLineIntString() {
-		fail("Not yet implemented"); // TODO
+		to.addToLine(-1, null);
+		to.finish();
+		assertEquals("", to.getResult());
 	}
 
 	/**
@@ -115,7 +104,7 @@ public class SourceWriterImplTest {
 	 */
 	@Test
 	public final void testSetCommonAttributes() {
-		fail("Not yet implemented"); // TODO
+		to.setCommonAttributes(null);
 	}
 
 	/**
@@ -124,7 +113,10 @@ public class SourceWriterImplTest {
 	 */
 	@Test
 	public final void testCommitLine() {
-		fail("Not yet implemented"); // TODO
+		to.commitLine(false);
+		assertEquals("", to.getResult());
+		to.addLine(0, "hello this is a longer line");
+		assertFalse(to.commitLine(false));
 	}
 
 }

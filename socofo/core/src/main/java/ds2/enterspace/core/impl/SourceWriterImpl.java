@@ -17,9 +17,21 @@ public class SourceWriterImpl implements SourceWriter {
 	 * The string buffer to store content in
 	 */
 	private StringBuffer sb = null;
+	/**
+	 * the line buffer
+	 */
 	private StringBuffer currentLine = null;
+	/**
+	 * The common attributes for NEWLINE, maxLineLength and indentSequence
+	 */
 	private CommonAttributes ca = null;
+	/**
+	 * the NewLine terminator
+	 */
 	private String NEWLINE = "\n";
+	/**
+	 * A logger
+	 */
 	private static final transient Logger log = Logger
 			.getLogger(SourceWriterImpl.class.getName());
 
@@ -41,10 +53,9 @@ public class SourceWriterImpl implements SourceWriter {
 			log.severe("Indents of " + indents + " are impossible!");
 			return false;
 		}
-		addIndents(sb, indents);
-		sb.append(s);
-		sb.append(NEWLINE);
-		return false;
+		addIndents(currentLine, indents);
+		currentLine.append(s);
+		return commitLine(false);
 	}
 
 	/**
@@ -52,16 +63,11 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	@Override
 	public boolean addToLine(String s) {
+		if (s == null) {
+			return false;
+		}
 		currentLine.append(s);
-		return false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean writeLine(String s) {
-		return false;
+		return true;
 	}
 
 	/**
@@ -77,6 +83,10 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	@Override
 	public void addToLine(int currentIndent, String s) {
+		if (s == null) {
+			log.warning("No content given!");
+			return;
+		}
 		addIndents(currentLine, currentIndent);
 		currentLine.append(s);
 	}
@@ -90,6 +100,14 @@ public class SourceWriterImpl implements SourceWriter {
 	 *            the count of indents to add
 	 */
 	private void addIndents(StringBuffer s, int count) {
+		if (count <= 0) {
+			log.warning("Count is too low: " + count);
+			return;
+		}
+		if (s == null) {
+			log.warning("No buffer given!");
+			return;
+		}
 		for (int i = 0; i < count; i++) {
 			s.append(ca.getIndentSequence());
 		}
@@ -100,7 +118,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	@Override
 	public void finish() {
-		sb.append(currentLine);
+		commitLine(false);
 		clearBuffer(currentLine);
 	}
 
@@ -118,6 +136,10 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	@Override
 	public void setCommonAttributes(CommonAttributes c) {
+		if (c == null) {
+			log.warning("No common attributes given!");
+			return;
+		}
 		ca = c;
 	}
 
@@ -125,10 +147,19 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void commitLine(boolean ignoreLineLength) {
+	public boolean commitLine(boolean ignoreLineLength) {
+		if (!ignoreLineLength && currentLine.length() > ca.getMaxLinewidth()) {
+			log.warning("line too long to commit: " + currentLine);
+			return false;
+		}
+		if (currentLine.length() <= 0) {
+			log.finer("nothing to commit: line is empty already");
+			return true;
+		}
 		sb.append(currentLine.toString());
 		sb.append(NEWLINE);
 		clearBuffer(currentLine);
+		return true;
 	}
 
 	/**
@@ -139,6 +170,14 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	private void clearBuffer(StringBuffer s) {
 		s.delete(0, s.length());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getCurrentLine() {
+		return currentLine.toString();
 	}
 
 }

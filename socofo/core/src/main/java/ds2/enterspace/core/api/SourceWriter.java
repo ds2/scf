@@ -14,18 +14,11 @@ import ds2.enterspace.rules.api.CommonAttributes;
  * 
  */
 public interface SourceWriter {
-	/**
-	 * Adds source file content
-	 * 
-	 * @param s
-	 *            the content to write in one single line.
-	 * @return TRUE if successful, otherwise FALSE
-	 */
-	public boolean writeLine(String s);
 
 	/**
 	 * Adds a new line to the writer, first adding some indents, and then adding
-	 * the given sequence of data
+	 * the given sequence of data. After that, the line is commited (a newline
+	 * sign is added).
 	 * 
 	 * @param indents
 	 *            the count of indents to write first
@@ -89,6 +82,14 @@ public interface SourceWriter {
 	 * @param ignoreLinelength
 	 *            flag to indicate that the line length check can be ignored.
 	 *            Set TRUE to ignore line length, default is FALSE
+	 * @return TRUE if line was commited successful, otherwise FALSE
 	 */
-	public void commitLine(boolean ignoreLinelength);
+	public boolean commitLine(boolean ignoreLinelength);
+
+	/**
+	 * Returns the result of the currentLine buffer.
+	 * 
+	 * @return the current line content
+	 */
+	public String getCurrentLine();
 }
