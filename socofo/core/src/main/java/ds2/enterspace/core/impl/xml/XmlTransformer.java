@@ -99,20 +99,58 @@ public class XmlTransformer implements SourceTransformer {
 		Token token;
 		int currentIndent = 0;
 		log.finer("Starting token run");
+		WriteState state = WriteState.UNDEFINED;
+		boolean isAttribute = false;
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
-			log.finest("Token (" + token.getType() + "): " + token.getText());
+			log.finest("Token (" + token.getType() + ") for this run: "
+					+ token.getText());
 			switch (token.getType()) {
 			case XmlGrammar.PI_START:
 				sw.addToLine(currentIndent, "<?");
+				state = WriteState.MustWriteElement;
+				currentIndent++;
 				break;
 			case XmlGrammar.PI_STOP:
-				sw.addToLine(currentIndent, "?>");
+				currentIndent--;
+				if (rules.getAlignFinalBracketOnNewline()) {
+					sw.commitLine(false);
+					sw.addToLine(currentIndent, "");
+				}
+				sw.addToLine(token.getText());
 				break;
 			case XmlGrammar.WS:
-				sw.addLine(currentIndent, " ");
+				sw.addToLine(" ");
 				break;
 			case XmlGrammar.GENERIC_ID: // attribute or element name
-				sw.addLine(currentIndent, token.getText());
+				if (isAttribute && rules.getSeparateAttributesPerLine()) {
+					sw.commitLine(false);
+					sw.addToLine(currentIndent, "");
+				}
+				sw.addToLine(token.getText());
+				isAttribute = true;
+				break;
+			case XmlGrammar.TAG_START_OPEN:
+				currentIndent++;
+				isAttribute = false;
+				sw.addToLine(token.getText());
+				break;
+			case XmlGrammar.TAG_CLOSE:
+				if (rules.getAlignFinalBracketOnNewline()) {
+					sw.commitLine(false);
+				}
+				sw.addToLine(currentIndent, token.getText());
+				sw.commitLine(false);
+				currentIndent--;
+				isAttribute = false;
+				break;
+			case XmlGrammar.TAG_EMPTY_CLOSE:
+				sw.addToLine(token.getText());
+				break;
+			case XmlGrammar.ATTR_EQ:
+				sw.addToLine(token.getText());
+				break;
+			case XmlGrammar.ATTR_VALUE:
+				sw.addToLine(token.getText());
 				break;
 			default:
 				log.warning("unknown token: type=" + token.getType()

@@ -4,4 +4,6 @@
     <maxLineWidth>80</maxLineWidth>
     <indentSequence><![CDATA[  ]]></indentSequence>
   </commonAttributes>
+  <separateAttributesPerLine>true</separateAttributesPerLine>
+  <alignFinalBracketOnNewline>true</alignFinalBracketOnNewline>
 </p:xml-format>

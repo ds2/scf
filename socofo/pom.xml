@@ -80,5 +80,6 @@
 		<module>rules</module>
 		<module>core</module>
 		<module>plugins</module>
+		<module>runtime</module>
 	</modules>
 </project>

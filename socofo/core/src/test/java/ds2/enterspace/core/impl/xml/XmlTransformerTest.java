@@ -133,7 +133,7 @@ public class XmlTransformerTest {
 		String result = to.getResult();
 		assertNotNull(result);
 		assertTrue(result.length() > 0);
-		log.info("Result is " + result);
+		log.info("Result is\n" + result);
 	}
 
 }

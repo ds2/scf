@@ -174,7 +174,7 @@ public class SourceWriterImpl implements SourceWriter {
 			return;
 		}
 		if (s.length() > 0) {
-			log.warning("This content will be cleared now: " + s.toString());
+			log.finest("This content will be cleared now: " + s.toString());
 		}
 		s.delete(0, s.length());
 	}
