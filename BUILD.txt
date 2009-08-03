@@ -1,0 +1,9 @@
+= Release generation =
+
+mvn release:prepare -PgoogleRelease
+
+on success:
+mvn release:perform
+
+on failure:
+mvn release:rollback

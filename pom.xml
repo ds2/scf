@@ -1,4 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.socofo</groupId>
 	<artifactId>socofo</artifactId>
@@ -7,6 +10,10 @@
 	<packaging>pom</packaging>
 	<description>Yet another source code formatter 4</description>
 	<url>http://socofo.googlecode.com/</url>
+	<issueManagement>
+		<system>google</system>
+		<url>http://code.google.com/p/socofo/issues/list</url>
+	</issueManagement>
 	<inceptionYear>2009</inceptionYear>
 	<developers>
 		<developer>
@@ -48,6 +55,35 @@
 				<configuration>
 					<releaseProfiles>googleRelease</releaseProfiles>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<basedir>${basedir}</basedir>
+					<header>license_header.txt</header>
+					<excludes>
+						<exclude>target/**</exclude>
+						<exclude>.hg/**</exclude>
+						<exclude>.hgignore</exclude>
+						<exclude>.hgtags</exclude>
+						<exclude>BUILD.txt</exclude>
+						<exclude>.clover/**</exclude>
+					</excludes>
+					<encoding>utf-8</encoding>
+					<mapping>
+						<g>JAVADOC_STYLE</g>
+					</mapping>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
