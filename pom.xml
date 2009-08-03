@@ -75,6 +75,9 @@
 					<mapping>
 						<g>JAVADOC_STYLE</g>
 					</mapping>
+					<properties>
+						<year>${project.inceptionYear}</year>
+					</properties>
 				</configuration>
 				<executions>
 					<execution>
@@ -140,4 +143,11 @@
 		<module>plugins</module>
 		<module>runtime</module>
 	</modules>
+	<licenses>
+		<license>
+			<distribution>repo</distribution>
+			<name>GNU GENERAL PUBLIC LICENSE</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+		</license>
+	</licenses>
 </project>
