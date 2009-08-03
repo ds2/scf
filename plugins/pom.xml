@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>socofo</artifactId>
+    <groupId>com.googlecode.socofo</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>socofo-plugins</artifactId>
+  <packaging>pom</packaging>
+  <name>SoCoFo Plugins</name>
+  <modules>
+  	<module>netbeans-plugin</module>
+  	<module>eclipse-plugin</module>
+  	<module>maven-plugin</module>
+  	<module>appengine-website</module>
+  </modules>
+</project>

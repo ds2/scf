@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:xml-format xmlns:p="http://www.ds2/ns/socofo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ds2/ns/socofo http://www.ds2/ns/socofo ">
+  <commonAttributes>
+    <maxLineWidth>80</maxLineWidth>
+    <indentSequence><![CDATA[  ]]></indentSequence>
+  </commonAttributes>
+  <separateAttributesPerLine>true</separateAttributesPerLine>
+  <alignFinalBracketOnNewline>true</alignFinalBracketOnNewline>
+</p:xml-format>
