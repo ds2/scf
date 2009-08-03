@@ -14,9 +14,9 @@
 	<name>SoCoFo Plugins - Maven</name>
 	<dependencies>
 		<dependency>
-			<groupId>ds2.socofo</groupId>
+			<groupId>com.googlecode.socofo</groupId>
 			<artifactId>socofo-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
