@@ -13,3 +13,6 @@ syntax: regexp
 target
 syntax: regexp
 release\.properties
+
+syntax: regexp
+\.releaseBackup$
