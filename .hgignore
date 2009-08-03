@@ -9,3 +9,7 @@ syntax: regexp
 \.settings
 syntax: regexp
 ^socofo/\.settings$
+syntax: regexp
+target
+syntax: regexp
+release\.properties
