@@ -20,6 +20,7 @@
  */
 package ds2.enterspace.core.impl.xml;
 
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -117,25 +118,39 @@ public class XmlTransformer implements SourceTransformer {
 		int currentIndent = 0;
 		log.finer("Starting token run");
 		WriteState state = WriteState.UNDEFINED;
+		XmlObject currentObject = null;
 		boolean isAttribute = false;
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + ") for this run: "
 					+ token.getText());
 			switch (token.getType()) {
 			case XmlGrammar.PI_START:
-				sw.addToLine(currentIndent, "<?");
 				state = WriteState.MustWriteElement;
-				currentIndent++;
+				currentObject = new ProcessingInstruction();
 				break;
 			case XmlGrammar.PI_STOP:
-				currentIndent--;
+				// write Element
+				sw.addToLine(currentIndent, "<?");
+				sw.addToLine(currentObject.getElementName());
+				if (rules.getSeparateAttributesPerLine()
+						&& currentObject.hasAttributes()) {
+					for (Entry<String, String> keyValuePair : currentObject
+							.getAttributes().entrySet()) {
+						sw.commitLine(false);
+						sw.addToLine(currentIndent + 1, keyValuePair.getKey()
+								+ "=" + keyValuePair.getValue());
+					}
+				}
 				if (rules.getAlignFinalBracketOnNewline()) {
 					sw.commitLine(false);
-					sw.addToLine(currentIndent, "");
 				}
-				sw.addToLine(token.getText());
+				sw.addToLine("?>");
+				currentObject = null;
 				break;
 			case XmlGrammar.WS:
+				if (currentObject != null) {
+					break;
+				}
 				sw.addToLine(" ");
 				break;
 			case XmlGrammar.GENERIC_ID: // attribute or element name
@@ -143,31 +158,35 @@ public class XmlTransformer implements SourceTransformer {
 					sw.commitLine(false);
 					sw.addToLine(currentIndent, "");
 				}
-				sw.addToLine(token.getText());
+				// sw.addToLine(token.getText());
 				isAttribute = true;
-				break;
-			case XmlGrammar.TAG_START_OPEN:
-				currentIndent++;
-				isAttribute = false;
-				sw.addToLine(token.getText());
-				break;
-			case XmlGrammar.TAG_CLOSE:
-				if (rules.getAlignFinalBracketOnNewline()) {
-					sw.commitLine(false);
+				if (currentObject != null) {
+					if (currentObject.getElementName() == null) {
+						// this is an element name
+						currentObject.setElementName(token.getText());
+					} else {
+						// it is an attribute name
+						currentObject.setAttributName(token.getText());
+					}
 				}
-				sw.addToLine(currentIndent, token.getText());
-				sw.commitLine(false);
-				currentIndent--;
-				isAttribute = false;
 				break;
-			case XmlGrammar.TAG_EMPTY_CLOSE:
-				sw.addToLine(token.getText());
-				break;
+			/*
+			 * case XmlGrammar.TAG_START_OPEN: currentIndent++; isAttribute =
+			 * false; sw.addToLine(token.getText()); break; case
+			 * XmlGrammar.TAG_CLOSE: if (rules.getAlignFinalBracketOnNewline())
+			 * { sw.commitLine(false); } sw.addToLine(currentIndent,
+			 * token.getText()); sw.commitLine(false); currentIndent--;
+			 * isAttribute = false; break; case XmlGrammar.TAG_EMPTY_CLOSE:
+			 * sw.addToLine(token.getText()); break;
+			 */
 			case XmlGrammar.ATTR_EQ:
-				sw.addToLine(token.getText());
+				// sw.addToLine(token.getText());
 				break;
 			case XmlGrammar.ATTR_VALUE:
-				sw.addToLine(token.getText());
+				// sw.addToLine(token.getText());
+				if (currentObject != null) {
+					currentObject.setAttributValue(token.getText());
+				}
 				break;
 			default:
 				log.warning("unknown token: type=" + token.getType()

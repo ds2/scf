@@ -20,10 +20,22 @@
  */
 package ds2.enterspace.core.impl.xml;
 
+import java.util.Map;
+
 /**
  * @author kaeto23
  * 
  */
 public interface XmlObject {
 	void setElementName(String s);
+
+	String getElementName();
+
+	void setAttributName(String s);
+
+	void setAttributValue(String s);
+
+	boolean hasAttributes();
+
+	Map<String, String> getAttributes();
 }

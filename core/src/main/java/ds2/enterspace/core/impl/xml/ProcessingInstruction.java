@@ -20,17 +20,53 @@
  */
 package ds2.enterspace.core.impl.xml;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author kaeto23
- *
+ * 
  */
-public class ProcessingInstruction {
+public class ProcessingInstruction implements XmlObject {
+	private String elName = null;
+	private Map<String, String> attributes = null;
+	private String currentAttributeName = null;
 
 	/**
 	 * 
 	 */
 	public ProcessingInstruction() {
-		// TODO Auto-generated constructor stub
+		attributes = new HashMap<String, String>();
+	}
+
+	@Override
+	public void setElementName(String s) {
+		elName = s;
+	}
+
+	@Override
+	public Map<String, String> getAttributes() {
+		return attributes;
+	}
+
+	@Override
+	public String getElementName() {
+		return elName;
+	}
+
+	@Override
+	public boolean hasAttributes() {
+		return !attributes.isEmpty();
+	}
+
+	@Override
+	public void setAttributName(String s) {
+		currentAttributeName = s;
+	}
+
+	@Override
+	public void setAttributValue(String s) {
+		attributes.put(currentAttributeName, s);
 	}
 
 }
