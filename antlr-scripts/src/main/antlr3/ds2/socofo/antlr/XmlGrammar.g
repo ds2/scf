@@ -67,16 +67,16 @@ ATTR_VALUE : { tagMode }?=>
 
 /** ATTRIBUTE : GENERIC_ID (WS)* ATTR_EQ (WS)* ATTR_VALUE; */
 
-
-
 CDATA_SECTION:
 { cdataMode }?=> (~']')+
 ;
+
+COMMENT_SECTION:'<!--' (~'-')* '-->';
 DOCDATA:
 {doctypeMode}?=> (~'>')+
 ;
 
-PCDATA : { !tagMode && !cdataMode && !doctypeMode}?=> (~'<')+ ;
+PCDATA : { !tagMode && !cdataMode && !doctypeMode }?=> (~'<')+ ;
 
 GENERIC_ID
     : { tagMode }?=>
