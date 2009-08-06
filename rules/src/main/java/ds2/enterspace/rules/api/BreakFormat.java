@@ -18,19 +18,32 @@
 /**
  * 
  */
-package ds2.enterspace.core.impl.xml;
+package ds2.enterspace.rules.api;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
 
 /**
+ * The rules for breaking content sequences into several lines.
+ * 
  * @author kaeto23
  * 
  */
-public class ProcessingInstruction extends BaseXmlObject {
+@XmlType(name = "BreakFormat", namespace = "http://www.ds2/ns/socofo")
+@XmlEnum()
+public enum BreakFormat {
 	/**
-	 * 
+	 * basically a BeautyBreak, but when facing too long words, a break is
+	 * forced, breaking the word into two words
 	 */
-	public ProcessingInstruction() {
-		startSeq = "<?";
-		endSeq = "?>";
-	}
+	BeautyForcedBreak,
+	/**
+	 * breaks the line according to spaces. If a word exceeds the line, the word
+	 * is printed, and a new line added
+	 */
+	BeautyBreak,
+	/**
+	 * No special breaks. The content is returned 1:1
+	 */
+	NoBreak;
 }

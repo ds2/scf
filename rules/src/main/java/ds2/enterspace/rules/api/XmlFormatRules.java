@@ -44,4 +44,6 @@ public interface XmlFormatRules {
 	Boolean getSortAttributes();
 
 	TextBlocks getTextBlocks();
+
+	XmlCommentsRules getCommentsRules();
 }

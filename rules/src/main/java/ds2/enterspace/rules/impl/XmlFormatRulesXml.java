@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import ds2.enterspace.rules.api.CommonAttributes;
 import ds2.enterspace.rules.api.NamespaceRule;
 import ds2.enterspace.rules.api.TextBlocks;
+import ds2.enterspace.rules.api.XmlCommentsRules;
 import ds2.enterspace.rules.api.XmlFormatRules;
 
 /**
@@ -55,6 +56,8 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	private List<NamespaceRule> namespaceRules = null;
 	@XmlElement(type = TextBlocksXml.class)
 	private TextBlocks textBlocks = null;
+	@XmlElement(type = XmlCommentsRulesXml.class)
+	private XmlCommentsRules commentsRules = null;
 
 	/**
 	 * {@inheritDoc}
@@ -115,6 +118,11 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	@Override
 	public Boolean getSortAttributes() {
 		return sortAttributes;
+	}
+
+	@Override
+	public XmlCommentsRules getCommentsRules() {
+		return commentsRules;
 	}
 
 }

@@ -18,19 +18,40 @@
 /**
  * 
  */
-package ds2.enterspace.core.impl.xml;
+package ds2.enterspace.core.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ds2.enterspace.core.api.LineHandler;
+import ds2.enterspace.rules.api.BreakFormat;
+import ds2.enterspace.rules.api.CommonAttributes;
 
 /**
  * @author kaeto23
  * 
  */
-public class ProcessingInstruction extends BaseXmlObject {
+public class LineHandlerImpl implements LineHandler {
+	List<String> lines = null;
+
 	/**
 	 * 
 	 */
-	public ProcessingInstruction() {
-		startSeq = "<?";
-		endSeq = "?>";
+	public LineHandlerImpl() {
+		lines = new ArrayList<String>();
 	}
+
+	@Override
+	public List<String> breakContent(int lineWidth, String content,
+			int firstIndent, BreakFormat breakType) {
+		List<String> rc = new ArrayList<String>();
+		return rc;
+	}
+
+	@Override
+	public int calculateLineWidth(CommonAttributes ca, int additionalChars) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

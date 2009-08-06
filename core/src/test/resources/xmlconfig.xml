@@ -25,4 +25,6 @@
   </commonAttributes>
   <separateAttributesPerLine>true</separateAttributesPerLine>
   <alignFinalBracketOnNewline>true</alignFinalBracketOnNewline>
+  <commentsRules>
+  	<breakType>BeautyBreak</breakType></commentsRules>
 </p:xml-format>

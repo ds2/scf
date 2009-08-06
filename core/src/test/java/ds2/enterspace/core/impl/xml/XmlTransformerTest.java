@@ -26,18 +26,15 @@ import static org.junit.Assert.fail;
 
 import java.util.logging.Logger;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.code.socofo.common.modules.CommonsInjectionPlan;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.core.api.StreamRoot;
-import ds2.enterspace.core.api.TransformerDelegate;
 import ds2.enterspace.core.exceptions.LoadingException;
 import ds2.enterspace.core.impl.SourceWriterImpl;
 import ds2.enterspace.core.modules.CoreInjectionPlan;
@@ -47,31 +44,33 @@ import ds2.enterspace.rules.api.XmlFormatRules;
 import ds2.enterspace.rules.modules.RulesInjectionPlan;
 
 /**
+ * class to test the xml transformer
+ * 
  * @author kaeto23
  * 
  */
 public class XmlTransformerTest {
+	/**
+	 * a logger
+	 */
 	private static final transient Logger log = Logger
 			.getLogger(XmlTransformerTest.class.getName());
+	/**
+	 * the transformer
+	 */
 	private XmlTransformer to = null;
+	/**
+	 * The rules loader
+	 */
 	private RulesLoader rulesLoader = null;
+	/**
+	 * the xml transformation rules
+	 */
 	private XmlFormatRules formatRules = null;
-	private TransformerDelegate transformerDelegate = null;
+	/**
+	 * The stream root
+	 */
 	private StreamRoot sr = null;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	/**
 	 * @throws java.lang.Exception
@@ -85,6 +84,7 @@ public class XmlTransformerTest {
 		rulesLoader = ij.getInstance(RulesLoader.class);
 		formatRules = rulesLoader.loadFormatRules(getClass()
 				.getResourceAsStream("/xmlconfig.xml"));
+		to.setTestLh(ij.getInstance(LineHandler.class));
 		to.loadRules(new RuleSet() {
 
 			@Override
@@ -93,13 +93,6 @@ public class XmlTransformerTest {
 			}
 		});
 		sr = ij.getInstance(StreamRoot.class);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**

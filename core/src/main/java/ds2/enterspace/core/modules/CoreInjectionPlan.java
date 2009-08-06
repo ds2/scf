@@ -25,10 +25,12 @@ import com.google.inject.Module;
 import com.google.inject.name.Names;
 
 import ds2.enterspace.core.api.FileRoot;
+import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.core.api.SourceTransformer;
 import ds2.enterspace.core.api.SourceTypeDetector;
 import ds2.enterspace.core.api.SourceWriter;
 import ds2.enterspace.core.api.StreamRoot;
+import ds2.enterspace.core.impl.LineHandlerImpl;
 import ds2.enterspace.core.impl.SourceWriterImpl;
 import ds2.enterspace.core.impl.TypeDetectorImpl;
 import ds2.enterspace.core.impl.io.FileRootImpl;
@@ -54,6 +56,7 @@ public class CoreInjectionPlan implements Module {
 		binder.bind(FileRoot.class).to(FileRootImpl.class);
 		binder.bindConstant().annotatedWith(Names.named("defaultEncoding")).to(
 				"utf-8");
+		binder.bind(LineHandler.class).to(LineHandlerImpl.class);
 	}
 
 }

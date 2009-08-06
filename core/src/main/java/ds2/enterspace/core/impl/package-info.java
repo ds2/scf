@@ -16,21 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * 
+ * Basic implementations of the formatter core
  */
-package ds2.enterspace.core.impl.xml;
-
-
-/**
- * @author kaeto23
- * 
- */
-public class ProcessingInstruction extends BaseXmlObject {
-	/**
-	 * 
-	 */
-	public ProcessingInstruction() {
-		startSeq = "<?";
-		endSeq = "?>";
-	}
-}
+package ds2.enterspace.core.impl;

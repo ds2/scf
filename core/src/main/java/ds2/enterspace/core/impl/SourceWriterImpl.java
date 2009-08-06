@@ -174,6 +174,7 @@ public class SourceWriterImpl implements SourceWriter {
 			return true;
 		}
 		sb.append(currentLine.toString());
+		log.finest("commiting this content: " + currentLine.toString());
 		sb.append(NEWLINE);
 		clearBuffer(currentLine);
 		return true;

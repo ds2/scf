@@ -20,6 +20,7 @@
  */
 package ds2.enterspace.core.impl.xml;
 
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -29,6 +30,7 @@ import org.antlr.runtime.Token;
 
 import com.google.inject.Inject;
 
+import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.core.api.SourceTransformer;
 import ds2.enterspace.core.api.SourceWriter;
 import ds2.enterspace.rules.api.RuleSet;
@@ -60,6 +62,8 @@ public class XmlTransformer implements SourceTransformer {
 	 * the xml grammar that has been loaded.
 	 */
 	private XmlGrammar grammar = null;
+	@Inject
+	private LineHandler lh = null;
 
 	/**
 	 * {@inheritDoc}
@@ -130,21 +134,7 @@ public class XmlTransformer implements SourceTransformer {
 				break;
 			case XmlGrammar.PI_STOP:
 				// write Element
-				sw.addToLine(currentIndent, "<?");
-				sw.addToLine(currentObject.getElementName());
-				if (rules.getSeparateAttributesPerLine()
-						&& currentObject.hasAttributes()) {
-					for (Entry<String, String> keyValuePair : currentObject
-							.getAttributes().entrySet()) {
-						sw.commitLine(false);
-						sw.addToLine(currentIndent + 1, keyValuePair.getKey()
-								+ "=" + keyValuePair.getValue());
-					}
-				}
-				if (rules.getAlignFinalBracketOnNewline()) {
-					sw.commitLine(false);
-				}
-				sw.addToLine("?>");
+				writeElement(currentIndent, currentObject);
 				currentObject = null;
 				break;
 			case XmlGrammar.WS:
@@ -170,15 +160,24 @@ public class XmlTransformer implements SourceTransformer {
 					}
 				}
 				break;
-			/*
-			 * case XmlGrammar.TAG_START_OPEN: currentIndent++; isAttribute =
-			 * false; sw.addToLine(token.getText()); break; case
-			 * XmlGrammar.TAG_CLOSE: if (rules.getAlignFinalBracketOnNewline())
-			 * { sw.commitLine(false); } sw.addToLine(currentIndent,
-			 * token.getText()); sw.commitLine(false); currentIndent--;
-			 * isAttribute = false; break; case XmlGrammar.TAG_EMPTY_CLOSE:
-			 * sw.addToLine(token.getText()); break;
-			 */
+			case XmlGrammar.TAG_START_OPEN:
+				isAttribute = false;
+				currentObject = new StartElement();
+				break;
+			case XmlGrammar.TAG_CLOSE:
+				isAttribute = false;
+				// write element
+				writeElement(currentIndent, currentObject);
+				currentObject = null;
+				break;
+			case XmlGrammar.TAG_EMPTY_CLOSE:
+				currentObject.setEndSequence(token.getText());
+				writeElement(currentIndent, currentObject);
+				currentObject = null;
+				break;
+			case XmlGrammar.TAG_END_OPEN:
+				currentObject = new EndElement();
+				break;
 			case XmlGrammar.ATTR_EQ:
 				// sw.addToLine(token.getText());
 				break;
@@ -187,6 +186,15 @@ public class XmlTransformer implements SourceTransformer {
 				if (currentObject != null) {
 					currentObject.setAttributValue(token.getText());
 				}
+				break;
+			case XmlGrammar.PCDATA:
+				sw.addToLine(token.getText());
+				break;
+			case XmlGrammar.COMMENT_SECTION:
+				currentObject = new Comment();
+				currentObject.setInnerContent(token.getText());
+				writeElement(currentIndent, currentObject);
+				currentObject = null;
 				break;
 			default:
 				log.warning("unknown token: type=" + token.getType()
@@ -199,6 +207,45 @@ public class XmlTransformer implements SourceTransformer {
 	}
 
 	/**
+	 * Writes an xml object to the source writer
+	 * 
+	 * @param indent
+	 *            the current indent
+	 * @param xo
+	 *            the object to write
+	 */
+	private void writeElement(int indent, XmlObject xo) {
+		log.entering(XmlTransformer.class.getName(), "writeElement",
+				new Object[] { indent, xo });
+		sw.addToLine(indent, xo.getStartSequence());
+		if (xo.getElementName() != null) {
+			sw.addToLine(xo.getElementName());
+		}
+		if (rules.getSeparateAttributesPerLine() && xo.hasAttributes()) {
+			for (Entry<String, String> keyValuePair : xo.getAttributes()
+					.entrySet()) {
+				sw.commitLine(false);
+				sw.addToLine(indent + 1, keyValuePair.getKey() + "="
+						+ keyValuePair.getValue());
+			}
+		}
+		// write inner content
+		int commentLineWidth = lh.calculateLineWidth(rules
+				.getCommonAttributes(), 3);
+		List<String> lines = lh.breakContent(commentLineWidth, xo
+				.getInnerContent(), 0, rules.getCommentsRules().getBreakType());
+		for (String line : lines) {
+			sw.addLine(indent, " * " + line);
+		}
+		// align final bracket
+		if (rules.getAlignFinalBracketOnNewline()) {
+			sw.commitLine(false);
+		}
+		sw.addToLine(xo.getEndSequence());
+		log.exiting(XmlTransformer.class.getName(), "writeElement");
+	}
+
+	/**
 	 * Sets the source writer. This method here is usually called in a test
 	 * case. DO NOT USE IT IN PRODUCTION!!
 	 * 
@@ -207,6 +254,10 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	protected void setTestSw(SourceWriter s) {
 		this.sw = s;
+	}
+
+	public void setTestLh(LineHandler i) {
+		this.lh = i;
 	}
 
 }

@@ -37,6 +37,9 @@
 		<name>DS/2</name>
 		<url>http://ds-2.de/</url>
 	</organization>
+	<prerequisites>
+		<maven>2.1.0</maven>
+	</prerequisites>
 	<build>
 		<plugins>
 			<plugin>
@@ -70,6 +73,7 @@
 						<exclude>.hgtags</exclude>
 						<exclude>BUILD.txt</exclude>
 						<exclude>.clover/**</exclude>
+						<exclude>test*.xml</exclude>
 					</excludes>
 					<encoding>utf-8</encoding>
 					<mapping>

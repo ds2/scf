@@ -20,17 +20,12 @@
  */
 package ds2.enterspace.core.impl.xml;
 
-
 /**
  * @author kaeto23
  * 
  */
-public class ProcessingInstruction extends BaseXmlObject {
-	/**
-	 * 
-	 */
-	public ProcessingInstruction() {
-		startSeq = "<?";
-		endSeq = "?>";
+public class EndElement extends BaseXmlObject {
+	public EndElement() {
+		startSeq = "</";
 	}
 }

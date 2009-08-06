@@ -38,4 +38,14 @@ public interface XmlObject {
 	boolean hasAttributes();
 
 	Map<String, String> getAttributes();
+
+	String getStartSequence();
+
+	String getEndSequence();
+
+	void setEndSequence(String s);
+
+	void setInnerContent(String s);
+
+	String getInnerContent();
 }

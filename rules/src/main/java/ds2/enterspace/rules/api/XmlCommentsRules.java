@@ -18,19 +18,16 @@
 /**
  * 
  */
-package ds2.enterspace.core.impl.xml;
-
+package ds2.enterspace.rules.api;
 
 /**
  * @author kaeto23
  * 
  */
-public class ProcessingInstruction extends BaseXmlObject {
-	/**
-	 * 
-	 */
-	public ProcessingInstruction() {
-		startSeq = "<?";
-		endSeq = "?>";
-	}
+public interface XmlCommentsRules {
+	Boolean getBreakAfterBegin();
+
+	BreakFormat getBreakType();
+
+	Boolean getBreakBeforeEnd();
 }

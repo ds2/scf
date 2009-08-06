@@ -22,15 +22,16 @@ package ds2.enterspace.core.impl.xml;
 
 /**
  * @author kaeto23
- *
+ * 
  */
-public class Comment {
+public class Comment extends BaseXmlObject {
 
 	/**
 	 * 
 	 */
 	public Comment() {
-		// TODO Auto-generated constructor stub
+		startSeq = "<!--";
+		endSeq = "-->";
 	}
 
 }

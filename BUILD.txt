@@ -7,3 +7,13 @@ mvn release:perform
 
 on failure:
 mvn release:rollback
+
+= Important maven options =
+
+Due to the nature of grammar analysis tools, you need a special amount of memory
+to compile the project:
+
+MAVEN_OPTS="-Xmx1024m -Xms512m"
+export MAVEN_OPTS
+
+Using this settings, the project was able to build on a MacBook Air (1st gen) :)
