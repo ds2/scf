@@ -52,6 +52,8 @@ CDATA_END:
 {cdataMode=false;}
 ;
 
+COMMENT_SECTION:'<!--' (~'-')* '-->';
+
 TAG_START_OPEN : {!cdataMode}?=> '<' { tagMode = true; } ;
 TAG_END_OPEN : {!cdataMode}?=> '</' { tagMode = true; } ;
 TAG_CLOSE : { tagMode && !cdataMode }?=> '>' { tagMode = false; } ;
@@ -71,7 +73,6 @@ CDATA_SECTION:
 { cdataMode }?=> (~']')+
 ;
 
-COMMENT_SECTION:'<!--' (~'-')* '-->';
 DOCDATA:
 {doctypeMode}?=> (~'>')+
 ;
