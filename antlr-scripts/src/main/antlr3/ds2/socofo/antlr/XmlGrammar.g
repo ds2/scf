@@ -23,7 +23,6 @@ lexer grammar XmlGrammar;
 
 @members {
     boolean tagMode = false;
-    boolean cdataMode=false;
     boolean doctypeMode=false;
 }
 
@@ -31,7 +30,7 @@ PI_START : '<?' { tagMode=true;};
 PI_STOP: {tagMode}?=> '?>' {tagMode=false;};
 
 DOCTYPE_START:
-{!tagMode && ! cdataMode}?=>
+{!tagMode }?=>
 '<!DOCTYPE'
 {doctypeMode=true;}
 ;
@@ -41,23 +40,14 @@ DOCTYPE_END:
 {doctypeMode=false;}
 ;
 
-CDATA_START:
-{!tagMode}?=>
-('<![CDATA[')
-{cdataMode=true;}
-;
-CDATA_END:
-{cdataMode}?=>
-']]>'
-{cdataMode=false;}
-;
+CDATA_SECTION: {!tagMode}?=> '<![CDATA[' (~']')* ']]>' ;
 
 COMMENT_SECTION:'<!--' (~'-')* '-->';
 
-TAG_START_OPEN : {!cdataMode}?=> '<' { tagMode = true; } ;
-TAG_END_OPEN : {!cdataMode}?=> '</' { tagMode = true; } ;
-TAG_CLOSE : { tagMode && !cdataMode }?=> '>' { tagMode = false; } ;
-TAG_EMPTY_CLOSE : { tagMode && !cdataMode }?=> '/>' { tagMode = false; } ;
+TAG_START_OPEN : '<' { tagMode = true; } ;
+TAG_END_OPEN : '</' { tagMode = true; } ;
+TAG_CLOSE : { tagMode }?=> '>' { tagMode = false; } ;
+TAG_EMPTY_CLOSE : { tagMode }?=> '/>' { tagMode = false; } ;
 
 ATTR_EQ : { tagMode }?=> '=' ;
 
@@ -69,15 +59,11 @@ ATTR_VALUE : { tagMode }?=>
 
 /** ATTRIBUTE : GENERIC_ID (WS)* ATTR_EQ (WS)* ATTR_VALUE; */
 
-CDATA_SECTION:
-{ cdataMode }?=> (~']')+
-;
-
 DOCDATA:
 {doctypeMode}?=> (~'>')+
 ;
 
-PCDATA : { !tagMode && !cdataMode && !doctypeMode }?=> (~'<')+ ;
+PCDATA : { !tagMode && !doctypeMode }?=> (~'<')+ ;
 
 GENERIC_ID
     : { tagMode }?=>

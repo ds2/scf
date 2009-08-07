@@ -23,7 +23,6 @@ package ds2.enterspace.core.api;
 import java.util.List;
 
 import ds2.enterspace.rules.api.BreakFormat;
-import ds2.enterspace.rules.api.CommonAttributes;
 
 /**
  * A formatter for breaking too long lines of code into several lines
@@ -53,11 +52,23 @@ public interface LineHandler {
 	 * Calculates the line width for
 	 * {@link #breakContent(int, String, int, BreakFormat)}
 	 * 
-	 * @param ca
-	 *            the common attributes to read the max line width from
+	 * @param maxLineWidth
+	 *            the maximum line width
+	 * 
 	 * @param additionalChars
 	 *            the count of chars that act as an indent. Set to 0 if unsure.
 	 * @return the real line width to use
 	 */
-	int calculateLineWidth(CommonAttributes ca, int additionalChars);
+	int calculateLineWidth(int maxLineWidth, int additionalChars);
+
+	/**
+	 * Cleans a given comment. This method checks for any line content that
+	 * starts with WS* and removes them. This method ONLY removes the trailing
+	 * WS sequence!! Nothing more.
+	 * 
+	 * @param innerContent
+	 *            the content to clean
+	 * @return a cleaned comment
+	 */
+	String cleanComment(String innerContent);
 }

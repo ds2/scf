@@ -190,6 +190,12 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.PCDATA:
 				sw.addToLine(token.getText());
 				break;
+			case XmlGrammar.CDATA_SECTION:
+				currentObject = new CDataBlock();
+				currentObject.setInnerContent(token.getText());
+				writeElement(currentIndent, currentObject);
+				currentObject = null;
+				break;
 			case XmlGrammar.COMMENT_SECTION:
 				currentObject = new Comment();
 				currentObject.setInnerContent(token.getText());
@@ -231,9 +237,10 @@ public class XmlTransformer implements SourceTransformer {
 		}
 		// write inner content
 		int commentLineWidth = lh.calculateLineWidth(rules
-				.getCommonAttributes(), 3);
-		List<String> lines = lh.breakContent(commentLineWidth, xo
-				.getInnerContent(), 0, rules.getCommentsRules().getBreakType());
+				.getCommonAttributes().getMaxLinewidth(), 3);
+		String innerContentClean = lh.cleanComment(xo.getInnerContent());
+		List<String> lines = lh.breakContent(commentLineWidth,
+				innerContentClean, 0, rules.getCommentsRules().getBreakType());
 		for (String line : lines) {
 			sw.addLine(indent, " * " + line);
 		}

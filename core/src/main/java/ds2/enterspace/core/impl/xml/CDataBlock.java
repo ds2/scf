@@ -22,15 +22,16 @@ package ds2.enterspace.core.impl.xml;
 
 /**
  * @author kaeto23
- *
+ * 
  */
-public class CDataBlock {
+public class CDataBlock extends BaseXmlObject {
 
 	/**
 	 * 
 	 */
 	public CDataBlock() {
-		// TODO Auto-generated constructor stub
+		startSeq = "<![CDATA[";
+		endSeq = "]]>";
 	}
 
 }

@@ -22,25 +22,26 @@ package ds2.enterspace.core.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Logger;
 
 import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.rules.api.BreakFormat;
-import ds2.enterspace.rules.api.CommonAttributes;
 
 /**
  * @author kaeto23
  * 
  */
 public class LineHandlerImpl implements LineHandler {
-	List<String> lines = null;
+	/**
+	 * A logger
+	 */
+	private static final Logger log = Logger.getLogger(LineHandlerImpl.class
+			.getName());
 
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
-	public LineHandlerImpl() {
-		lines = new ArrayList<String>();
-	}
-
 	@Override
 	public List<String> breakContent(int lineWidth, String content,
 			int firstIndent, BreakFormat breakType) {
@@ -48,10 +49,54 @@ public class LineHandlerImpl implements LineHandler {
 		return rc;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public int calculateLineWidth(CommonAttributes ca, int additionalChars) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int calculateLineWidth(int maxLineWidth, int ac) {
+		if (maxLineWidth <= 0) {
+			// no linewidth set
+			return -1;
+		}
+		int rc = maxLineWidth;
+		rc -= ac;
+		if (rc < 0) {
+			log.warning("too much additional chars: " + ac);
+			rc = 0;
+		} else if (rc == 0) {
+			log.warning("Width and additional chars are the same!");
+		}
+		return rc;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String cleanComment(String lines) {
+		log.entering(LineHandlerImpl.class.getName(), "cleanComment", lines);
+		StringBuffer rc = new StringBuffer();
+		if (lines == null) {
+			return "";
+		}
+		Scanner scanner = new Scanner(lines);
+		scanner.useDelimiter("\n");
+		while (scanner.hasNext()) {
+			String line = scanner.next();
+			line = line.trim();
+			if (line.startsWith("* ")) {
+				line = line.substring(2);
+			} else if (line.equalsIgnoreCase("*")) {
+				line = "";
+			}
+			rc.append(line);
+			rc.append("\n");
+		}
+		String rc2 = rc.toString();
+		// remove the last \n char
+		rc2 = rc2.substring(0, rc2.length() - 1);
+		log.exiting(LineHandlerImpl.class.getName(), "cleanComment", rc2);
+		return rc2;
 	}
 
 }
