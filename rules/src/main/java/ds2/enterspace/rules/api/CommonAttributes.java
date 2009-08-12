@@ -21,12 +21,24 @@
 package ds2.enterspace.rules.api;
 
 /**
- * @author kaeto23
+ * Common attributes for any file to format.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface CommonAttributes {
+	/**
+	 * Returns the maximum line width.
+	 * 
+	 * @return the maximum line width
+	 */
 	int getMaxLinewidth();
 
+	/**
+	 * Returns the sequence of characters to act as indent.
+	 * 
+	 * @return the indent sequence
+	 */
 	String getIndentSequence();
 
 	/**

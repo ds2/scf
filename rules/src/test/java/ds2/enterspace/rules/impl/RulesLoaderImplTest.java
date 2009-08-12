@@ -25,10 +25,7 @@ import static org.junit.Assert.assertNull;
 
 import java.io.InputStream;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.code.socofo.common.modules.CommonsInjectionPlan;
@@ -44,37 +41,22 @@ import ds2.enterspace.rules.modules.RulesInjectionPlan;
  * 
  */
 public class RulesLoaderImplTest {
+	/**
+	 * the test object
+	 */
 	private RulesLoader to = null;
 
 	/**
+	 * Sets up a test run
+	 * 
 	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
+	 *             if an error occurred
 	 */
 	@Before
 	public void setUp() throws Exception {
 		Injector oj = Guice.createInjector(new CommonsInjectionPlan(),
 				new RulesInjectionPlan());
 		to = oj.getInstance(RulesLoader.class);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**

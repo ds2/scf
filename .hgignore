@@ -16,3 +16,6 @@ release\.properties
 
 syntax: regexp
 \.releaseBackup$
+
+syntax: regexp
+\.checkstyle$

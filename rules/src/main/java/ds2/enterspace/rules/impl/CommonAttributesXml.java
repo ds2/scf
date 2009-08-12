@@ -35,7 +35,7 @@ public class CommonAttributesXml implements CommonAttributes {
 	private int maxLineWidth = 0;
 	@XmlElement(required = true)
 	private String indentSequence = null;
-	@XmlElement(required = false)
+	@XmlElement(required = false, defaultValue = "4")
 	private int tabSize = 4;
 
 	@Override

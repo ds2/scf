@@ -26,11 +26,12 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * The rules for breaking content sequences into several lines.
  * 
- * @author kaeto23
+ * @author Dirk Strauss
+ * @version 1.0
  * 
  */
 @XmlType(name = "BreakFormat", namespace = "http://www.ds2/ns/socofo")
-@XmlEnum()
+@XmlEnum
 public enum BreakFormat {
 	/**
 	 * basically a BeautyBreak, but when facing too long words, a break is

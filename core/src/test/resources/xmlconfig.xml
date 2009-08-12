@@ -22,6 +22,7 @@
   <commonAttributes>
     <maxLineWidth>80</maxLineWidth>
     <indentSequence><![CDATA[  ]]></indentSequence>
+    <tabSize>4</tabSize>
   </commonAttributes>
   <separateAttributesPerLine>true</separateAttributesPerLine>
   <alignFinalBracketOnNewline>OnAttributes</alignFinalBracketOnNewline>

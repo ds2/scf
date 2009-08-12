@@ -23,10 +23,23 @@ package ds2.enterspace.rules.api;
 import javax.xml.bind.annotation.XmlEnum;
 
 /**
- * @author kaeto23
+ * The final bracket policy.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @XmlEnum
 public enum FinalBracketPolicy {
-	Never, Always, OnAttributes;
+	/**
+	 * Never do a break at a final bracket.
+	 */
+	Never,
+	/**
+	 * Always do a break at a final bracket.
+	 */
+	Always,
+	/**
+	 * Only do a final break when attributes were found
+	 */
+	OnAttributes;
 }

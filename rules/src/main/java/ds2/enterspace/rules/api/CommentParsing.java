@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @XmlType(name = "CommentParsingType", namespace = "http://www.ds2/ns/socofo")
 @XmlEnum
