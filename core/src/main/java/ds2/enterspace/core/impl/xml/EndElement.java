@@ -27,5 +27,6 @@ package ds2.enterspace.core.impl.xml;
 public class EndElement extends BaseXmlObject {
 	public EndElement() {
 		startSeq = "</";
+		endTag = true;
 	}
 }

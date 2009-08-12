@@ -66,6 +66,11 @@ public class SourceWriterImplTest {
 			public String getIndentSequence() {
 				return "  ";
 			}
+
+			@Override
+			public int getTabSize() {
+				return 4;
+			}
 		};
 	}
 

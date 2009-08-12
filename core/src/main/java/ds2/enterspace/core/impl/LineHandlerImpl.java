@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.rules.api.BreakFormat;
@@ -38,6 +40,15 @@ public class LineHandlerImpl implements LineHandler {
 	 */
 	private static final Logger log = Logger.getLogger(LineHandlerImpl.class
 			.getName());
+	/**
+	 * Whitespace pattern
+	 */
+	protected static final Pattern PATTERN_WS = Pattern.compile("[\\s]+");
+	/**
+	 * word pattern with whitespaces
+	 */
+	protected static final Pattern wordPattern = Pattern.compile("[\\S]+"
+			+ PATTERN_WS.pattern());
 
 	/**
 	 * {@inheritDoc}
@@ -45,8 +56,141 @@ public class LineHandlerImpl implements LineHandler {
 	@Override
 	public List<String> breakContent(int lineWidth, String content,
 			int firstIndent, BreakFormat breakType) {
+		log.entering(LineHandlerImpl.class.getName(), "breakContent",
+				new Object[] { lineWidth, content, firstIndent, breakType });
+		List<String> rc = new ArrayList<String>();
+		if (content == null || content.length() <= 0) {
+			return rc;
+		}
+		log.finer("breaking content at default NEWLINE sequences");
+		Scanner scanner = new Scanner(content);
+		scanner.useDelimiter("\n");
+		log.finer("Entering line loop");
+		boolean isFirstLine = true;
+		while (scanner.hasNext()) {
+			String line = scanner.next();
+			log.finest("current line is: " + line);
+			if (line == null) {
+				log.finer("line has no content, continuing");
+				continue;
+			}
+			if (line.length() <= 0 || breakType.equals(BreakFormat.NoBreak)) {
+				log
+						.finer("line is empty or has NOBREAK flag -> adding and continuing");
+				rc.add(line);
+				continue;
+			}
+			log.finer("checking for words on this line to fill current line");
+			StringBuffer currentLine = new StringBuffer();
+			if (isFirstLine) {
+				for (int i = 0; i < firstIndent; i++) {
+					currentLine.append(" ");
+				}
+				isFirstLine = false;
+			}
+			line = line.trim();
+			log.finest("Checking for words on the given line");
+			List<String> tokens = getTokens(line);
+			log
+					.finest("found " + tokens.size()
+							+ " tokens on the current line");
+			log.finer("entering token loop");
+			for (int tokenIndex = 0; tokenIndex < tokens.size(); tokenIndex++) {
+				String token = tokens.get(tokenIndex);
+				log.finest("Working with token(" + tokenIndex + "): " + token);
+				int tokenInsertOffset = currentLine.length();
+				currentLine.append(token);
+				if (getLengthOfBuffer(currentLine) > lineWidth) {
+					log.finest("currentLine is too long, shortening");
+					String beforeToken = "";
+					switch (breakType) {
+					case BeautyBreak:
+						beforeToken = currentLine.substring(0,
+								tokenInsertOffset);
+						rc.add(beforeToken);
+						currentLine.delete(0, tokenInsertOffset);
+						break;
+					case BeautyForcedBreak:
+						beforeToken = currentLine.substring(0, lineWidth);
+						rc.add(beforeToken);
+						currentLine.delete(0, lineWidth);
+						break;
+					}
+
+				}
+			}
+			log.finer("Checking last buffer");
+			if (currentLine.length() > 0) {
+				log.finest("adding last content of currentLineBuffer");
+				rc.add(currentLine.toString());
+			}
+			log.finer("line finished");
+		}
+		log.exiting(LineHandlerImpl.class.getName(), "breakContent", rc);
+		return rc;
+	}
+
+	/**
+	 * Separates the given line into a list of tokens. The term token referres
+	 * to the string sequence defined by the regular expression pattern.
+	 * 
+	 * @param line
+	 *            the line to separate
+	 * @return a list of tokens to iterate through
+	 * @see #wordPattern
+	 */
+	protected List<String> getTokens(final String line) {
+		log.entering(LineHandlerImpl.class.getName(), "getTokens", line);
+		List<String> tokenList = new ArrayList<String>();
+		if (line == null || line.length() <= 0) {
+			return tokenList;
+		}
+		Matcher wordMatcher = wordPattern.matcher(line);
+		int lastOffset = 0;
+		while (wordMatcher.find(lastOffset)) {
+			String wordSeq = wordMatcher.group();
+			tokenList.add(wordSeq);
+			lastOffset = wordMatcher.end();
+			log.finest("found a seq between " + wordMatcher.start() + " and "
+					+ lastOffset);
+		}
+		if (lastOffset < line.length()) {
+			// there is something missing
+			tokenList.add(line.substring(lastOffset));
+		}
+		log.exiting(LineHandlerImpl.class.getName(), "getTokens", tokenList);
+		return tokenList;
+	}
+
+	/**
+	 * 
+	 * @param line
+	 * @return
+	 */
+	protected List<String> separateIntoLines(String line, int maxLineLength) {
 		List<String> rc = new ArrayList<String>();
 		return rc;
+	}
+
+	protected int getLineLength(String s) {
+		log.entering(LineHandlerImpl.class.getName(), "getLineLength", s);
+		int rc = 0;
+		if (s == null || s.length() <= 0) {
+			return rc;
+		}
+		rc = s.length();
+		// count all tab chars
+		int startOffset = 0;
+		while (s.indexOf("\t", startOffset++) > 0) {
+			rc += 3;
+		}
+		log.exiting(LineHandlerImpl.class.getName(), "getLineLength", rc);
+		return rc;
+	}
+
+	protected int getLengthOfBuffer(StringBuffer sb) {
+		String s = sb.toString();
+		return getLineLength(s);
 	}
 
 	/**
@@ -97,6 +241,19 @@ public class LineHandlerImpl implements LineHandler {
 		rc2 = rc2.substring(0, rc2.length() - 1);
 		log.exiting(LineHandlerImpl.class.getName(), "cleanComment", rc2);
 		return rc2;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String removeEnters(String s) {
+		String rc = s;
+		if (rc == null || rc.length() <= 0) {
+			return "";
+		}
+		rc = rc.replaceAll("\n", " ");
+		return rc;
 	}
 
 }

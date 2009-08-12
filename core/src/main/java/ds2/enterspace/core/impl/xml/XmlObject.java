@@ -45,7 +45,21 @@ public interface XmlObject {
 
 	void setEndSequence(String s);
 
+	/**
+	 * Sets the inner content of an xml object. This can be a text comment
+	 * usually.
+	 * 
+	 * @param s
+	 *            the inner content
+	 */
 	void setInnerContent(String s);
 
+	/**
+	 * Returns the inner content.
+	 * 
+	 * @return the inner content, or null
+	 */
 	String getInnerContent();
+
+	boolean isEndTag();
 }

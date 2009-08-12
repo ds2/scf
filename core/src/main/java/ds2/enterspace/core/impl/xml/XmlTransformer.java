@@ -33,6 +33,8 @@ import com.google.inject.Inject;
 import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.core.api.SourceTransformer;
 import ds2.enterspace.core.api.SourceWriter;
+import ds2.enterspace.rules.api.FinalBracketPolicy;
+import ds2.enterspace.rules.api.NewlineRules;
 import ds2.enterspace.rules.api.RuleSet;
 import ds2.enterspace.rules.api.XmlFormatRules;
 import ds2.socofo.antlr.XmlGrammar;
@@ -123,7 +125,6 @@ public class XmlTransformer implements SourceTransformer {
 		log.finer("Starting token run");
 		WriteState state = WriteState.UNDEFINED;
 		XmlObject currentObject = null;
-		boolean isAttribute = false;
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + ") for this run: "
 					+ token.getText());
@@ -144,12 +145,6 @@ public class XmlTransformer implements SourceTransformer {
 				sw.addToLine(" ");
 				break;
 			case XmlGrammar.GENERIC_ID: // attribute or element name
-				if (isAttribute && rules.getSeparateAttributesPerLine()) {
-					sw.commitLine(false);
-					sw.addToLine(currentIndent, "");
-				}
-				// sw.addToLine(token.getText());
-				isAttribute = true;
 				if (currentObject != null) {
 					if (currentObject.getElementName() == null) {
 						// this is an element name
@@ -161,11 +156,9 @@ public class XmlTransformer implements SourceTransformer {
 				}
 				break;
 			case XmlGrammar.TAG_START_OPEN:
-				isAttribute = false;
 				currentObject = new StartElement();
 				break;
 			case XmlGrammar.TAG_CLOSE:
-				isAttribute = false;
 				// write element
 				writeElement(currentIndent, currentObject);
 				currentObject = null;
@@ -191,9 +184,7 @@ public class XmlTransformer implements SourceTransformer {
 				sw.addToLine(token.getText());
 				break;
 			case XmlGrammar.CDATA_SECTION:
-				currentObject = new CDataBlock();
-				currentObject.setInnerContent(token.getText());
-				writeElement(currentIndent, currentObject);
+				sw.addToLine(token.getText());
 				currentObject = null;
 				break;
 			case XmlGrammar.COMMENT_SECTION:
@@ -227,10 +218,15 @@ public class XmlTransformer implements SourceTransformer {
 		if (xo.getElementName() != null) {
 			sw.addToLine(xo.getElementName());
 		}
-		if (rules.getSeparateAttributesPerLine() && xo.hasAttributes()) {
+		NewlineRules nlRules = rules.getNewlineRules();
+		if (xo.hasAttributes()) {
 			for (Entry<String, String> keyValuePair : xo.getAttributes()
 					.entrySet()) {
-				sw.commitLine(false);
+				if (nlRules != null && nlRules.getAfterEachXmlAttribute()) {
+					sw.commitLine(false);
+				} else {
+					sw.addToLine(" ");
+				}
 				sw.addToLine(indent + 1, keyValuePair.getKey() + "="
 						+ keyValuePair.getValue());
 			}
@@ -244,11 +240,29 @@ public class XmlTransformer implements SourceTransformer {
 		for (String line : lines) {
 			sw.addLine(indent, " * " + line);
 		}
+
 		// align final bracket
-		if (rules.getAlignFinalBracketOnNewline()) {
+		FinalBracketPolicy fbp = rules.getAlignFinalBracketOnNewline();
+		if (fbp == null) {
+			fbp = FinalBracketPolicy.Never;
+		}
+		switch (fbp) {
+		case Always:
 			sw.commitLine(false);
+			break;
+		case Never:
+			break;
+		case OnAttributes:
+			if (xo.hasAttributes()) {
+				sw.commitLine(false);
+			}
+			break;
 		}
 		sw.addToLine(xo.getEndSequence());
+
+		if (nlRules != null && nlRules.getAfterXmlEndTag() && xo.isEndTag()) {
+			sw.commitLine(false);
+		}
 		log.exiting(XmlTransformer.class.getName(), "writeElement");
 	}
 

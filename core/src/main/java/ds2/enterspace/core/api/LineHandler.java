@@ -71,4 +71,14 @@ public interface LineHandler {
 	 * @return a cleaned comment
 	 */
 	String cleanComment(String innerContent);
+
+	/**
+	 * Returns the given string without any NEWLINE characters. Such characters
+	 * are replaced by a single WS (whitespace).
+	 * 
+	 * @param s
+	 *            the string to analyse
+	 * @return the cleaned version
+	 */
+	String removeEnters(String s);
 }

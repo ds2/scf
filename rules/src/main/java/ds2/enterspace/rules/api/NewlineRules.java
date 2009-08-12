@@ -24,12 +24,12 @@ package ds2.enterspace.rules.api;
  * @author kaeto23
  * 
  */
-public interface XmlCommentsRules {
-	Boolean getBreakAfterBegin();
+public interface NewlineRules {
+	Boolean getAfterXmlEndTag();
 
-	BreakFormat getBreakType();
+	Boolean getAfterEachXmlAttribute();
 
-	Boolean getBreakBeforeEnd();
+	Boolean getBeforeComment();
 
-	CommentParsing getParsing();
+	Boolean getBeforeIfStatements();
 }

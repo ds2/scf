@@ -21,9 +21,16 @@
 package ds2.enterspace.core.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+import java.util.regex.Matcher;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import ds2.enterspace.rules.api.BreakFormat;
 
 /**
  * @author kaeto23
@@ -50,7 +57,25 @@ public class LineHandlerImplTest {
 	 */
 	@Test
 	public final void testBreakContent() {
-		// assertEquals(Arrays.asList(""), to.breakContent(10, null, 0, null));
+		assertEqualList(to.breakContent(10, null, 0, null), "");
+		assertEqualList(to.breakContent(10, "this is a test", 0,
+				BreakFormat.BeautyBreak), "this is a ", "test");
+	}
+
+	private void assertEqualList(List<String> l, String... elements) {
+		if (l == null) {
+			fail("List is null");
+			return;
+		}
+		int index = 0;
+		for (String item : l) {
+			String mustItem = elements[index++];
+			if (!mustItem.equals(item)) {
+				fail("Item \"" + mustItem + "\" is not the same as \"" + item
+						+ "\"");
+				break;
+			}
+		}
 	}
 
 	/**
@@ -83,6 +108,63 @@ public class LineHandlerImplTest {
 		assertEquals("word\nword2", to.cleanComment("word\n* word2"));
 		assertEquals("word\nword2", to.cleanComment("word\n    * word2"));
 		assertEquals("word\nword2", to.cleanComment("word\n  \t  * word2"));
+	}
+
+	@Test
+	public final void testWhitespacePatterns() {
+		Matcher m = to.PATTERN_WS.matcher(" ");
+		assertTrue(m.find());
+		assertEquals(" ", m.group());
+
+		m = to.PATTERN_WS.matcher("   ");
+		assertTrue(m.find());
+		assertEquals("   ", m.group());
+
+		m = to.PATTERN_WS.matcher("\t");
+		assertTrue(m.find());
+		assertEquals("\t", m.group());
+	}
+
+	@Test
+	public final void testWordPatterns() {
+		Matcher m = to.wordPattern.matcher("a ");
+		assertTrue(m.find());
+		assertEquals("a ", m.group());
+
+		m = to.wordPattern.matcher("a   ");
+		assertTrue(m.find());
+		assertEquals("a   ", m.group());
+
+		m = to.wordPattern.matcher("a \t ");
+		assertTrue(m.find());
+		assertEquals("a \t ", m.group());
+
+		m = to.wordPattern.matcher("abc \t ");
+		assertTrue(m.find());
+		assertEquals("abc \t ", m.group());
+
+		m = to.wordPattern.matcher(" abc \t ");
+		assertTrue(m.find());
+		assertEquals("abc \t ", m.group());
+	}
+
+	@Test
+	public final void testGetTokens() {
+		assertEqualList(to.getTokens(null), "");
+
+		assertEqualList(to.getTokens("this"), "this");
+
+		assertEqualList(to.getTokens("this is "), "this ", "is ");
+
+		assertEqualList(to.getTokens("this is a test"), "this ", "is ", "a ",
+				"test");
+	}
+
+	@Test
+	public final void testGetLineLength() {
+		assertEquals(0, to.getLineLength(null));
+
+		assertEquals(0, to.getLineLength(""));
 	}
 
 }

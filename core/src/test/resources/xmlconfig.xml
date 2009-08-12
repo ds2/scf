@@ -24,7 +24,11 @@
     <indentSequence><![CDATA[  ]]></indentSequence>
   </commonAttributes>
   <separateAttributesPerLine>true</separateAttributesPerLine>
-  <alignFinalBracketOnNewline>true</alignFinalBracketOnNewline>
+  <alignFinalBracketOnNewline>OnAttributes</alignFinalBracketOnNewline>
   <commentsRules>
   	<breakType>BeautyBreak</breakType></commentsRules>
+  <newlineRules>
+  	<beforeComment>true</beforeComment>
+  	<afterXmlEndTag>true</afterXmlEndTag>
+  	<afterEachXmlAttribute>true</afterEachXmlAttribute></newlineRules>
 </p:xml-format>

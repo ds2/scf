@@ -23,34 +23,53 @@ package ds2.enterspace.rules.impl;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import ds2.enterspace.rules.api.CommonAttributes;
+import ds2.enterspace.rules.api.NewlineRules;
 
 /**
  * @author kaeto23
  * 
  */
-@XmlType(name = "CommonAttributesType", namespace = "http://www.ds2/ns/socofo")
-public class CommonAttributesXml implements CommonAttributes {
-	@XmlElement(required = true)
-	private int maxLineWidth = 0;
-	@XmlElement(required = true)
-	private String indentSequence = null;
-	@XmlElement(required = false)
-	private int tabSize = 4;
+@XmlType(name = "NewlineRulesType", namespace = "http://www.ds2/ns/socofo")
+public class NewlineRulesXml implements NewlineRules {
+	@XmlElement
+	private Boolean beforeIfStatements = false;
+	@XmlElement
+	private Boolean beforeComment = false;
+	@XmlElement
+	private Boolean afterXmlEndTag = false;
+	@XmlElement
+	private Boolean afterEachXmlAttribute = false;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String getIndentSequence() {
-		return indentSequence;
+	public Boolean getAfterEachXmlAttribute() {
+		return afterEachXmlAttribute;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public int getMaxLinewidth() {
-		return maxLineWidth;
+	public Boolean getAfterXmlEndTag() {
+		return afterXmlEndTag;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public int getTabSize() {
-		return tabSize;
+	public Boolean getBeforeComment() {
+		return beforeComment;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Boolean getBeforeIfStatements() {
+		return beforeIfStatements;
 	}
 
 }

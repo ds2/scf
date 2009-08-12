@@ -34,6 +34,7 @@ public class BaseXmlObject implements XmlObject {
 	protected String startSeq = "<";
 	protected String endSeq = ">";
 	private String innerContent;
+	protected boolean endTag = false;
 
 	/**
 	 * 
@@ -95,6 +96,11 @@ public class BaseXmlObject implements XmlObject {
 	@Override
 	public void setInnerContent(String s) {
 		innerContent = s;
+	}
+
+	@Override
+	public boolean isEndTag() {
+		return endTag;
 	}
 
 }

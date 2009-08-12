@@ -109,4 +109,11 @@ public interface SourceWriter {
 	 * @return the current line content
 	 */
 	public String getCurrentLine();
+
+	/**
+	 * Returns the length of the current line
+	 * 
+	 * @return the length of the current line (special counting for tab chars)
+	 */
+	public int getCurrentLineLength();
 }

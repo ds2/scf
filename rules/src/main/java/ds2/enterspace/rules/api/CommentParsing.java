@@ -20,16 +20,22 @@
  */
 package ds2.enterspace.rules.api;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author kaeto23
  * 
  */
-public interface XmlCommentsRules {
-	Boolean getBreakAfterBegin();
-
-	BreakFormat getBreakType();
-
-	Boolean getBreakBeforeEnd();
-
-	CommentParsing getParsing();
+@XmlType(name = "CommentParsingType", namespace = "http://www.ds2/ns/socofo")
+@XmlEnum
+public enum CommentParsing {
+	/**
+	 * The comment is untouched. No preparsing is done (Default)
+	 */
+	NoParsing,
+	/**
+	 * Replaces any NEWLINE chars with a single SPACE
+	 */
+	ReplaceNewlinesWithSpace;
 }

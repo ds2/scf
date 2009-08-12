@@ -20,9 +20,11 @@
 -->
 <testProject>
 	<name>Dummy Project</name>
-	<description>This here is a very long description of the project. This is simply to test the maxLine feature of the formatter. The formatter must be able to break down such constructs at special positions (aka Whitespaces). Only CDATA sections must stay as they are.</description>
-	<anotherElement a="23">
-	Here is text
-	</anotherElement>
-	<emptyElement/>
+	<anotherElement a="23">Here is text</anotherElement><emptyElement /><cdata><![CDATA[This is cdata text]]></cdata><description>This here is a very long description of the project. This
+		is simply to test the maxLine feature of the formatter. The formatter
+		must be able to break down such constructs at special positions (aka
+		Whitespaces). Only CDATA sections must stay as they are.</description>
+	
+	
+	
 </testProject>

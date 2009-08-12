@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import ds2.enterspace.rules.api.BreakFormat;
+import ds2.enterspace.rules.api.CommentParsing;
 import ds2.enterspace.rules.api.XmlCommentsRules;
 
 /**
@@ -35,9 +36,11 @@ public class XmlCommentsRulesXml implements XmlCommentsRules {
 	@XmlElement
 	private Boolean breakAfterBegin = false;
 	@XmlElement
-	private Boolean breakBeforeEnd;
+	private Boolean breakBeforeEnd = false;
 	@XmlElement
-	private BreakFormat breakType;
+	private BreakFormat breakType = BreakFormat.NoBreak;
+	@XmlElement
+	private CommentParsing parsing = CommentParsing.NoParsing;
 
 	/**
 	 * {@inheritDoc}
@@ -61,6 +64,11 @@ public class XmlCommentsRulesXml implements XmlCommentsRules {
 	@Override
 	public BreakFormat getBreakType() {
 		return breakType;
+	}
+
+	@Override
+	public CommentParsing getParsing() {
+		return parsing;
 	}
 
 }

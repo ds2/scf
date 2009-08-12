@@ -33,9 +33,7 @@ public interface XmlFormatRules {
 
 	List<NamespaceRule> getNamespaceRules();
 
-	Boolean getSeparateAttributesPerLine();
-
-	Boolean getAlignFinalBracketOnNewline();
+	FinalBracketPolicy getAlignFinalBracketOnNewline();
 
 	Boolean getClearBlanklines();
 
@@ -46,4 +44,6 @@ public interface XmlFormatRules {
 	TextBlocks getTextBlocks();
 
 	XmlCommentsRules getCommentsRules();
+
+	NewlineRules getNewlineRules();
 }

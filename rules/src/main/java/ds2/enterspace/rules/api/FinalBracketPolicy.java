@@ -18,20 +18,15 @@
 /**
  * 
  */
-package ds2.enterspace.core.impl.xml;
+package ds2.enterspace.rules.api;
+
+import javax.xml.bind.annotation.XmlEnum;
 
 /**
  * @author kaeto23
  * 
  */
-public class CDataBlock extends BaseXmlObject {
-
-	/**
-	 * 
-	 */
-	public CDataBlock() {
-		startSeq = "<![CDATA[";
-		endSeq = "]]>";
-	}
-
+@XmlEnum
+public enum FinalBracketPolicy {
+	Never, Always, OnAttributes;
 }

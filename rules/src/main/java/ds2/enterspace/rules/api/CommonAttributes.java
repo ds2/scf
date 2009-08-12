@@ -28,4 +28,11 @@ public interface CommonAttributes {
 	int getMaxLinewidth();
 
 	String getIndentSequence();
+
+	/**
+	 * Returns the count of spaces that represent a tab character.
+	 * 
+	 * @return the count of spaces for a tab. Usually 4.
+	 */
+	int getTabSize();
 }

@@ -28,7 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import ds2.enterspace.rules.api.CommonAttributes;
+import ds2.enterspace.rules.api.FinalBracketPolicy;
 import ds2.enterspace.rules.api.NamespaceRule;
+import ds2.enterspace.rules.api.NewlineRules;
 import ds2.enterspace.rules.api.TextBlocks;
 import ds2.enterspace.rules.api.XmlCommentsRules;
 import ds2.enterspace.rules.api.XmlFormatRules;
@@ -45,7 +47,7 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	@XmlElement(required = false)
 	private Boolean separateAttributesPerLine = false;
 	@XmlElement(required = false)
-	private Boolean alignFinalBracketOnNewline = false;
+	private FinalBracketPolicy alignFinalBracketOnNewline = FinalBracketPolicy.Never;
 	@XmlElement(required = false)
 	private Boolean clearBlankLines = false;
 	@XmlElement(required = false)
@@ -58,12 +60,14 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	private TextBlocks textBlocks = null;
 	@XmlElement(type = XmlCommentsRulesXml.class)
 	private XmlCommentsRules commentsRules = null;
+	@XmlElement(type = NewlineRulesXml.class)
+	private NewlineRules newlineRules = null;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean getAlignFinalBracketOnNewline() {
+	public FinalBracketPolicy getAlignFinalBracketOnNewline() {
 		return alignFinalBracketOnNewline;
 	}
 
@@ -103,14 +107,6 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean getSeparateAttributesPerLine() {
-		return separateAttributesPerLine;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public TextBlocks getTextBlocks() {
 		return textBlocks;
 	}
@@ -123,6 +119,11 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	@Override
 	public XmlCommentsRules getCommentsRules() {
 		return commentsRules;
+	}
+
+	@Override
+	public NewlineRules getNewlineRules() {
+		return newlineRules;
 	}
 
 }

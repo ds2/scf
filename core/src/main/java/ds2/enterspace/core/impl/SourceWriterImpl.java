@@ -205,4 +205,10 @@ public class SourceWriterImpl implements SourceWriter {
 		return currentLine.toString();
 	}
 
+	@Override
+	public int getCurrentLineLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
