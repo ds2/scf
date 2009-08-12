@@ -48,6 +48,7 @@ public class LineHandlerImplTest {
 	@Before
 	public void setUp() throws Exception {
 		to = new LineHandlerImpl();
+		to.setTabSize(4);
 	}
 
 	/**
@@ -60,6 +61,18 @@ public class LineHandlerImplTest {
 		assertEqualList(to.breakContent(10, null, 0, null), "");
 		assertEqualList(to.breakContent(10, "this is a test", 0,
 				BreakFormat.BeautyBreak), "this is a ", "test");
+		assertEqualList(to.breakContent(10, "this is a test", 5,
+				BreakFormat.BeautyBreak), "this ", "is a test");
+		assertEqualList(to.breakContent(5, "1234567890", 0,
+				BreakFormat.BeautyBreak), "1234567890");
+		assertEqualList(to.breakContent(5, "1234567890", 2,
+				BreakFormat.BeautyBreak), "1234567890");
+		assertEqualList(to.breakContent(5, "1234567890", 5,
+				BreakFormat.BeautyBreak), "");
+		assertEqualList(to.breakContent(5, "1234567890", 0,
+				BreakFormat.BeautyForcedBreak), "12345", "67890");
+		assertEqualList(to.breakContent(5, "1234567890", 2,
+				BreakFormat.BeautyForcedBreak), "123", "45678", "90");
 	}
 
 	private void assertEqualList(List<String> l, String... elements) {
@@ -165,6 +178,12 @@ public class LineHandlerImplTest {
 		assertEquals(0, to.getLineLength(null));
 
 		assertEquals(0, to.getLineLength(""));
+
+		assertEquals(4, to.getLineLength("test"));
+
+		assertEquals(6, to.getLineLength("  test"));
+
+		assertEquals(8, to.getLineLength("\ttest"));
 	}
 
 }

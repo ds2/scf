@@ -31,6 +31,13 @@ import ds2.enterspace.rules.api.BreakFormat;
  * 
  */
 public interface LineHandler {
+	/**
+	 * Sets the size for tab chars
+	 * 
+	 * @param v
+	 *            the size for tab chars
+	 */
+	void setTabSize(int v);
 
 	/**
 	 * Breaks a given content into several lines

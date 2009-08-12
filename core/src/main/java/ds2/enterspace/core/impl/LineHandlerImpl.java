@@ -49,6 +49,10 @@ public class LineHandlerImpl implements LineHandler {
 	 */
 	protected static final Pattern wordPattern = Pattern.compile("[\\S]+"
 			+ PATTERN_WS.pattern());
+	/**
+	 * the count of spaces chars to represent a single tab
+	 */
+	private int tabCharSize = 4;
 
 	/**
 	 * {@inheritDoc}
@@ -60,6 +64,10 @@ public class LineHandlerImpl implements LineHandler {
 				new Object[] { lineWidth, content, firstIndent, breakType });
 		List<String> rc = new ArrayList<String>();
 		if (content == null || content.length() <= 0) {
+			return rc;
+		}
+		if (firstIndent >= lineWidth) {
+			log.severe("The indent is too big to handle!");
 			return rc;
 		}
 		log.finer("breaking content at default NEWLINE sequences");
@@ -80,7 +88,7 @@ public class LineHandlerImpl implements LineHandler {
 				rc.add(line);
 				continue;
 			}
-			log.finer("checking for words on this line to fill current line");
+			log.finer("Creating currentLine buffer, adding indent");
 			StringBuffer currentLine = new StringBuffer();
 			if (isFirstLine) {
 				for (int i = 0; i < firstIndent; i++) {
@@ -89,7 +97,7 @@ public class LineHandlerImpl implements LineHandler {
 				isFirstLine = false;
 			}
 			line = line.trim();
-			log.finest("Checking for words on the given line");
+			log.finest("Tokenizing line...");
 			List<String> tokens = getTokens(line);
 			log
 					.finest("found " + tokens.size()
@@ -111,9 +119,11 @@ public class LineHandlerImpl implements LineHandler {
 						currentLine.delete(0, tokenInsertOffset);
 						break;
 					case BeautyForcedBreak:
-						beforeToken = currentLine.substring(0, lineWidth);
-						rc.add(beforeToken);
-						currentLine.delete(0, lineWidth);
+						while (getLengthOfBuffer(currentLine) > lineWidth) {
+							beforeToken = currentLine.substring(0, lineWidth);
+							rc.add(beforeToken);
+							currentLine.delete(0, lineWidth);
+						}
 						break;
 					}
 
@@ -124,7 +134,23 @@ public class LineHandlerImpl implements LineHandler {
 				log.finest("adding last content of currentLineBuffer");
 				rc.add(currentLine.toString());
 			}
+			if (firstIndent > 0) {
+				log.finer("Clearing first indent template");
+				String firstLine = rc.get(0);
+				firstLine = firstLine.substring(firstIndent);
+				rc.remove(0);
+				rc.add(0, firstLine);
+			}
 			log.finer("line finished");
+		}
+		log.finer("Removing leading empty lines");
+		for (int i = 0; i < rc.size(); i++) {
+			String line = rc.get(0);
+			if (line.trim().length() <= 0) {
+				rc.remove(0);
+			} else {
+				break;
+			}
 		}
 		log.exiting(LineHandlerImpl.class.getName(), "breakContent", rc);
 		return rc;
@@ -179,10 +205,11 @@ public class LineHandlerImpl implements LineHandler {
 			return rc;
 		}
 		rc = s.length();
+		log.finest("actual length is " + rc);
 		// count all tab chars
 		int startOffset = 0;
-		while (s.indexOf("\t", startOffset++) > 0) {
-			rc += 3;
+		while (s.indexOf("\t", startOffset++) >= 0) {
+			rc += (tabCharSize - 1);
 		}
 		log.exiting(LineHandlerImpl.class.getName(), "getLineLength", rc);
 		return rc;
@@ -254,6 +281,17 @@ public class LineHandlerImpl implements LineHandler {
 		}
 		rc = rc.replaceAll("\n", " ");
 		return rc;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setTabSize(int v) {
+		if (v <= 0) {
+			return;
+		}
+		tabCharSize = v;
 	}
 
 }
