@@ -189,42 +189,22 @@ public class LineHandlerImpl implements LineHandler {
 	}
 
 	/**
+	 * Returns the length of the buffer
 	 * 
-	 * @param line
-	 * @return
+	 * @param sb
+	 *            the buffer to analyze
+	 * @return the length of the buffer
 	 */
-	protected List<String> separateIntoLines(String line, int maxLineLength) {
-		List<String> rc = new ArrayList<String>();
-		return rc;
-	}
-
-	protected int getLineLength(String s) {
-		log.entering(LineHandlerImpl.class.getName(), "getLineLength", s);
-		int rc = 0;
-		if (s == null || s.length() <= 0) {
-			return rc;
-		}
-		rc = s.length();
-		log.finest("actual length is " + rc);
-		// count all tab chars
-		int startOffset = 0;
-		while (s.indexOf("\t", startOffset++) >= 0) {
-			rc += (tabCharSize - 1);
-		}
-		log.exiting(LineHandlerImpl.class.getName(), "getLineLength", rc);
-		return rc;
-	}
-
 	protected int getLengthOfBuffer(StringBuffer sb) {
 		String s = sb.toString();
-		return getLineLength(s);
+		return getLineWidth(tabCharSize, s);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int calculateLineWidth(int maxLineWidth, int ac) {
+	public int calculateContentLineWidth(int maxLineWidth, int ac) {
 		if (maxLineWidth <= 0) {
 			// no linewidth set
 			return -1;
@@ -292,6 +272,27 @@ public class LineHandlerImpl implements LineHandler {
 			return;
 		}
 		tabCharSize = v;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getLineWidth(int tabSize, String s) {
+		log.entering(LineHandlerImpl.class.getName(), "getLineWidth", s);
+		int rc = 0;
+		if (s == null || s.length() <= 0) {
+			return rc;
+		}
+		rc = s.length();
+		log.finest("actual length is " + rc);
+		// count all tab chars
+		int startOffset = 0;
+		while (s.indexOf("\t", startOffset++) >= 0) {
+			rc += (tabCharSize - 1);
+		}
+		log.exiting(LineHandlerImpl.class.getName(), "getLineWidth", rc);
+		return rc;
 	}
 
 }

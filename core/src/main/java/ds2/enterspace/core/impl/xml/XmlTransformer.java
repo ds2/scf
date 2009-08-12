@@ -120,6 +120,7 @@ public class XmlTransformer implements SourceTransformer {
 		}
 		log.finer("Setting rules and attributes");
 		sw.setCommonAttributes(rules.getCommonAttributes());
+		lh.setTabSize(rules.getCommonAttributes().getTabSize());
 		Token token;
 		int currentIndent = 0;
 		log.finer("Starting token run");
@@ -232,7 +233,7 @@ public class XmlTransformer implements SourceTransformer {
 			}
 		}
 		// write inner content
-		int commentLineWidth = lh.calculateLineWidth(rules
+		int commentLineWidth = lh.calculateContentLineWidth(rules
 				.getCommonAttributes().getMaxLinewidth(), 3);
 		String innerContentClean = lh.cleanComment(xo.getInnerContent());
 		List<String> lines = lh.breakContent(commentLineWidth,

@@ -93,18 +93,18 @@ public class LineHandlerImplTest {
 
 	/**
 	 * Test method for
-	 * {@link ds2.enterspace.core.impl.LineHandlerImpl#calculateLineWidth(ds2.enterspace.rules.api.CommonAttributes, int)}
+	 * {@link ds2.enterspace.core.impl.LineHandlerImpl#calculateContentLineWidth(ds2.enterspace.rules.api.CommonAttributes, int)}
 	 * .
 	 */
 	@Test
 	public final void testCalculateLineWidth() {
-		assertEquals(-1, to.calculateLineWidth(-1, 0));
-		assertEquals(-1, to.calculateLineWidth(0, 0));
-		assertEquals(-1, to.calculateLineWidth(0, 2));
-		assertEquals(10, to.calculateLineWidth(10, 0));
-		assertEquals(7, to.calculateLineWidth(10, 3));
-		assertEquals(0, to.calculateLineWidth(10, 10));
-		assertEquals(0, to.calculateLineWidth(10, 20));
+		assertEquals(-1, to.calculateContentLineWidth(-1, 0));
+		assertEquals(-1, to.calculateContentLineWidth(0, 0));
+		assertEquals(-1, to.calculateContentLineWidth(0, 2));
+		assertEquals(10, to.calculateContentLineWidth(10, 0));
+		assertEquals(7, to.calculateContentLineWidth(10, 3));
+		assertEquals(0, to.calculateContentLineWidth(10, 10));
+		assertEquals(0, to.calculateContentLineWidth(10, 20));
 	}
 
 	/**
@@ -175,15 +175,15 @@ public class LineHandlerImplTest {
 
 	@Test
 	public final void testGetLineLength() {
-		assertEquals(0, to.getLineLength(null));
+		assertEquals(0, to.getLineWidth(4, null));
 
-		assertEquals(0, to.getLineLength(""));
+		assertEquals(0, to.getLineWidth(4, ""));
 
-		assertEquals(4, to.getLineLength("test"));
+		assertEquals(4, to.getLineWidth(4, "test"));
 
-		assertEquals(6, to.getLineLength("  test"));
+		assertEquals(6, to.getLineWidth(4, "  test"));
 
-		assertEquals(8, to.getLineLength("\ttest"));
+		assertEquals(8, to.getLineWidth(4, "\ttest"));
 	}
 
 }

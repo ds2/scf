@@ -66,7 +66,7 @@ public interface LineHandler {
 	 *            the count of chars that act as an indent. Set to 0 if unsure.
 	 * @return the real line width to use
 	 */
-	int calculateLineWidth(int maxLineWidth, int additionalChars);
+	int calculateContentLineWidth(int maxLineWidth, int additionalChars);
 
 	/**
 	 * Cleans a given comment. This method checks for any line content that
@@ -88,4 +88,15 @@ public interface LineHandler {
 	 * @return the cleaned version
 	 */
 	String removeEnters(String s);
+
+	/**
+	 * Calculates the line width of the given string
+	 * 
+	 * @param tabSize
+	 *            the tab size (usually 4)
+	 * @param s
+	 *            the string to analyze
+	 * @return the width of the given string.
+	 */
+	int getLineWidth(int tabSize, String s);
 }

@@ -22,6 +22,9 @@ package ds2.enterspace.core.impl;
 
 import java.util.logging.Logger;
 
+import com.google.inject.Inject;
+
+import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.core.api.SourceWriter;
 import ds2.enterspace.rules.api.CommonAttributes;
 
@@ -51,6 +54,8 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	private static final transient Logger log = Logger
 			.getLogger(SourceWriterImpl.class.getName());
+	@Inject
+	private LineHandler lh = null;
 
 	/**
 	 * Inits the source buffer
@@ -205,10 +210,14 @@ public class SourceWriterImpl implements SourceWriter {
 		return currentLine.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getCurrentLineLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		int rc = 0;
+		rc = lh.getLineWidth(ca.getTabSize(), currentLine.toString());
+		return rc;
 	}
 
 }
