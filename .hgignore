@@ -19,3 +19,5 @@ syntax: regexp
 
 syntax: regexp
 \.checkstyle$
+syntax: regexp
+\.pmd$
