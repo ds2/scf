@@ -24,9 +24,9 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import com.google.code.socofo.common.api.IOHelper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.googlecode.socofo.common.api.IOHelper;
 
 import ds2.enterspace.core.api.SourceTypes;
 import ds2.enterspace.core.api.StreamRoot;

@@ -18,7 +18,7 @@
 /**
  * 
  */
-package com.google.code.socofo.common.impl;
+package com.googlecode.socofo.common.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,17 +27,19 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
-import com.google.code.socofo.common.api.IOHelper;
 import com.google.inject.Singleton;
+import com.googlecode.socofo.common.api.IOHelper;
 
 /**
- * @author kaeto23
+ * A first implementation of the IOHelper.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Singleton
 public class IOHelperImpl implements IOHelper {
 	/**
-	 * A logger
+	 * A logger.
 	 * 
 	 */
 	private static final transient Logger log = Logger
@@ -47,14 +49,14 @@ public class IOHelperImpl implements IOHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void closeInputstream(InputStream is) {
+	public void closeInputstream(final InputStream is) {
 		if (is == null) {
 			log.warning("No inputstream given!");
 			return;
 		}
 		try {
 			is.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			log.throwing(IOHelperImpl.class.getName(), "closeInputstream", e);
 		}
 	}
@@ -63,12 +65,12 @@ public class IOHelperImpl implements IOHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void closeReader(Reader r) {
+	public void closeReader(final Reader r) {
 		log.entering(IOHelperImpl.class.getName(), "closeReader", r);
 		if (r != null) {
 			try {
 				r.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				log.throwing(IOHelper.class.getName(), "closeReader", e);
 			}
 		}
@@ -79,10 +81,14 @@ public class IOHelperImpl implements IOHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void closeOutputstream(OutputStream baos) {
+	public void closeOutputstream(final OutputStream baos) {
+		if (baos == null) {
+			log.warning("No output stream given!");
+			return;
+		}
 		try {
 			baos.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			log.throwing(IOHelperImpl.class.getName(), "closeOutputstream", e);
 		}
 	}
@@ -91,11 +97,11 @@ public class IOHelperImpl implements IOHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String createString(byte[] byteArray, String encoding) {
+	public String createString(final byte[] byteArray, final String encoding) {
 		String rc = null;
 		try {
 			rc = new String(byteArray, encoding);
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			log.throwing(IOHelperImpl.class.getName(), "createString", e);
 		}
 		return rc;
@@ -105,11 +111,11 @@ public class IOHelperImpl implements IOHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int read(InputStream bis, byte[] buffer) {
+	public int read(final InputStream bis, final byte[] buffer) {
 		int rc;
 		try {
 			rc = bis.read(buffer);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			log.throwing(IOHelperImpl.class.getName(), "read", e);
 			rc = -1;
 		}

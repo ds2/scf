@@ -28,9 +28,9 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.code.socofo.common.modules.CommonsInjectionPlan;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
 
 import ds2.enterspace.rules.api.RulesLoader;
 import ds2.enterspace.rules.api.XmlFormatRules;

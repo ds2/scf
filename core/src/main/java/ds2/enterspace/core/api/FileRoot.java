@@ -25,8 +25,10 @@ import java.io.File;
 import ds2.enterspace.core.exceptions.LoadingException;
 
 /**
- * @author kaeto23
+ * Interface for reading source files.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface FileRoot extends SourceRoot {
 	/**

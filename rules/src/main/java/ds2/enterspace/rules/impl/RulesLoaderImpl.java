@@ -28,9 +28,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import com.google.code.socofo.common.api.IOHelper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlecode.socofo.common.api.IOHelper;
 
 import ds2.enterspace.rules.api.RulesLoader;
 import ds2.enterspace.rules.api.XmlFormatRules;

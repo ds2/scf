@@ -25,8 +25,10 @@ import java.io.InputStream;
 import ds2.enterspace.core.exceptions.LoadingException;
 
 /**
- * @author kaeto23
+ * Interface for reading source streams.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface StreamRoot extends SourceRoot {
 	/**

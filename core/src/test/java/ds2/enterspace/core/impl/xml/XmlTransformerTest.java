@@ -29,9 +29,9 @@ import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.code.socofo.common.modules.CommonsInjectionPlan;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
 
 import ds2.enterspace.core.api.LineHandler;
 import ds2.enterspace.core.api.StreamRoot;

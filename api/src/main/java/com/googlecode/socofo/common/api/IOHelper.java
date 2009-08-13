@@ -18,7 +18,7 @@
 /**
  * 
  */
-package com.google.code.socofo.common.api;
+package com.googlecode.socofo.common.api;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,7 +27,8 @@ import java.io.Reader;
 /**
  * A helper to support operation with input/output.
  * 
- * @author kaeto23
+ * @author Dirk Strauss
+ * @version 1.0
  * 
  */
 public interface IOHelper {

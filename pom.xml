@@ -74,6 +74,9 @@
 						<exclude>BUILD.txt</exclude>
 						<exclude>.clover/**</exclude>
 						<exclude>test*.xml</exclude>
+						<exclude>test*.txt</exclude>
+						<exclude>*test.txt</exclude>
+						<exclude>*.checkstyle</exclude>
 					</excludes>
 					<encoding>utf-8</encoding>
 					<mapping>

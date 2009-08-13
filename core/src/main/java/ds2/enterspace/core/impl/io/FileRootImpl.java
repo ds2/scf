@@ -27,8 +27,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import com.google.code.socofo.common.api.IOHelper;
 import com.google.inject.Inject;
+import com.googlecode.socofo.common.api.IOHelper;
 
 import ds2.enterspace.core.api.FileRoot;
 import ds2.enterspace.core.api.SourceTypeDetector;
