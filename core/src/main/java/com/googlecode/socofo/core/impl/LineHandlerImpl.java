@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.rules.api.BreakFormat;
 
-
 /**
  * @author kaeto23
  * 
@@ -246,7 +245,9 @@ public class LineHandlerImpl implements LineHandler {
 		}
 		String rc2 = rc.toString();
 		// remove the last \n char
-		rc2 = rc2.substring(0, rc2.length() - 1);
+		if (rc2.length() > 0) {
+			rc2 = rc2.substring(0, rc2.length() - 1);
+		}
 		log.exiting(LineHandlerImpl.class.getName(), "cleanComment", rc2);
 		return rc2;
 	}

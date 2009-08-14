@@ -39,10 +39,10 @@ import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
 
 /**
- * The xml transformer
+ * The xml transformer.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class XmlTransformer implements SourceTransformer {
 	/**
@@ -63,6 +63,9 @@ public class XmlTransformer implements SourceTransformer {
 	 * the xml grammar that has been loaded.
 	 */
 	private XmlGrammar grammar = null;
+	/**
+	 * The line handler.
+	 */
 	@Inject
 	private LineHandler lh = null;
 
@@ -71,7 +74,7 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	@Override
 	public String getResult() {
-		String rc = sw.getResult();
+		final String rc = sw.getResult();
 		return rc;
 	}
 
@@ -79,7 +82,7 @@ public class XmlTransformer implements SourceTransformer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void loadRules(RuleSet r) {
+	public void loadRules(final RuleSet r) {
 		if (r == null) {
 			log.warning("No rules given!");
 			return;
@@ -91,13 +94,13 @@ public class XmlTransformer implements SourceTransformer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void parseContent(String s) {
+	public void parseContent(final String s) {
 		if (s == null || s.length() <= 0) {
 			log.warning("No content given!");
 			return;
 		}
-		ANTLRStringStream ss = new ANTLRStringStream(s);
-		CharStream input = ss;
+		final ANTLRStringStream ss = new ANTLRStringStream(s);
+		final CharStream input = ss;
 		grammar = new XmlGrammar(input);
 	}
 
@@ -181,7 +184,10 @@ public class XmlTransformer implements SourceTransformer {
 				}
 				break;
 			case XmlGrammar.PCDATA:
-				sw.addToLine(token.getText());
+				currentObject = new Text();
+				currentObject.setInnerContent(token.getText());
+				writeElement(currentIndent, currentObject);
+				currentObject = null;
 				break;
 			case XmlGrammar.CDATA_SECTION:
 				sw.addToLine(token.getText());
@@ -211,14 +217,14 @@ public class XmlTransformer implements SourceTransformer {
 	 * @param xo
 	 *            the object to write
 	 */
-	private void writeElement(int indent, XmlObject xo) {
+	private void writeElement(final int indent, final XmlObject xo) {
 		log.entering(XmlTransformer.class.getName(), "writeElement",
 				new Object[] { indent, xo });
 		sw.addToLine(indent, xo.getStartSequence());
 		if (xo.getElementName() != null) {
 			sw.addToLine(xo.getElementName());
 		}
-		NewlineRules nlRules = rules.getNewlineRules();
+		final NewlineRules nlRules = rules.getNewlineRules();
 		if (xo.hasAttributes()) {
 			for (Entry<String, String> keyValuePair : xo.getAttributes()
 					.entrySet()) {
@@ -232,13 +238,22 @@ public class XmlTransformer implements SourceTransformer {
 			}
 		}
 		// write inner content
+		int additionalIndent = 0;
+		if (xo instanceof Comment) {
+			additionalIndent = 3;
+		}
 		int commentLineWidth = lh.calculateContentLineWidth(rules
-				.getCommonAttributes().getMaxLinewidth(), 3);
+				.getCommonAttributes().getMaxLinewidth(), additionalIndent);
 		String innerContentClean = lh.cleanComment(xo.getInnerContent());
 		List<String> lines = lh.breakContent(commentLineWidth,
 				innerContentClean, 0, rules.getCommentsRules().getBreakType());
 		for (String line : lines) {
-			sw.addLine(indent, " * " + line);
+			StringBuffer lineToPrint = new StringBuffer();
+			if (xo instanceof Comment) {
+				lineToPrint.append(" * ");
+			}
+			lineToPrint.append(line);
+			sw.addLine(indent, lineToPrint.toString());
 		}
 
 		// align final bracket

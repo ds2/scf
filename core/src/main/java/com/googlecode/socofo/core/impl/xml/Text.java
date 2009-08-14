@@ -21,16 +21,19 @@
 package com.googlecode.socofo.core.impl.xml;
 
 /**
- * @author kaeto23
- *
+ * Simple text content.
+ * 
+ * @author Dirk Strauss
+ * @version 1.0
+ * 
  */
-public class Text {
+public class Text extends BaseXmlObject {
 
 	/**
-	 * 
+	 * Inits the text object.
 	 */
 	public Text() {
-		// TODO Auto-generated constructor stub
+		startSeq = "";
+		endSeq = "";
 	}
-
 }

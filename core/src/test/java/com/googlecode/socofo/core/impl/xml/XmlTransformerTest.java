@@ -37,17 +37,16 @@ import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.exceptions.LoadingException;
 import com.googlecode.socofo.core.impl.SourceWriterImpl;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
-import com.googlecode.socofo.core.impl.xml.XmlTransformer;
 import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.RulesLoader;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
 import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 
-
 /**
- * class to test the xml transformer
+ * class to test the xml transformer.
  * 
- * @author kaeto23
+ * @author Dirk Strauss
+ * @version 1.0
  * 
  */
 public class XmlTransformerTest {
@@ -126,7 +125,8 @@ public class XmlTransformerTest {
 
 	/**
 	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#performTranslation()}.
+	 * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#performTranslation()}
+	 * .
 	 */
 	@Test
 	public final void testPerformTranslation() {
