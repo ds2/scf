@@ -26,8 +26,10 @@ import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.common.impl.IOHelperImpl;
 
 /**
- * @author kaeto23
+ * The injection plan for all common interfaces.
  * 
+ * @author Dirk Stauss
+ * @version 1.0
  */
 public class CommonsInjectionPlan implements Module {
 
@@ -35,7 +37,7 @@ public class CommonsInjectionPlan implements Module {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void configure(Binder binder) {
+	public void configure(final Binder binder) {
 		binder.bind(IOHelper.class).to(IOHelperImpl.class);
 	}
 
