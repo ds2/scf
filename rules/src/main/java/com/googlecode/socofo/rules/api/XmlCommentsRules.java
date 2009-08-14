@@ -20,13 +20,15 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
+
 /**
  * Rules for xml comments.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface XmlCommentsRules {
+public interface XmlCommentsRules extends Serializable {
 	/**
 	 * Returns the flag for inserting a NEWLINE after a comment begin.
 	 * 

@@ -20,6 +20,7 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ import java.util.List;
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface XmlFormatRules {
+public interface XmlFormatRules extends Serializable {
 	/**
 	 * Returns the common attributes for xml files.
 	 * 

@@ -20,13 +20,15 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
+
 /**
  * Rules for adding additional text blocks into the source code.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface TextBlocks {
+public interface TextBlocks extends Serializable {
 	/**
 	 * Returns the header to insert at the beginning of a document.
 	 * 
