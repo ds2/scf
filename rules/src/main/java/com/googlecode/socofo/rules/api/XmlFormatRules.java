@@ -23,16 +23,31 @@ package com.googlecode.socofo.rules.api;
 import java.util.List;
 
 /**
- * All the formatter rules for XML files
+ * All the formatter rules for XML files.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface XmlFormatRules {
+	/**
+	 * Returns the common attributes for xml files.
+	 * 
+	 * @return the common attributes
+	 */
 	CommonAttributes getCommonAttributes();
 
+	/**
+	 * Returns a list of namespace rules.
+	 * 
+	 * @return a list of namespace rules, or null
+	 */
 	List<NamespaceRule> getNamespaceRules();
 
+	/**
+	 * Returns the final bracket policy.
+	 * 
+	 * @return null, or the final bracket policy
+	 */
 	FinalBracketPolicy getAlignFinalBracketOnNewline();
 
 	Boolean getClearBlanklines();

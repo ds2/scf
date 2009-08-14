@@ -24,16 +24,34 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import com.googlecode.socofo.rules.impl.NamespaceRuleXml;
 
-
 /**
- * @author kaeto23
+ * A namespace rule.
+ * 
+ * @author Dirk Strauss
+ * @version 1.0
  * 
  */
-@XmlSeeAlso( { NamespaceRuleXml.class })
+@XmlSeeAlso(NamespaceRuleXml.class)
 public interface NamespaceRule {
+	/**
+	 * Returns the prefix to use for this namespace.
+	 * 
+	 * @return the prefix to use. May return null in case of NO prefix to be
+	 *         used.
+	 */
 	public String getPrefix();
 
+	/**
+	 * Returns the namespace uri.
+	 * 
+	 * @return the namespace uri
+	 */
 	public String getNamespace();
 
+	/**
+	 * Returns the url to the XSD for this namespace.
+	 * 
+	 * @return null, or the url for this namespace
+	 */
 	public String getNamespaceUrl();
 }

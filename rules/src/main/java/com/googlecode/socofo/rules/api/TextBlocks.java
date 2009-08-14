@@ -21,11 +21,23 @@
 package com.googlecode.socofo.rules.api;
 
 /**
- * @author kaeto23
+ * Rules for adding additional text blocks into the source code.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface TextBlocks {
+	/**
+	 * Returns the header to insert at the beginning of a document.
+	 * 
+	 * @return the header content
+	 */
 	String getHeader();
 
+	/**
+	 * Returns the footer to insert at the end of a document.
+	 * 
+	 * @return the footer content
+	 */
 	String getFooter();
 }

@@ -21,11 +21,23 @@
 package com.googlecode.socofo.rules.api;
 
 /**
- * @author kaeto23
+ * Rules for inserting SPACEs.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface SpacesRules {
+	/**
+	 * Flag for inserting a SPACE before an assigment.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getBeforeAssignment();
 
+	/**
+	 * Flag for inserting a SPACE after an assignment.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getAfterAssignment();
 }

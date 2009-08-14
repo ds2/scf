@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
 /**
+ * Some comment preparsing values.
+ * 
  * @author Dirk Strauss
  * @version 1.0
  */

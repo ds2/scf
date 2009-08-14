@@ -23,8 +23,11 @@ package com.googlecode.socofo.rules.api;
 import java.io.InputStream;
 
 /**
- * @author kaeto23
+ * Contract for a loader for rules. Implementations of this contract will load
+ * xml configuration files and interprete them for socofo.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface RulesLoader {
 	/**

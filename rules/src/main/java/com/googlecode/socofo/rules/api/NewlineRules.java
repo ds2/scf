@@ -21,15 +21,37 @@
 package com.googlecode.socofo.rules.api;
 
 /**
- * @author kaeto23
+ * Some rules for inserting a NEWLINE.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface NewlineRules {
+	/**
+	 * Flag for NEWLINE after an XML closing tag.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getAfterXmlEndTag();
 
+	/**
+	 * Flag for NEWLINE after each xml attribute.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getAfterEachXmlAttribute();
 
+	/**
+	 * Flag for NEWLINE before a xml comment.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getBeforeComment();
 
+	/**
+	 * Flag for NEWLINE before an if statement.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getBeforeIfStatements();
 }

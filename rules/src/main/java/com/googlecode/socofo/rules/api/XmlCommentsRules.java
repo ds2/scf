@@ -21,15 +21,37 @@
 package com.googlecode.socofo.rules.api;
 
 /**
- * @author kaeto23
+ * Rules for xml comments.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface XmlCommentsRules {
+	/**
+	 * Returns the flag for inserting a NEWLINE after a comment begin.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getBreakAfterBegin();
 
+	/**
+	 * Returns the break format to use.
+	 * 
+	 * @return the break format
+	 */
 	BreakFormat getBreakType();
 
+	/**
+	 * Returns the flag for inserting a NEWLINE before the end of a comment.
+	 * 
+	 * @return flag value
+	 */
 	Boolean getBreakBeforeEnd();
 
+	/**
+	 * Returns the parsing instruction before dealing with comment content.
+	 * 
+	 * @return the parsing instructions
+	 */
 	CommentParsing getParsing();
 }
