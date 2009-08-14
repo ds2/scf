@@ -34,18 +34,18 @@ import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.exceptions.LoadingException;
 
-
 /**
- * Implementation for a file source root
+ * Implementation for a file source root.
  * 
- * @author kaeto23
+ * @author Dirk Strauss
+ * @version 1.0
  * 
  */
 public class FileRootImpl implements FileRoot {
 	/**
 	 * A logger
 	 */
-	private static final transient Logger log = Logger
+	private static final transient Logger LOG = Logger
 			.getLogger(FileRootImpl.class.getName());
 	/**
 	 * The content of the file
@@ -74,9 +74,9 @@ public class FileRootImpl implements FileRoot {
 	 * @throws LoadingException
 	 *             if an error occurred
 	 */
-	public void loadFile(File f) throws LoadingException {
+	public void loadFile(final File f) throws LoadingException {
 		if (f == null) {
-			log.warning("No file given!");
+			LOG.warning("No file given!");
 			return;
 		}
 		FileReader fr = null;
@@ -95,10 +95,10 @@ public class FileRootImpl implements FileRoot {
 			content = sb.toString();
 			type = detector.guessTypeByFilename(f.getAbsolutePath());
 		} catch (FileNotFoundException e) {
-			log.throwing(FileRootImpl.class.getName(), "loadFile", e);
+			LOG.throwing(FileRootImpl.class.getName(), "loadFile", e);
 			throw new LoadingException("File not found: " + f.getAbsolutePath());
 		} catch (IOException e) {
-			log.throwing(FileRootImpl.class.getName(), "loadFile", e);
+			LOG.throwing(FileRootImpl.class.getName(), "loadFile", e);
 			throw new LoadingException("IO error when loading the file: "
 					+ e.getLocalizedMessage());
 		} finally {
