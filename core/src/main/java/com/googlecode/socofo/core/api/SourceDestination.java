@@ -23,8 +23,8 @@ package com.googlecode.socofo.core.api;
 /**
  * The destination of a source code transformation.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface SourceDestination {
 	/**
@@ -32,6 +32,8 @@ public interface SourceDestination {
 	 * 
 	 * @param s
 	 *            the content to write
+	 * @param encoding
+	 *            the encoding to use
 	 */
-	public void writeContent(String s);
+	public void writeContent(String s, String encoding);
 }

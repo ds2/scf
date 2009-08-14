@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.Before;
@@ -32,6 +33,7 @@ import org.junit.Test;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
+import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.exceptions.LoadingException;
@@ -71,6 +73,7 @@ public class XmlTransformerTest {
 	 * The stream root
 	 */
 	private StreamRoot sr = null;
+	private FileDestination dest = null;
 
 	/**
 	 * @throws java.lang.Exception
@@ -93,6 +96,8 @@ public class XmlTransformerTest {
 			}
 		});
 		sr = ij.getInstance(StreamRoot.class);
+		dest = ij.getInstance(FileDestination.class);
+		dest.setFile(new File("target/sample1.result.xml"));
 	}
 
 	/**
@@ -145,6 +150,7 @@ public class XmlTransformerTest {
 		assertNotNull(result);
 		assertTrue(result.length() > 0);
 		log.info("Result is\n" + result);
+		dest.writeContent(result, "utf-8");
 	}
 
 }

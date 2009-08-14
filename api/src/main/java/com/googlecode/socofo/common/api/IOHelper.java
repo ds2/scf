@@ -23,6 +23,7 @@ package com.googlecode.socofo.common.api;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 
 /**
  * A helper to support operation with input/output.
@@ -78,4 +79,12 @@ public interface IOHelper {
 	 * @return null, or the string
 	 */
 	String createString(byte[] byteArray, String encoding);
+
+	/**
+	 * Closes a writer.
+	 * 
+	 * @param w
+	 *            the writer to close
+	 */
+	void closeWriter(Writer w);
 }

@@ -18,37 +18,23 @@
 /**
  * 
  */
-package com.googlecode.socofo.core.impl.io;
+package com.googlecode.socofo.core.api;
 
 import java.io.File;
 
-import com.googlecode.socofo.core.api.SourceDestination;
-
-
 /**
- * @author kaeto23
+ * A file destination for transformed source content.
+ * 
+ * @author Dirk Strauss
+ * @version 1.0
  * 
  */
-public class FileDestination implements SourceDestination {
-	private File dest = null;
-
+public interface FileDestination extends SourceDestination {
 	/**
+	 * Sets the file to write the content to.
 	 * 
+	 * @param f
+	 *            the file destination
 	 */
-	public FileDestination() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ds2.enterspace.core.api.SourceDestination#writeContent(java.lang.String)
-	 */
-	@Override
-	public void writeContent(String s) {
-		// TODO Auto-generated method stub
-
-	}
-
+	void setFile(File f);
 }

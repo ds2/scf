@@ -23,6 +23,7 @@ package com.googlecode.socofo.core.impl.modules;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.FileRoot;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceTransformer;
@@ -32,14 +33,16 @@ import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.impl.LineHandlerImpl;
 import com.googlecode.socofo.core.impl.SourceWriterImpl;
 import com.googlecode.socofo.core.impl.TypeDetectorImpl;
+import com.googlecode.socofo.core.impl.io.FileDestinationImpl;
 import com.googlecode.socofo.core.impl.io.FileRootImpl;
 import com.googlecode.socofo.core.impl.io.StreamRootImpl;
 import com.googlecode.socofo.core.impl.xml.XmlTransformer;
 
-
 /**
- * @author kaeto23
+ * The injection plan for any core interfaces.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class CoreInjectionPlan implements Module {
 
@@ -47,7 +50,7 @@ public class CoreInjectionPlan implements Module {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void configure(Binder binder) {
+	public void configure(final Binder binder) {
 		binder.bind(SourceTypeDetector.class).to(TypeDetectorImpl.class);
 		binder.bind(SourceTransformer.class).annotatedWith(Names.named("xml"))
 				.to(XmlTransformer.class);
@@ -57,6 +60,7 @@ public class CoreInjectionPlan implements Module {
 		binder.bindConstant().annotatedWith(Names.named("defaultEncoding")).to(
 				"utf-8");
 		binder.bind(LineHandler.class).to(LineHandlerImpl.class);
+		binder.bind(FileDestination.class).to(FileDestinationImpl.class);
 	}
 
 }
