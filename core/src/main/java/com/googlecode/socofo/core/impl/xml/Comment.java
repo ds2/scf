@@ -34,4 +34,21 @@ public class Comment extends BaseXmlObject {
 		endSeq = "-->";
 	}
 
+	@Override
+	public void setInnerContent(String s) {
+		if (s == null) {
+			super.setInnerContent(s);
+			return;
+		}
+		String comment = s.trim();
+		if (comment.startsWith(startSeq)) {
+			comment = comment.substring(4);
+		}
+		if (comment.endsWith(endSeq)) {
+			comment = comment.substring(0, comment.length() - 4);
+		}
+		comment = comment.trim();
+		super.setInnerContent(comment);
+	}
+
 }

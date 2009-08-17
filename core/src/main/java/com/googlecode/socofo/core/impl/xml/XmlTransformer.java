@@ -126,14 +126,12 @@ public class XmlTransformer implements SourceTransformer {
 		Token token;
 		int currentIndent = 0;
 		log.finer("Starting token run");
-		WriteState state = WriteState.UNDEFINED;
 		XmlObject currentObject = null;
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + ") for this run: "
 					+ token.getText());
 			switch (token.getType()) {
 			case XmlGrammar.PI_START:
-				state = WriteState.MustWriteElement;
 				currentObject = new ProcessingInstruction();
 				break;
 			case XmlGrammar.PI_STOP:
@@ -147,7 +145,7 @@ public class XmlTransformer implements SourceTransformer {
 				}
 				sw.addToLine(" ");
 				break;
-			case XmlGrammar.GENERIC_ID: // attribute or element name
+			case XmlGrammar.GENERIC_ID:
 				if (currentObject != null) {
 					if (currentObject.getElementName() == null) {
 						// this is an element name
@@ -164,6 +162,11 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.TAG_CLOSE:
 				// write element
 				writeElement(currentIndent, currentObject);
+				if (!currentObject.isEndTag()) {
+					currentIndent++;
+				} else {
+					currentIndent--;
+				}
 				currentObject = null;
 				break;
 			case XmlGrammar.TAG_EMPTY_CLOSE:
@@ -210,7 +213,7 @@ public class XmlTransformer implements SourceTransformer {
 	}
 
 	/**
-	 * Writes an xml object to the source writer
+	 * Writes an xml object to the source writer.
 	 * 
 	 * @param indent
 	 *            the current indent
@@ -242,13 +245,13 @@ public class XmlTransformer implements SourceTransformer {
 		if (xo instanceof Comment) {
 			additionalIndent = 3;
 		}
-		int commentLineWidth = lh.calculateContentLineWidth(rules
+		final int commentLineWidth = lh.calculateContentLineWidth(rules
 				.getCommonAttributes().getMaxLinewidth(), additionalIndent);
-		String innerContentClean = lh.cleanComment(xo.getInnerContent());
-		List<String> lines = lh.breakContent(commentLineWidth,
+		final String innerContentClean = lh.cleanComment(xo.getInnerContent());
+		final List<String> lines = lh.breakContent(commentLineWidth,
 				innerContentClean, 0, rules.getCommentsRules().getBreakType());
 		for (String line : lines) {
-			StringBuffer lineToPrint = new StringBuffer();
+			final StringBuffer lineToPrint = new StringBuffer();
 			if (xo instanceof Comment) {
 				lineToPrint.append(" * ");
 			}
@@ -272,6 +275,8 @@ public class XmlTransformer implements SourceTransformer {
 				sw.commitLine(false);
 			}
 			break;
+		default:
+			break;
 		}
 		sw.addToLine(xo.getEndSequence());
 
@@ -288,11 +293,17 @@ public class XmlTransformer implements SourceTransformer {
 	 * @param s
 	 *            the source writer to use
 	 */
-	protected void setTestSw(SourceWriter s) {
+	protected void setTestSw(final SourceWriter s) {
 		this.sw = s;
 	}
 
-	public void setTestLh(LineHandler i) {
+	/**
+	 * Sets the test line handler to perform some unit tests.
+	 * 
+	 * @param i
+	 *            the line handler to use for performing tests
+	 */
+	public void setTestLh(final LineHandler i) {
 		this.lh = i;
 	}
 

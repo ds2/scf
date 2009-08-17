@@ -24,8 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author kaeto23
+ * The base class for XML elements.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class BaseXmlObject implements XmlObject {
 	private String elName = null;
@@ -37,70 +39,122 @@ public class BaseXmlObject implements XmlObject {
 	protected boolean endTag = false;
 
 	/**
-	 * 
+	 * Inits the base object.
 	 */
 	public BaseXmlObject() {
 		attributes = new HashMap<String, String>();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setElementName(String s) {
 		elName = s;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Map<String, String> getAttributes() {
 		return attributes;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getElementName() {
 		return elName;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean hasAttributes() {
 		return !attributes.isEmpty();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setAttributName(String s) {
 		currentAttributeName = s;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setAttributValue(String s) {
 		attributes.put(currentAttributeName, s);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getEndSequence() {
 		return endSeq;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getStartSequence() {
 		return startSeq;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setEndSequence(String s) {
 		endSeq = s;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getInnerContent() {
 		return innerContent;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setInnerContent(String s) {
 		innerContent = s;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isEndTag() {
 		return endTag;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		sb.append(getClass().getName());
+		sb.append("(");
+		sb.append("elName=").append(elName);
+		sb.append(",startSeq=").append(startSeq);
+		sb.append(",endSeq=").append(endSeq);
+		sb.append(",endTag=").append(endTag);
+		sb.append(")");
+		return sb.toString();
 	}
 
 }
