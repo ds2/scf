@@ -46,7 +46,7 @@ public class XmlCommentsRulesXml implements XmlCommentsRules {
 	@XmlElement
 	private CommentParsing parsing = CommentParsing.NoParsing;
 	@XmlElement
-	private String commentIndentSpacer = null;
+	private String commentIndentSpacer = "";
 
 	/**
 	 * {@inheritDoc}

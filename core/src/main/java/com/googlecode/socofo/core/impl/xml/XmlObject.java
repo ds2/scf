@@ -22,9 +22,15 @@ package com.googlecode.socofo.core.impl.xml;
 
 import java.util.Map;
 
+import com.googlecode.socofo.core.api.LineHandler;
+import com.googlecode.socofo.core.api.SourceWriter;
+import com.googlecode.socofo.rules.api.XmlFormatRules;
+
 /**
- * @author kaeto23
+ * contract for an XML object
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface XmlObject {
 	void setElementName(String s);
@@ -61,5 +67,25 @@ public interface XmlObject {
 	 */
 	String getInnerContent();
 
+	/**
+	 * Returns the isEnd flag.
+	 * 
+	 * @return TRUE if the current element is an end tag, otherwise FALSE
+	 */
 	boolean isEndTag();
+
+	/**
+	 * Writes this element to the source writer.
+	 * 
+	 * @param indent
+	 *            the possible indent to use
+	 * @param sw
+	 *            the source writer
+	 * @param rules
+	 *            the xml format rules
+	 * @param lh
+	 *            the line handler
+	 */
+	void writeElement(final int indent, SourceWriter sw, XmlFormatRules rules,
+			LineHandler lh);
 }

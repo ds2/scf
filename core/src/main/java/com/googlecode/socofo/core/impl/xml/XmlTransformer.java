@@ -106,9 +106,9 @@ public class XmlTransformer implements SourceTransformer {
 		final ANTLRStringStream ss = new ANTLRStringStream(s);
 		final CharStream input = ss;
 		grammar = new XmlGrammar(input);
-		TokenStream tr=null;
-		tr=new CommonTokenStream(grammar);
-		XmlParser parser=new XmlParser(tr);
+		TokenStream tr = null;
+		tr = new CommonTokenStream(grammar);
+		XmlParser parser = new XmlParser(tr);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class XmlTransformer implements SourceTransformer {
 		int currentIndent = 0;
 		log.finer("Starting token run");
 		XmlObject currentObject = null;
-		Stack<String> elementStack=new Stack<String>();
+		Stack<String> elementStack = new Stack<String>();
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + ") for this run: "
 					+ token.getText());
@@ -144,7 +144,7 @@ public class XmlTransformer implements SourceTransformer {
 				break;
 			case XmlGrammar.PI_STOP:
 				// write Element
-				writeElement(currentIndent, currentObject);
+				currentObject.writeElement(currentIndent, sw, rules, lh);
 				currentObject = null;
 				break;
 			case XmlGrammar.WS:
@@ -169,7 +169,7 @@ public class XmlTransformer implements SourceTransformer {
 				break;
 			case XmlGrammar.TAG_CLOSE:
 				// write element
-				writeElement(currentIndent, currentObject);
+				currentObject.writeElement(currentIndent, sw, rules, lh);
 				if (!currentObject.isEndTag()) {
 					currentIndent++;
 				} else {
@@ -179,7 +179,7 @@ public class XmlTransformer implements SourceTransformer {
 				break;
 			case XmlGrammar.TAG_EMPTY_CLOSE:
 				currentObject.setEndSequence(token.getText());
-				writeElement(currentIndent, currentObject);
+				currentObject.writeElement(currentIndent, sw, rules, lh);
 				currentObject = null;
 				break;
 			case XmlGrammar.TAG_END_OPEN:
@@ -197,7 +197,7 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.PCDATA:
 				currentObject = new Text();
 				currentObject.setInnerContent(token.getText());
-				writeElement(currentIndent, currentObject);
+				currentObject.writeElement(currentIndent, sw, rules, lh);
 				currentObject = null;
 				break;
 			case XmlGrammar.CDATA_SECTION:
@@ -207,7 +207,7 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.COMMENT_SECTION:
 				currentObject = new Comment();
 				currentObject.setInnerContent(token.getText());
-				writeElement(currentIndent, currentObject);
+				currentObject.writeElement(currentIndent, sw, rules, lh);
 				currentObject = null;
 				break;
 			default:
@@ -218,82 +218,6 @@ public class XmlTransformer implements SourceTransformer {
 		log.finer("finishing the result");
 		sw.finish();
 		log.exiting(XmlTransformer.class.getName(), "performTranslation");
-	}
-
-	/**
-	 * Writes an xml object to the source writer.
-	 * 
-	 * @param indent
-	 *            the current indent
-	 * @param xo
-	 *            the object to write
-	 *            @deprecated use {@link BaseXmlObject#writeElement(int, SourceWriter, XmlFormatRules, LineHandler)}
-	 */
-	@Deprecated
-	private void writeElement(final int indent, final XmlObject xo) {
-		log.entering(XmlTransformer.class.getName(), "writeElement",
-				new Object[] { indent, xo });
-		sw.addToLine(indent, xo.getStartSequence());
-		if (xo.getElementName() != null) {
-			sw.addToLine(xo.getElementName());
-		}
-		final NewlineRules nlRules = rules.getNewlineRules();
-		if (xo.hasAttributes()) {
-			for (Entry<String, String> keyValuePair : xo.getAttributes()
-					.entrySet()) {
-				if (nlRules != null && nlRules.getAfterEachXmlAttribute()) {
-					sw.commitLine(false);
-				} else {
-					sw.addToLine(" ");
-				}
-				sw.addToLine(indent + 1, keyValuePair.getKey() + "="
-						+ keyValuePair.getValue());
-			}
-		}
-		// write inner content
-		int additionalIndent = 0;
-		if (xo instanceof Comment) {
-			additionalIndent = 3;
-		}
-		final int commentLineWidth = lh.calculateContentLineWidth(rules
-				.getCommonAttributes().getMaxLinewidth(), additionalIndent);
-		final String innerContentClean = lh.cleanComment(xo.getInnerContent());
-		final List<String> lines = lh.breakContent(commentLineWidth,
-				innerContentClean, 0, rules.getCommentsRules().getBreakType());
-		for (String line : lines) {
-			final StringBuffer lineToPrint = new StringBuffer();
-			if (xo instanceof Comment) {
-				lineToPrint.append(" * ");
-			}
-			lineToPrint.append(line);
-			sw.addLine(indent, lineToPrint.toString());
-		}
-
-		// align final bracket
-		FinalBracketPolicy fbp = rules.getAlignFinalBracketOnNewline();
-		if (fbp == null) {
-			fbp = FinalBracketPolicy.Never;
-		}
-		switch (fbp) {
-		case Always:
-			sw.commitLine(false);
-			break;
-		case Never:
-			break;
-		case OnAttributes:
-			if (xo.hasAttributes()) {
-				sw.commitLine(false);
-			}
-			break;
-		default:
-			break;
-		}
-		sw.addToLine(xo.getEndSequence());
-
-		if (nlRules != null && nlRules.getAfterXmlEndTag() && xo.isEndTag()) {
-			sw.commitLine(false);
-		}
-		log.exiting(XmlTransformer.class.getName(), "writeElement");
 	}
 
 	/**

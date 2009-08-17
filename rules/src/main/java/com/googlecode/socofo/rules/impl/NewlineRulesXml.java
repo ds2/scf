@@ -43,6 +43,8 @@ public class NewlineRulesXml implements NewlineRules {
 	private Boolean afterXmlEndTag = false;
 	@XmlElement
 	private Boolean afterEachXmlAttribute = false;
+	@XmlElement
+	private Boolean onLevelChange=false;
 
 	/**
 	 * {@inheritDoc}
@@ -74,6 +76,13 @@ public class NewlineRulesXml implements NewlineRules {
 	@Override
 	public Boolean getBeforeIfStatements() {
 		return beforeIfStatements;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Boolean getOnLevelChange() {
+		return onLevelChange;
 	}
 
 }

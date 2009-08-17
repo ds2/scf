@@ -45,21 +45,53 @@ public interface XmlFormatRules extends Serializable {
 	List<NamespaceRule> getNamespaceRules();
 
 	/**
-	 * Returns the final bracket policy.
+	 * Returns the final bracket policy. This is usually the NEWLINE behaviour
+	 * when a closing &gt; sign for the current tag is found. This rule here
+	 * defines how to deal with this.
 	 * 
 	 * @return null, or the final bracket policy
 	 */
 	FinalBracketPolicy getAlignFinalBracketOnNewline();
 
+	/**
+	 * returns the flag if empty lines should be cleared or not.
+	 * 
+	 * @return TRUE or FALSE. Default is TRUE
+	 */
 	Boolean getClearBlanklines();
 
+	/**
+	 * Returns the flag for inserting a whitespace before a /&gt; sequence.
+	 * 
+	 * @return TRUE or FALSE
+	 */
 	Boolean getInsertWsAtEmptyElement();
 
+	/**
+	 * Returns the flag for sorting attributes by name.
+	 * 
+	 * @return TRUE if attributes should be sorted by name, otherwise FALSE
+	 */
 	Boolean getSortAttributes();
 
+	/**
+	 * Returns possible text blocks to insert into the transformed code.
+	 * 
+	 * @return some text blocks
+	 */
 	TextBlocks getTextBlocks();
 
+	/**
+	 * Returns some rules for dealing with comments.
+	 * 
+	 * @return some rules for comments
+	 */
 	XmlCommentsRules getCommentsRules();
 
+	/**
+	 * Returns some rules for inserting NEWLINE sequences.
+	 * 
+	 * @return rules for NEWLINE behaviour
+	 */
 	NewlineRules getNewlineRules();
 }

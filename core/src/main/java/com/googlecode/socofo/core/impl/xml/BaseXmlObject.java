@@ -31,6 +31,7 @@ import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.rules.api.FinalBracketPolicy;
 import com.googlecode.socofo.rules.api.NewlineRules;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
+import com.googlecode.socofo.rules.impl.NewlineRulesXml;
 
 /**
  * The base class for XML elements.
@@ -39,14 +40,38 @@ import com.googlecode.socofo.rules.api.XmlFormatRules;
  * @version 1.0
  */
 public class BaseXmlObject implements XmlObject {
+	/**
+	 * A logger
+	 */
 	private static final Logger log = Logger.getLogger(BaseXmlObject.class
 			.getName());
+	/**
+	 * The element name
+	 */
 	private String elName = null;
+	/**
+	 * The attributes of this element
+	 */
 	private Map<String, String> attributes = null;
+	/**
+	 * Temporary attribute name
+	 */
 	private String currentAttributeName = null;
+	/**
+	 * The start sequence of the element
+	 */
 	protected String startSeq = "<";
+	/**
+	 * The end sequence of the element
+	 */
 	protected String endSeq = ">";
+	/**
+	 * the inner content. This can be CDATA or DATA
+	 */
 	private String innerContent;
+	/**
+	 * Flag to indicate that this tag is an end tag
+	 */
 	protected boolean endTag = false;
 
 	/**
@@ -173,18 +198,20 @@ public class BaseXmlObject implements XmlObject {
 	 * 
 	 * @param indent
 	 *            the current indent
-	 * @param xo
-	 *            the object to write
 	 */
 	public void writeElement(final int indent, SourceWriter sw,
 			XmlFormatRules rules, LineHandler lh) {
-		log.entering(XmlTransformer.class.getName(), "writeElement",
+		log.entering(BaseXmlObject.class.getName(), "writeElement",
 				new Object[] { indent, this });
 		sw.addToLine(indent, getStartSequence());
 		if (getElementName() != null) {
 			sw.addToLine(getElementName());
 		}
-		final NewlineRules nlRules = rules.getNewlineRules();
+		NewlineRules nlRules = rules.getNewlineRules();
+		if (nlRules == null) {
+			log.warning("No NL rules found, using defaults");
+			nlRules = new NewlineRulesXml();
+		}
 		if (hasAttributes()) {
 			for (Entry<String, String> keyValuePair : getAttributes()
 					.entrySet()) {
@@ -199,8 +226,9 @@ public class BaseXmlObject implements XmlObject {
 		}
 		// write inner content
 		int additionalIndent = 0;
+		String commentSeq = rules.getCommentsRules().getCommentIndentSpacer();
 		if (this instanceof Comment) {
-			additionalIndent = 3;
+			additionalIndent = commentSeq.length();
 		}
 		final int commentLineWidth = lh.calculateContentLineWidth(rules
 				.getCommonAttributes().getMaxLinewidth(), additionalIndent);
@@ -210,7 +238,7 @@ public class BaseXmlObject implements XmlObject {
 		for (String line : lines) {
 			final StringBuffer lineToPrint = new StringBuffer();
 			if (this instanceof Comment) {
-				lineToPrint.append(" * ");
+				lineToPrint.append(commentSeq);
 			}
 			lineToPrint.append(line);
 			sw.addLine(indent, lineToPrint.toString());
@@ -237,10 +265,14 @@ public class BaseXmlObject implements XmlObject {
 		}
 		sw.addToLine(getEndSequence());
 
+		log.finer("Checking if line can be committed now");
+		if (nlRules.getOnLevelChange()) {
+			sw.commitLine(false);
+		}
 		if (nlRules != null && nlRules.getAfterXmlEndTag() && isEndTag()) {
 			sw.commitLine(false);
 		}
-		log.exiting(XmlTransformer.class.getName(), "writeElement");
+		log.exiting(BaseXmlObject.class.getName(), "writeElement");
 	}
 
 }

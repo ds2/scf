@@ -56,4 +56,15 @@ public interface NewlineRules extends Serializable {
 	 * @return flag value
 	 */
 	Boolean getBeforeIfStatements();
+
+	/**
+	 * Flag for NEWLINE when the level of any future element is different from
+	 * the current one. Usually, this means that a NL will be done when you
+	 * close a tag and a new tag will needed. There are some exceptions, like a
+	 * following TEXT element which basically is a new element. But in this
+	 * case, a level change will not occur.
+	 * 
+	 * @return TRUE if a NL should be done on level change, otherwise FALSE
+	 */
+	Boolean getOnLevelChange();
 }
