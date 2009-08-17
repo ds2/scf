@@ -56,4 +56,11 @@ public interface XmlCommentsRules extends Serializable {
 	 * @return the parsing instructions
 	 */
 	CommentParsing getParsing();
+
+	/**
+	 * Returns a possible comment indent spacer.
+	 * 
+	 * @return a comment indent spacer, or null if not used
+	 */
+	String getCommentIndentSpacer();
 }

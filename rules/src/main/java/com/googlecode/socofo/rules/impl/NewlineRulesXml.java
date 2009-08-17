@@ -25,13 +25,16 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.googlecode.socofo.rules.api.NewlineRules;
 
-
 /**
  * @author kaeto23
  * 
  */
-@XmlType(name = "NewlineRulesType", namespace = "http://www.ds2/ns/socofo")
+@XmlType(name = "NewlineRulesType")
 public class NewlineRulesXml implements NewlineRules {
+	/**
+	 * the svuid
+	 */
+	private static final long serialVersionUID = 485959883495651756L;
 	@XmlElement
 	private Boolean beforeIfStatements = false;
 	@XmlElement

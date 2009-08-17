@@ -20,13 +20,15 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
+
 /**
  * Some rules for inserting a NEWLINE.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface NewlineRules {
+public interface NewlineRules extends Serializable {
 	/**
 	 * Flag for NEWLINE after an XML closing tag.
 	 * 

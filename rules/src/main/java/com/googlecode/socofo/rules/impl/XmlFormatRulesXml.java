@@ -35,14 +35,17 @@ import com.googlecode.socofo.rules.api.TextBlocks;
 import com.googlecode.socofo.rules.api.XmlCommentsRules;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
 
-
 /**
  * @author kaeto23
  * 
  */
-@XmlRootElement(name = "xml-format", namespace = "http://www.ds2/ns/socofo")
+@XmlRootElement(name = "xml-format")
 @XmlSeeAlso( { NamespaceRuleXml.class, CommonAttributesXml.class })
 public class XmlFormatRulesXml implements XmlFormatRules {
+	/**
+	 * the svuid
+	 */
+	private static final long serialVersionUID = -2816143684776160066L;
 	@XmlElement(required = true, type = CommonAttributesXml.class)
 	private CommonAttributes commonAttributes = null;
 	@XmlElement(required = false)

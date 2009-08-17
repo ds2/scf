@@ -20,10 +20,12 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
+
 /**
  * @author kaeto23
  * 
  */
-public interface RuleSet {
+public interface RuleSet extends Serializable {
 	XmlFormatRules getXmlFormatRules();
 }

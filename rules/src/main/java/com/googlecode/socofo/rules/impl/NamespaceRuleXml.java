@@ -25,13 +25,16 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.googlecode.socofo.rules.api.NamespaceRule;
 
-
 /**
  * @author kaeto23
  * 
  */
-@XmlType(name = "NamespaceRuleType", namespace = "http://www.ds2/ns/socofo")
+@XmlType(name = "NamespaceRuleType")
 public class NamespaceRuleXml implements NamespaceRule {
+	/**
+	 * the svuid
+	 */
+	private static final long serialVersionUID = -9044058741124419475L;
 	@XmlElement(required = true)
 	private String namespace;
 	@XmlElement(required = true)

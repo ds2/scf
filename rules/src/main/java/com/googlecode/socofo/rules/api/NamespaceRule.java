@@ -20,6 +20,8 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import com.googlecode.socofo.rules.impl.NamespaceRuleXml;
@@ -32,7 +34,7 @@ import com.googlecode.socofo.rules.impl.NamespaceRuleXml;
  * 
  */
 @XmlSeeAlso(NamespaceRuleXml.class)
-public interface NamespaceRule {
+public interface NamespaceRule extends Serializable {
 	/**
 	 * Returns the prefix to use for this namespace.
 	 * 

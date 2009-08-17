@@ -25,13 +25,16 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.googlecode.socofo.rules.api.CommonAttributes;
 
-
 /**
  * @author kaeto23
  * 
  */
-@XmlType(name = "CommonAttributesType", namespace = "http://www.ds2/ns/socofo")
+@XmlType(name = "CommonAttributesType")
 public class CommonAttributesXml implements CommonAttributes {
+	/**
+	 * the svuid
+	 */
+	private static final long serialVersionUID = 8599603676435230001L;
 	@XmlElement(required = true)
 	private int maxLineWidth = 0;
 	@XmlElement(required = true)

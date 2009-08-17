@@ -27,13 +27,16 @@ import com.googlecode.socofo.rules.api.BreakFormat;
 import com.googlecode.socofo.rules.api.CommentParsing;
 import com.googlecode.socofo.rules.api.XmlCommentsRules;
 
-
 /**
  * @author kaeto23
  * 
  */
-@XmlType(name = "XmlCommentsRulesType", namespace = "http://www.ds2/ns/socofo")
+@XmlType(name = "XmlCommentsRulesType")
 public class XmlCommentsRulesXml implements XmlCommentsRules {
+	/**
+	 * the svuid
+	 */
+	private static final long serialVersionUID = 866115633795062805L;
 	@XmlElement
 	private Boolean breakAfterBegin = false;
 	@XmlElement
@@ -42,6 +45,8 @@ public class XmlCommentsRulesXml implements XmlCommentsRules {
 	private BreakFormat breakType = BreakFormat.NoBreak;
 	@XmlElement
 	private CommentParsing parsing = CommentParsing.NoParsing;
+	@XmlElement
+	private String commentIndentSpacer = null;
 
 	/**
 	 * {@inheritDoc}
@@ -70,6 +75,11 @@ public class XmlCommentsRulesXml implements XmlCommentsRules {
 	@Override
 	public CommentParsing getParsing() {
 		return parsing;
+	}
+
+	@Override
+	public String getCommentIndentSpacer() {
+		return commentIndentSpacer;
 	}
 
 }

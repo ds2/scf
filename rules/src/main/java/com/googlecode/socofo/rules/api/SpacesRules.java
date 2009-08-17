@@ -20,13 +20,15 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
+
 /**
  * Rules for inserting SPACEs.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface SpacesRules {
+public interface SpacesRules extends Serializable {
 	/**
 	 * Flag for inserting a SPACE before an assigment.
 	 * 

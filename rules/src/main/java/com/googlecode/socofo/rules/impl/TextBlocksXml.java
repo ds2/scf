@@ -25,13 +25,16 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.googlecode.socofo.rules.api.TextBlocks;
 
-
 /**
  * @author kaeto23
  * 
  */
-@XmlType(name = "TextBlocksType", namespace = "http://www.ds2/ns/socofo")
+@XmlType(name = "TextBlocksType")
 public class TextBlocksXml implements TextBlocks {
+	/**
+	 * the svuid
+	 */
+	private static final long serialVersionUID = 2815059537069771320L;
 	@XmlElement
 	private String header;
 	@XmlElement

@@ -20,13 +20,15 @@
  */
 package com.googlecode.socofo.rules.api;
 
+import java.io.Serializable;
+
 /**
  * Common attributes for any file to format.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface CommonAttributes {
+public interface CommonAttributes extends Serializable {
 	/**
 	 * Returns the maximum line width.
 	 * 
