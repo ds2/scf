@@ -21,7 +21,16 @@
 package com.googlecode.socofo.core.impl.xml;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
+import com.googlecode.socofo.core.api.LineHandler;
+import com.googlecode.socofo.core.api.SourceWriter;
+import com.googlecode.socofo.rules.api.FinalBracketPolicy;
+import com.googlecode.socofo.rules.api.NewlineRules;
+import com.googlecode.socofo.rules.api.XmlFormatRules;
 
 /**
  * The base class for XML elements.
@@ -30,6 +39,7 @@ import java.util.Map;
  * @version 1.0
  */
 public class BaseXmlObject implements XmlObject {
+	private static final Logger log=Logger.getLogger(BaseXmlObject.class.getName());
 	private String elName = null;
 	private Map<String, String> attributes = null;
 	private String currentAttributeName = null;
@@ -155,6 +165,79 @@ public class BaseXmlObject implements XmlObject {
 		sb.append(",endTag=").append(endTag);
 		sb.append(")");
 		return sb.toString();
+	}
+	/**
+	 * Writes an xml object to the source writer.
+	 * 
+	 * @param indent
+	 *            the current indent
+	 * @param xo
+	 *            the object to write
+	 */
+	public void writeElement(final int indent, SourceWriter sw, XmlFormatRules rules, LineHandler lh) {
+		log.entering(XmlTransformer.class.getName(), "writeElement",
+				new Object[] { indent, this });
+		sw.addToLine(indent, getStartSequence());
+		if (getElementName() != null) {
+			sw.addToLine(getElementName());
+		}
+		final NewlineRules nlRules = rules.getNewlineRules();
+		if (hasAttributes()) {
+			for (Entry<String, String> keyValuePair : getAttributes()
+					.entrySet()) {
+				if (nlRules != null && nlRules.getAfterEachXmlAttribute()) {
+					sw.commitLine(false);
+				} else {
+					sw.addToLine(" ");
+				}
+				sw.addToLine(indent + 1, keyValuePair.getKey() + "="
+						+ keyValuePair.getValue());
+			}
+		}
+		// write inner content
+		int additionalIndent = 0;
+		if (this instanceof Comment) {
+			additionalIndent = 3;
+		}
+		final int commentLineWidth = lh.calculateContentLineWidth(rules
+				.getCommonAttributes().getMaxLinewidth(), additionalIndent);
+		final String innerContentClean = lh.cleanComment(getInnerContent());
+		final List<String> lines = lh.breakContent(commentLineWidth,
+				innerContentClean, 0, rules.getCommentsRules().getBreakType());
+		for (String line : lines) {
+			final StringBuffer lineToPrint = new StringBuffer();
+			if (this instanceof Comment) {
+				lineToPrint.append(" * ");
+			}
+			lineToPrint.append(line);
+			sw.addLine(indent, lineToPrint.toString());
+		}
+
+		// align final bracket
+		FinalBracketPolicy fbp = rules.getAlignFinalBracketOnNewline();
+		if (fbp == null) {
+			fbp = FinalBracketPolicy.Never;
+		}
+		switch (fbp) {
+		case Always:
+			sw.commitLine(false);
+			break;
+		case Never:
+			break;
+		case OnAttributes:
+			if (hasAttributes()) {
+				sw.commitLine(false);
+			}
+			break;
+		default:
+			break;
+		}
+		sw.addToLine(getEndSequence());
+
+		if (nlRules != null && nlRules.getAfterXmlEndTag() && isEndTag()) {
+			sw.commitLine(false);
+		}
+		log.exiting(XmlTransformer.class.getName(), "writeElement");
 	}
 
 }

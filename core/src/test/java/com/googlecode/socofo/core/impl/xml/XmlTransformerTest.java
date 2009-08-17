@@ -21,7 +21,7 @@
 package com.googlecode.socofo.core.impl.xml;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -35,7 +35,9 @@ import com.google.inject.Injector;
 import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
 import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.LineHandler;
+import com.googlecode.socofo.core.api.SourceRoot;
 import com.googlecode.socofo.core.api.StreamRoot;
+import com.googlecode.socofo.core.api.StringRoot;
 import com.googlecode.socofo.core.exceptions.LoadingException;
 import com.googlecode.socofo.core.impl.SourceWriterImpl;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
@@ -73,6 +75,9 @@ public class XmlTransformerTest {
 	 * The stream root
 	 */
 	private StreamRoot sr = null;
+	/**
+	 * the destination to write a result to
+	 */
 	private FileDestination dest = null;
 
 	/**
@@ -151,6 +156,19 @@ public class XmlTransformerTest {
 		assertTrue(result.length() > 0);
 		log.info("Result is\n" + result);
 		dest.writeContent(result, "utf-8");
+	}
+	/**
+	 * Simple translation test
+	 */
+	@Test
+	public final void testTranslation1(){
+		String xmlSample = "<a><b/></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		to.performTranslation();
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b/>\n</a>",result);
 	}
 
 }

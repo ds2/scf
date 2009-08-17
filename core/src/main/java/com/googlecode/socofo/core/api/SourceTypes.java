@@ -15,24 +15,52 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 /**
  * A source type.
- * 
- * @author kaeto23
- * 
+ *
+ * @author  kaeto23
  */
 public enum SourceTypes {
-	/**
-	 * the XML source code type
-	 */
-	XML,
-	/**
-	 * The Java source code type
-	 */
-	Java;
+
+    /**
+     * the XML source code type.
+     */
+    XML,
+
+    /**
+     * The Java source code type.
+     */
+    Java,
+
+    /**
+     * The lua source code type.
+     */
+    Lua,
+
+    /**
+     * The HTML source code type.
+     */
+    HTML,
+
+    /**
+     * The XHTML source code type.
+     */
+    XHTML,
+
+    /**
+     * The JSP source code type.
+     */
+    JSP,
+
+    /**
+     * The JSPX source code type.
+     */
+    JSPX,
+
+    /**
+     * The c# source code type.
+     */
+    CSharp;
 }

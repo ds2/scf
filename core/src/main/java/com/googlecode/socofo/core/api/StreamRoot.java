@@ -44,4 +44,9 @@ public interface StreamRoot extends SourceRoot {
 	 *             if loading the stream did not succeed
 	 */
 	public void loadStream(InputStream is, String enc) throws LoadingException;
+	/**
+	 * Sets the type of the given stream.
+	 * @param type the type
+	 */
+	public void setType(SourceTypes type);
 }

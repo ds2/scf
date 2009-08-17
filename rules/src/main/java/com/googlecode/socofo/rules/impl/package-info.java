@@ -18,4 +18,5 @@
 /**
  * The implementations for the rules
  */
+@javax.xml.bind.annotation.XmlSchema(namespace="http://www.ds2/ns/socofo")
 package com.googlecode.socofo.rules.impl;

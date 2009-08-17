@@ -21,18 +21,22 @@
 package com.googlecode.socofo.core.impl.xml;
 
 import java.util.List;
+import java.util.Stack;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
+import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenStream;
 
 import com.google.inject.Inject;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.grammar.XmlGrammar;
+import com.googlecode.socofo.grammar.XmlParser;
 import com.googlecode.socofo.rules.api.FinalBracketPolicy;
 import com.googlecode.socofo.rules.api.NewlineRules;
 import com.googlecode.socofo.rules.api.RuleSet;
@@ -102,6 +106,9 @@ public class XmlTransformer implements SourceTransformer {
 		final ANTLRStringStream ss = new ANTLRStringStream(s);
 		final CharStream input = ss;
 		grammar = new XmlGrammar(input);
+		TokenStream tr=null;
+		tr=new CommonTokenStream(grammar);
+		XmlParser parser=new XmlParser(tr);
 	}
 
 	/**
@@ -127,6 +134,7 @@ public class XmlTransformer implements SourceTransformer {
 		int currentIndent = 0;
 		log.finer("Starting token run");
 		XmlObject currentObject = null;
+		Stack<String> elementStack=new Stack<String>();
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + ") for this run: "
 					+ token.getText());
@@ -219,7 +227,9 @@ public class XmlTransformer implements SourceTransformer {
 	 *            the current indent
 	 * @param xo
 	 *            the object to write
+	 *            @deprecated use {@link BaseXmlObject#writeElement(int, SourceWriter, XmlFormatRules, LineHandler)}
 	 */
+	@Deprecated
 	private void writeElement(final int indent, final XmlObject xo) {
 		log.entering(XmlTransformer.class.getName(), "writeElement",
 				new Object[] { indent, xo });

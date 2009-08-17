@@ -51,6 +51,7 @@ public class StreamRootImpl implements StreamRoot {
 	@Inject
 	@Named("defaultEncoding")
 	private String encoding = null;
+	private SourceTypes type=null;
 
 	/**
 	 * {@inheritDoc}
@@ -92,8 +93,14 @@ public class StreamRootImpl implements StreamRoot {
 	 */
 	@Override
 	public SourceTypes getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return type;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setType(SourceTypes type) {
+		this.type=type;
 	}
 
 }
