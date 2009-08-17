@@ -157,18 +157,41 @@ public class XmlTransformerTest {
 		log.info("Result is\n" + result);
 		dest.writeContent(result, "utf-8");
 	}
+
 	/**
 	 * Simple translation test
 	 */
 	@Test
-	public final void testTranslation1(){
+	public final void testTranslation1() {
 		String xmlSample = "<a><b/></a>";
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
 		to.performTranslation();
 		String result = to.getResult();
 		assertNotNull(result);
-		assertEquals("<a>\n  <b/>\n</a>",result);
+		assertEquals("<a>\n  <b/>\n</a>", result);
+	}
+
+	@Test
+	public final void testTranslation2() {
+		String xmlSample = "<a><b></b></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		to.performTranslation();
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b></b>\n</a>", result);
+	}
+
+	@Test
+	public final void testTranslation3() {
+		String xmlSample = "<a><b>test</b></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		to.performTranslation();
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b>test</b>\n</a>", result);
 	}
 
 }
