@@ -39,7 +39,8 @@ import com.googlecode.socofo.rules.api.XmlFormatRules;
  * @version 1.0
  */
 public class BaseXmlObject implements XmlObject {
-	private static final Logger log=Logger.getLogger(BaseXmlObject.class.getName());
+	private static final Logger log = Logger.getLogger(BaseXmlObject.class
+			.getName());
 	private String elName = null;
 	private Map<String, String> attributes = null;
 	private String currentAttributeName = null;
@@ -166,6 +167,7 @@ public class BaseXmlObject implements XmlObject {
 		sb.append(")");
 		return sb.toString();
 	}
+
 	/**
 	 * Writes an xml object to the source writer.
 	 * 
@@ -174,7 +176,8 @@ public class BaseXmlObject implements XmlObject {
 	 * @param xo
 	 *            the object to write
 	 */
-	public void writeElement(final int indent, SourceWriter sw, XmlFormatRules rules, LineHandler lh) {
+	public void writeElement(final int indent, SourceWriter sw,
+			XmlFormatRules rules, LineHandler lh) {
 		log.entering(XmlTransformer.class.getName(), "writeElement",
 				new Object[] { indent, this });
 		sw.addToLine(indent, getStartSequence());
