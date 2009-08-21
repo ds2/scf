@@ -250,15 +250,19 @@ public class BaseXmlObject implements XmlObject {
 		}
 		// write inner content
 		int additionalIndent = 0;
-		String commentSeq = rules.getCommentsRules().getCommentIndentSpacer();
+		final String commentSeq = rules.getCommentsRules()
+				.getCommentIndentSpacer();
 		if (this instanceof Comment) {
 			additionalIndent = commentSeq.length();
 		}
+		final int currentLineLength = sw.getCurrentLineLength();
 		final int commentLineWidth = lh.calculateContentLineWidth(rules
 				.getCommonAttributes().getMaxLinewidth(), additionalIndent);
 		final String innerContentClean = lh.cleanComment(getInnerContent());
+		int firstIndent = 0;
 		final List<String> lines = lh.breakContent(commentLineWidth,
-				innerContentClean, 0, rules.getCommentsRules().getBreakType());
+				innerContentClean, firstIndent, rules.getCommentsRules()
+						.getBreakType());
 		for (String line : lines) {
 			final StringBuffer lineToPrint = new StringBuffer();
 			if (this instanceof Comment) {

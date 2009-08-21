@@ -36,9 +36,9 @@ import com.google.inject.Injector;
 import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
 import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.LineHandler;
+import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.exceptions.LoadingException;
-import com.googlecode.socofo.core.impl.SourceWriterImpl;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
 import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.RulesLoader;
@@ -85,12 +85,12 @@ public class XmlTransformerTest {
 	@Before
 	public void setUp() throws Exception {
 		to = new XmlTransformer();
-		to.setTestSw(new SourceWriterImpl());
 		Injector ij = Guice.createInjector(new CommonsInjectionPlan(),
 				new RulesInjectionPlan(), new CoreInjectionPlan());
 		rulesLoader = ij.getInstance(RulesLoader.class);
 		formatRules = rulesLoader.loadFormatRules(getClass()
 				.getResourceAsStream("/xmlconfig.xml"));
+		to.setTestSw(ij.getInstance(SourceWriter.class));
 		to.setTestLh(ij.getInstance(LineHandler.class));
 		to.setTestTreehandler(ij.getInstance(TreeHandler.class));
 		to.loadRules(new RuleSet() {
@@ -170,6 +170,28 @@ public class XmlTransformerTest {
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals("<a>\n  <b/>\n</a>\n", result);
+	}
+
+	@Test
+	public final void testTranslation2() {
+		String xmlSample = "<a><b></b></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		to.performTranslation();
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b></b>\n</a>\n", result);
+	}
+
+	@Test
+	public final void testTranslation3() {
+		String xmlSample = "<a><b>text</b></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		to.performTranslation();
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b>text</b>\n</a>\n", result);
 	}
 
 }

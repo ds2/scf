@@ -27,7 +27,6 @@ import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.rules.api.CommonAttributes;
 
-
 /**
  * @author kaeto23
  * 
@@ -216,7 +215,12 @@ public class SourceWriterImpl implements SourceWriter {
 	@Override
 	public int getCurrentLineLength() {
 		int rc = 0;
-		rc = lh.getLineWidth(ca.getTabSize(), currentLine.toString());
+		int tabSize = ca.getTabSize();
+		String currentLineStr = currentLine.toString();
+		if (lh == null) {
+			throw new IllegalStateException("No line handler has been setup!");
+		}
+		rc = lh.getLineWidth(tabSize, currentLineStr);
 		return rc;
 	}
 
