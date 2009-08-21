@@ -68,6 +68,11 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	@Inject
 	private LineHandler lh = null;
+	/**
+	 * The tree handler to set the levels of the various xml objects
+	 */
+	@Inject
+	private TreeHandler treeHandler = null;
 
 	/**
 	 * {@inheritDoc}
@@ -141,6 +146,7 @@ public class XmlTransformer implements SourceTransformer {
 				break;
 			case XmlGrammar.PI_STOP:
 				// write Element
+				treeHandler.setLevel(currentObject);
 				currentObject.writeElement(lastObject, currentIndent, sw,
 						rules, lh);
 				lastObject = currentObject;
@@ -168,17 +174,23 @@ public class XmlTransformer implements SourceTransformer {
 				break;
 			case XmlGrammar.TAG_CLOSE:
 				// write element
-				currentObject.writeElement(currentIndent, sw, rules, lh);
+				treeHandler.setLevel(currentObject);
+				currentObject.writeElement(lastObject, currentIndent, sw,
+						rules, lh);
 				if (!currentObject.isEndTag()) {
 					currentIndent++;
 				} else {
 					currentIndent--;
 				}
+				lastObject = currentObject;
 				currentObject = null;
 				break;
 			case XmlGrammar.TAG_EMPTY_CLOSE:
 				currentObject.setEndSequence(token.getText());
-				currentObject.writeElement(currentIndent, sw, rules, lh);
+				treeHandler.setLevel(currentObject);
+				currentObject.writeElement(lastObject, currentIndent, sw,
+						rules, lh);
+				lastObject = currentObject;
 				currentObject = null;
 				break;
 			case XmlGrammar.TAG_END_OPEN:
@@ -196,7 +208,10 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.PCDATA:
 				currentObject = new Text();
 				currentObject.setInnerContent(token.getText());
-				currentObject.writeElement(currentIndent, sw, rules, lh);
+				treeHandler.setLevel(currentObject);
+				currentObject.writeElement(lastObject, currentIndent, sw,
+						rules, lh);
+				lastObject = currentObject;
 				currentObject = null;
 				break;
 			case XmlGrammar.CDATA_SECTION:
@@ -206,7 +221,10 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.COMMENT_SECTION:
 				currentObject = new Comment();
 				currentObject.setInnerContent(token.getText());
-				currentObject.writeElement(currentIndent, sw, rules, lh);
+				treeHandler.setLevel(currentObject);
+				currentObject.writeElement(lastObject, currentIndent, sw,
+						rules, lh);
+				lastObject = currentObject;
 				currentObject = null;
 				break;
 			default:
@@ -238,6 +256,10 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	public void setTestLh(final LineHandler i) {
 		this.lh = i;
+	}
+
+	public void setTestTreehandler(TreeHandler th) {
+		treeHandler = th;
 	}
 
 }

@@ -215,18 +215,26 @@ public class BaseXmlObject implements XmlObject {
 	 * @param indent
 	 *            the current indent
 	 */
-	public void writeElement(final int indent, SourceWriter sw,
-			XmlFormatRules rules, LineHandler lh) {
+	public void writeElement(final XmlObject lastObject, final int indent,
+			SourceWriter sw, XmlFormatRules rules, LineHandler lh) {
 		log.entering(BaseXmlObject.class.getName(), "writeElement",
 				new Object[] { indent, this });
-		sw.addToLine(indent, getStartSequence());
-		if (getElementName() != null) {
-			sw.addToLine(getElementName());
-		}
 		NewlineRules nlRules = rules.getNewlineRules();
 		if (nlRules == null) {
 			log.warning("No NL rules found, using defaults");
 			nlRules = new NewlineRulesXml();
+		}
+		int lastObjectLevel = 1;
+		if (lastObject != null) {
+			lastObjectLevel = lastObject.getLevel();
+		}
+		if (getLevel() != lastObjectLevel) {
+			sw.commitLine(false);
+			sw.addToLine(getLevel() - 1, "");
+		}
+		sw.addToLine(0, getStartSequence());
+		if (getElementName() != null) {
+			sw.addToLine(getElementName());
 		}
 		if (hasAttributes()) {
 			for (Entry<String, String> keyValuePair : getAttributes()
@@ -236,7 +244,7 @@ public class BaseXmlObject implements XmlObject {
 				} else {
 					sw.addToLine(" ");
 				}
-				sw.addToLine(indent + 1, keyValuePair.getKey() + "="
+				sw.addToLine(getLevel(), keyValuePair.getKey() + "="
 						+ keyValuePair.getValue());
 			}
 		}
@@ -257,7 +265,7 @@ public class BaseXmlObject implements XmlObject {
 				lineToPrint.append(commentSeq);
 			}
 			lineToPrint.append(line);
-			sw.addLine(indent, lineToPrint.toString());
+			sw.addLine(getLevel(), lineToPrint.toString());
 		}
 
 		// align final bracket
@@ -305,12 +313,6 @@ public class BaseXmlObject implements XmlObject {
 	@Override
 	public void setLevel(int l) {
 		level = l;
-	}
-
-	@Override
-	public void writeElement(XmlObject lastObject, int indent, SourceWriter sw,
-			XmlFormatRules rules, LineHandler lh) {
-		writeElement(indent, sw, rules, lh);
 	}
 
 }

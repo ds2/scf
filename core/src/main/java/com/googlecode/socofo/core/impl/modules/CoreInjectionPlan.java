@@ -36,6 +36,8 @@ import com.googlecode.socofo.core.impl.TypeDetectorImpl;
 import com.googlecode.socofo.core.impl.io.FileDestinationImpl;
 import com.googlecode.socofo.core.impl.io.FileRootImpl;
 import com.googlecode.socofo.core.impl.io.StreamRootImpl;
+import com.googlecode.socofo.core.impl.xml.TreeHandler;
+import com.googlecode.socofo.core.impl.xml.TreeHandlerImpl;
 import com.googlecode.socofo.core.impl.xml.XmlTransformer;
 
 /**
@@ -61,6 +63,7 @@ public class CoreInjectionPlan implements Module {
 				"utf-8");
 		binder.bind(LineHandler.class).to(LineHandlerImpl.class);
 		binder.bind(FileDestination.class).to(FileDestinationImpl.class);
+		binder.bind(TreeHandler.class).to(TreeHandlerImpl.class);
 	}
 
 }
