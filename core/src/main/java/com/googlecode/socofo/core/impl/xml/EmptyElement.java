@@ -22,15 +22,20 @@ package com.googlecode.socofo.core.impl.xml;
 
 /**
  * @author kaeto23
- *
+ * 
  */
-public class EmptyElement {
+public class EmptyElement extends BaseXmlObject {
 
 	/**
 	 * 
 	 */
 	public EmptyElement() {
-		// TODO Auto-generated constructor stub
+		this(null);
+	}
+
+	public EmptyElement(String elName) {
+		super(elName);
+		endSeq = "/>";
 	}
 
 }

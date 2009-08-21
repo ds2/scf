@@ -19,4 +19,12 @@ package com.googlecode.socofo.core.impl.xml;
 
 public class StartElement extends BaseXmlObject {
 
+	public StartElement(String elName) {
+		super(elName);
+	}
+
+	public StartElement() {
+		super();
+	}
+
 }

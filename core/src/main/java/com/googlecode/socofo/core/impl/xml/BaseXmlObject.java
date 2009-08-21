@@ -41,7 +41,11 @@ import com.googlecode.socofo.rules.impl.NewlineRulesXml;
  */
 public class BaseXmlObject implements XmlObject {
 	/**
-	 * A logger
+	 * no idea.
+	 */
+	private static final long serialVersionUID = 1101453558589747963L;
+	/**
+	 * A logger.
 	 */
 	private static final Logger log = Logger.getLogger(BaseXmlObject.class
 			.getName());
@@ -73,12 +77,24 @@ public class BaseXmlObject implements XmlObject {
 	 * Flag to indicate that this tag is an end tag
 	 */
 	protected boolean endTag = false;
+	private int level;
 
 	/**
 	 * Inits the base object.
 	 */
 	public BaseXmlObject() {
 		attributes = new HashMap<String, String>();
+	}
+
+	/**
+	 * Constructs a xml object with the given element name.
+	 * 
+	 * @param elName
+	 *            the name of the element
+	 */
+	public BaseXmlObject(String elName) {
+		this();
+		setElementName(elName);
 	}
 
 	/**
@@ -273,6 +289,28 @@ public class BaseXmlObject implements XmlObject {
 			sw.commitLine(false);
 		}
 		log.exiting(BaseXmlObject.class.getName(), "writeElement");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getLevel() {
+		return level;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setLevel(int l) {
+		level = l;
+	}
+
+	@Override
+	public void writeElement(XmlObject lastObject, int indent, SourceWriter sw,
+			XmlFormatRules rules, LineHandler lh) {
+		writeElement(indent, sw, rules, lh);
 	}
 
 }

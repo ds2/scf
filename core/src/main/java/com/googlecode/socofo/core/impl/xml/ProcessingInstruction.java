@@ -31,6 +31,5 @@ public class ProcessingInstruction extends BaseXmlObject {
 	public ProcessingInstruction() {
 		startSeq = "<?";
 		endSeq = "?>";
-		endTag = true;
 	}
 }
