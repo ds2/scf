@@ -218,4 +218,7 @@
             <unsubscribe>socofo-dev+unsubscribe@googlegroups.com</unsubscribe>
         </mailingList>
     </mailingLists>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>
