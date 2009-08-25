@@ -64,7 +64,7 @@ public class LineHandlerImplTest {
 		assertEqualList(to.breakContent(10, "this is a test", 0,
 				BreakFormat.BeautyBreak), "this is a ", "test");
 		assertEqualList(to.breakContent(10, "this is a test", 5,
-				BreakFormat.BeautyBreak), "this ", "is a test");
+				BreakFormat.BeautyBreak), "this", "is a test");
 		assertEqualList(to.breakContent(5, "1234567890", 0,
 				BreakFormat.BeautyBreak), "1234567890");
 		assertEqualList(to.breakContent(5, "1234567890", 2,
