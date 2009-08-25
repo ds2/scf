@@ -137,7 +137,7 @@ public class LineHandlerImpl implements LineHandler {
 			if (firstIndent > 0) {
 				log.finer("Clearing first indent template");
 				String firstLine = rc.get(0);
-				firstLine = firstLine.substring(firstIndent);
+				firstLine = firstLine.trim();
 				rc.remove(0);
 				rc.add(0, firstLine);
 			}
