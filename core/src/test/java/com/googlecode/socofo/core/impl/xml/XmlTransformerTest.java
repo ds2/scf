@@ -194,4 +194,15 @@ public class XmlTransformerTest {
 		assertEquals("<a>\n  <b>text</b>\n</a>\n", result);
 	}
 
+	@Test
+	public final void testTranslation4() {
+		String xmlSample = "<a><b a=\"13\"/></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		to.performTranslation();
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b\n    a=\"13\"\n  />\n</a>\n", result);
+	}
+
 }

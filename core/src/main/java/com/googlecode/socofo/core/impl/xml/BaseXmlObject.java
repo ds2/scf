@@ -293,6 +293,7 @@ public class BaseXmlObject implements XmlObject {
 		case OnAttributes:
 			if (hasAttributes()) {
 				sw.commitLine(false);
+				sw.addToLine(getLevel() - 1, "");
 			}
 			break;
 		default:
@@ -304,7 +305,7 @@ public class BaseXmlObject implements XmlObject {
 		if (nlRules.getOnLevelChange()) {
 			sw.commitLine(false);
 		}
-		if (nlRules != null && nlRules.getAfterXmlEndTag() && isEndTag()) {
+		if (nlRules.getAfterXmlEndTag() && isEndTag()) {
 			sw.commitLine(false);
 		}
 		log.exiting(BaseXmlObject.class.getName(), "writeElement");
