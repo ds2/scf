@@ -18,29 +18,41 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.modules;
+package com.googlecode.socofo.rules.impl;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.name.Names;
-import com.googlecode.socofo.rules.api.RulesLoader;
-import com.googlecode.socofo.rules.impl.RulesLoaderImpl;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.googlecode.socofo.rules.api.RuleSet;
+import com.googlecode.socofo.rules.api.XmlFormatRules;
 
 /**
- * @author kaeto23
+ * The root implementation for formatter rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
-public class RulesInjectionPlan implements Module {
+@XmlRootElement(name = "formatter-rules")
+public class RuleSetXml implements RuleSet {
+	@XmlElement(name = "xml-rules", type = XmlFormatRulesXml.class)
+	private XmlFormatRules xmlRules = null;
+
 	/**
-	 * {@inheritDoc}
+	 * 
+	 */
+	public RuleSetXml() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.googlecode.socofo.rules.api.RuleSet#getXmlFormatRules()
 	 */
 	@Override
-	public void configure(Binder binder) {
-		binder.bind(RulesLoader.class).to(RulesLoaderImpl.class);
-		binder.bindConstant().annotatedWith(Names.named("connectTimeout")).to(
-				45000);
-		binder.bindConstant().annotatedWith(Names.named("readTimeout")).to(
-				30000);
+	public XmlFormatRules getXmlFormatRules() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

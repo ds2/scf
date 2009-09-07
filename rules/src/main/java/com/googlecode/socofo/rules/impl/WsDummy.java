@@ -38,7 +38,7 @@ public class WsDummy {
 	}
 
 	@WebMethod
-	public XmlFormatRulesXml dummyMethod() {
+	public RuleSetXml dummyMethod() {
 		return null;
 	}
 

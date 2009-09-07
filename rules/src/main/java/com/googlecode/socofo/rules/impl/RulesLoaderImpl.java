@@ -21,7 +21,10 @@
 package com.googlecode.socofo.rules.impl;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBContext;
@@ -30,10 +33,11 @@ import javax.xml.bind.Unmarshaller;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.googlecode.socofo.common.api.IOHelper;
+import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.RulesLoader;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
-
 
 /**
  * @author kaeto23
@@ -55,13 +59,17 @@ public class RulesLoaderImpl implements RulesLoader {
 	 */
 	@Inject
 	private IOHelper iohelper = null;
+	@Named("connectTimeout")
+	private int connectTimeout = 20000;
+	@Named("readTimeout")
+	private int readTimeout = 20000;
 
 	/**
 	 * 
 	 */
 	public RulesLoaderImpl() {
 		try {
-			jb = JAXBContext.newInstance(XmlFormatRulesXml.class);
+			jb = JAXBContext.newInstance(RuleSetXml.class);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,6 +98,44 @@ public class RulesLoaderImpl implements RulesLoader {
 			iohelper.closeInputstream(is);
 		}
 		return rc;
+	}
+
+	@Override
+	public RuleSet loadRules(InputStream is) {
+		if (is == null) {
+			log.severe("No inputstream given -> returning null");
+			return null;
+		}
+		BufferedInputStream bis = new BufferedInputStream(is);
+		RuleSet rc = null;
+		try {
+			Unmarshaller um = jb.createUnmarshaller();
+			Object o = um.unmarshal(is);
+			rc = RuleSetXml.class.cast(o);
+		} catch (JAXBException e) {
+			log.throwing(RulesLoaderImpl.class.getName(), "loadRules", e);
+		} finally {
+			iohelper.closeInputstream(bis);
+			iohelper.closeInputstream(is);
+		}
+		return rc;
+	}
+
+	@Override
+	public RuleSet loadRulesFromUrl(URL formatterXml) {
+		try {
+			URLConnection urlConn = formatterXml.openConnection();
+			urlConn.setConnectTimeout(connectTimeout);
+			urlConn.setReadTimeout(readTimeout);
+			urlConn.connect();
+			InputStream is = urlConn.getInputStream();
+			loadRules(is);
+		} catch (IOException e) {
+			log
+					.throwing(RulesLoaderImpl.class.getName(),
+							"loadRulesFromUrl", e);
+		}
+		return null;
 	}
 
 }

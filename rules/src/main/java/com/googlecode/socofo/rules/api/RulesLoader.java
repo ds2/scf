@@ -21,6 +21,7 @@
 package com.googlecode.socofo.rules.api;
 
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Contract for a loader for rules. Implementations of this contract will load
@@ -38,4 +39,22 @@ public interface RulesLoader {
 	 * @return null, or the configuration
 	 */
 	XmlFormatRules loadFormatRules(InputStream is);
+
+	/**
+	 * Convenience method for loading the rules via a URL.
+	 * 
+	 * @param formatterXml
+	 *            the url to the rules
+	 * @return the rule set, or null
+	 */
+	RuleSet loadRulesFromUrl(URL formatterXml);
+
+	/**
+	 * Loads the rules from the given input stream.
+	 * 
+	 * @param is
+	 *            the input stream
+	 * @return null, or the rules
+	 */
+	RuleSet loadRules(InputStream is);
 }
