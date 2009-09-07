@@ -18,7 +18,7 @@
 /**
  * 
  */
-package com.googlecode.socofo.runtime;
+package com.googlecode.socofo.runtime.impl;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,14 +35,14 @@ import org.junit.Test;
  * 
  */
 public class MainTest {
-	private Main to = null;
+	private DefRuntime to = null;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		to = new Main();
+		to = new DefRuntime();
 	}
 
 	/**

@@ -16,30 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *
+ * 
  */
-package com.googlecode.socofo.runtime;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.googlecode.socofo.common.api.MainRuntime;
+package com.googlecode.socofo.common.api;
 
 /**
- * Main program to let the formatter run on in a terminal.
+ * @author kaeto23
  * 
- * @author Dirk Strauss
- * @version 1.0
  */
-public class Main {
+public interface MainRuntime {
+	public static final String PARAM_RULESURL = "--rulesUrl";
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
-		MainRuntime mr = ij.getInstance(MainRuntime.class);
-		int rc = mr.execute(args);
-		System.out.println("rc=" + rc);
-	}
-
+	int execute(String... args);
 }

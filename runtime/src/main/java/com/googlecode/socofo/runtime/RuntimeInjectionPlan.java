@@ -22,9 +22,11 @@ package com.googlecode.socofo.runtime;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.googlecode.socofo.common.api.MainRuntime;
 import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
 import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
+import com.googlecode.socofo.runtime.impl.DefRuntime;
 
 /**
  * @author kaeto23
@@ -49,6 +51,7 @@ public class RuntimeInjectionPlan implements Module {
 		binder.install(new CommonsInjectionPlan());
 		binder.install(new RulesInjectionPlan());
 		binder.install(new CoreInjectionPlan());
+		binder.bind(MainRuntime.class).to(DefRuntime.class);
 	}
 
 }
