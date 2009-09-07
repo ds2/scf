@@ -20,8 +20,18 @@
  */
 package com.googlecode.socofo.runtime;
 
+import java.io.Console;
+import java.io.File;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Logger;
+
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.googlecode.socofo.core.api.Scheduler;
+import com.googlecode.socofo.core.api.SourceTypes;
+import com.googlecode.socofo.core.api.TranslationJob;
 
 /**
  * Main program to let the formatter run on in a terminal.
@@ -45,11 +55,18 @@ public class Main {
 	 * the console to write log information to.
 	 */
 	private PrintWriter console = null;
+	@Inject
+	private Scheduler scheduler = null;
 
 	/**
      */
 	public Main() {
-		console = System.console().writer();
+		Console c = System.console();
+		if (c == null) {
+			console = new PrintWriter(System.out);
+		} else {
+			console = c.writer();
+		}
 	}
 
 	/**
@@ -61,7 +78,7 @@ public class Main {
 	 * @return TRUE if the user wants to display the help information, otherwise
 	 *         FALSE
 	 */
-	private boolean wantsHelp(String[] params) {
+	protected boolean wantsHelp(String... params) {
 		log.entering(Main.class.getName(), "wantsHelp", params);
 		boolean rc = false;
 		if ((params == null) || (params.length <= 0)) {
@@ -70,6 +87,8 @@ public class Main {
 			for (String param : params) {
 				if (param.equalsIgnoreCase("help")
 						|| param.equalsIgnoreCase("--help")) {
+					rc = true;
+				} else if (param.length() <= 0) {
 					rc = true;
 				}
 			}
@@ -98,7 +117,14 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Main m = new Main();
+		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
+		Scheduler scheduler = ij.getInstance(Scheduler.class);
+		m.setScheduler(scheduler);
 		m.execute(args);
+	}
+
+	private void setScheduler(Scheduler scheduler2) {
+		scheduler = scheduler2;
 	}
 
 	/**
@@ -107,10 +133,35 @@ public class Main {
 	 * @param args
 	 *            the parameters
 	 */
-	public void execute(String[] args) {
+	public void execute(String... args) {
 		if (wantsHelp(args)) {
 			printHelp();
 			return;
 		}
+		if (scheduler == null) {
+			log.severe("No scheduler set!");
+			return;
+		}
+		File baseDir = new File(".");
+		Thread currentThread = Thread.currentThread();
+		scheduler.addWaiterThreads(currentThread);
+		List<TranslationJob> jobs = null;
+		File targetDir = null;
+		jobs = scheduler.createLocalJobs(baseDir, targetDir, SourceTypes.XML);
+		scheduler.addJobs(jobs);
+		scheduler.startScheduler();
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			e.getLocalizedMessage();
+		}
+		List<String> errorMessages = scheduler.getErrorMessages();
+		if (!errorMessages.isEmpty()) {
+			console.println("Some errors occurred:");
+			for (String msg : errorMessages) {
+				console.println("*) " + msg);
+			}
+		}
+		console.println("finished");
 	}
 }
