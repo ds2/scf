@@ -26,12 +26,14 @@ import com.google.inject.name.Names;
 import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.FileRoot;
 import com.googlecode.socofo.core.api.LineHandler;
+import com.googlecode.socofo.core.api.Scheduler;
 import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.impl.LineHandlerImpl;
+import com.googlecode.socofo.core.impl.SchedulerImpl;
 import com.googlecode.socofo.core.impl.SourceWriterImpl;
 import com.googlecode.socofo.core.impl.TranslationJobImpl;
 import com.googlecode.socofo.core.impl.TypeDetectorImpl;
@@ -67,6 +69,7 @@ public class CoreInjectionPlan implements Module {
 		binder.bind(FileDestination.class).to(FileDestinationImpl.class);
 		binder.bind(TreeHandler.class).to(TreeHandlerImpl.class);
 		binder.bind(TranslationJob.class).to(TranslationJobImpl.class);
+		binder.bind(Scheduler.class).to(SchedulerImpl.class);
 	}
 
 }
