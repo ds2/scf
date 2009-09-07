@@ -33,7 +33,8 @@ public interface SourceDestination {
 	 * @param s
 	 *            the content to write
 	 * @param encoding
-	 *            the encoding to use
+	 *            the encoding to use. If null, the platform encoding will be
+	 *            used.
 	 */
 	public void writeContent(String s, String encoding);
 }

@@ -50,17 +50,29 @@ public class FileDestinationImpl implements FileDestination {
 			LOG.severe("No destination set!");
 			return;
 		}
+		if (s == null) {
+			LOG.severe("Nothing to write!");
+			return;
+		}
 		OutputStreamWriter fw = null;
+		FileOutputStream fos = null;
 		try {
-			FileOutputStream fos = new FileOutputStream(dest);
-			fw = new OutputStreamWriter(fos, enc);
+			dest.createNewFile();
+			fos = new FileOutputStream(dest);
+			if (enc == null) {
+				fw = new OutputStreamWriter(fos);
+			} else {
+				fw = new OutputStreamWriter(fos, enc);
+			}
 			fw.write(s);
+			fw.flush();
 		} catch (IOException e) {
 			LOG
 					.throwing(FileDestinationImpl.class.getName(),
 							"writeContent", e);
 		} finally {
 			iohelper.closeWriter(fw);
+			iohelper.closeOutputstream(fos);
 		}
 
 	}
@@ -68,6 +80,63 @@ public class FileDestinationImpl implements FileDestination {
 	@Override
 	public void setFile(File f) {
 		dest = f;
+	}
+
+	protected String parseDestination2(String baseDirStr, String targetDirStr,
+			String sourceFileStr) {
+		LOG.entering(FileDestinationImpl.class.getName(), "parseDestination2",
+				new Object[] { baseDirStr, targetDirStr, sourceFileStr });
+		if (baseDirStr == null) {
+			LOG.warning("No base directory given!");
+			return null;
+		}
+		if (sourceFileStr == null || sourceFileStr.length() <= 0) {
+			LOG.warning("No source file given!");
+			return null;
+		}
+		if (!sourceFileStr.startsWith(baseDirStr + File.separatorChar)) {
+			LOG.warning("The source file (" + sourceFileStr
+					+ ") is NOT a part of the base directory " + baseDirStr
+					+ "!");
+			return null;
+		}
+		String rc = sourceFileStr;
+		if (targetDirStr != null) {
+			String base = sourceFileStr.substring(baseDirStr.length());
+			rc = targetDirStr + base;
+		}
+		LOG.exiting(FileDestinationImpl.class.getName(), "parseDestination2",
+				rc);
+		return rc;
+	}
+
+	@Override
+	public File parseDestination(File baseDir, File targetDir, File sourceFile) {
+		LOG.entering(FileDestinationImpl.class.getName(), "parseDestination",
+				new Object[] { baseDir, targetDir, sourceFile });
+		if (baseDir == null) {
+			LOG.severe("No base directory given!");
+			return null;
+		}
+		if (sourceFile == null) {
+			LOG.severe("No source file given!");
+			return null;
+		}
+		String baseDirStr = baseDir.getAbsolutePath();
+		String targetDirStr = targetDir == null ? baseDirStr : targetDir
+				.getAbsolutePath();
+		String sourceFileStr = sourceFile.getAbsolutePath();
+		String newBase = parseDestination2(baseDirStr, targetDirStr,
+				sourceFileStr);
+		File rc = new File(newBase);
+		LOG
+				.exiting(FileDestinationImpl.class.getName(),
+						"parseDestination", rc);
+		return rc;
+	}
+
+	public void setTestIohelper(IOHelper i) {
+		iohelper = i;
 	}
 
 }

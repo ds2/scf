@@ -26,7 +26,6 @@ import com.google.inject.Singleton;
 import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
 
-
 /**
  * The implementation of a source type detector.
  * 
@@ -59,7 +58,19 @@ public class TypeDetectorImpl implements SourceTypeDetector {
 		if (filename.endsWith(".xml")) {
 			return SourceTypes.XML;
 		}
-		log.warning("Unknown type: " + fn);
+		if (filename.endsWith(".cs")) {
+			return SourceTypes.CSharp;
+		}
+		if (filename.endsWith(".java")) {
+			return SourceTypes.Java;
+		}
+		if (filename.endsWith(".xhtml")) {
+			return SourceTypes.XHTML;
+		}
+		if (filename.endsWith(".lua")) {
+			return SourceTypes.Lua;
+		}
+		log.info("Unknown type: " + fn);
 		return null;
 	}
 }

@@ -71,7 +71,7 @@ public class FileRootImpl implements FileRoot {
 	 * @throws LoadingException
 	 *             if an error occurred
 	 */
-	public void loadFile(final File f) throws LoadingException {
+	public void setFile(final File f) throws LoadingException {
 		if (f == null) {
 			LOG.warning("No file given!");
 			return;

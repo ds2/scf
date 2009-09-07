@@ -25,7 +25,6 @@ import com.googlecode.socofo.core.api.SourceRoot;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.rules.api.RuleSet;
 
-
 /**
  * @author kaeto23
  * 
@@ -74,15 +73,6 @@ public class TranslationJobImpl implements TranslationJob {
 	 */
 	@Override
 	public void setSource(SourceRoot sourceCode) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void startJob() {
 		// TODO Auto-generated method stub
 
 	}

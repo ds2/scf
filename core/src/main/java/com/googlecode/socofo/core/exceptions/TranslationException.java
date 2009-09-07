@@ -18,38 +18,29 @@
 /**
  * 
  */
-package com.googlecode.socofo.core.api;
-
-import com.googlecode.socofo.rules.api.RuleSet;
+package com.googlecode.socofo.core.exceptions;
 
 /**
- * A job for transforming a source code into a transformed source code.
+ * @author kaeto23
  * 
- * @author Dirk Strauss
- * @version 1.0
  */
-public interface TranslationJob extends Runnable {
-	/**
-	 * Sets the source code
-	 * 
-	 * @param sourceCode
-	 *            the source code to transform
-	 */
-	public void setSource(SourceRoot sourceCode);
+public class TranslationException extends Exception {
 
 	/**
-	 * Sets the transformation rules for transforming the source code.
-	 * 
-	 * @param r
-	 *            the rules
+	 * @param message
 	 */
-	public void setRule(RuleSet r);
+	public TranslationException(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
-	 * Sets the destination of the transformed source code.
-	 * 
-	 * @param dest
-	 *            the destination of the transformed source code
+	 * @param message
+	 * @param cause
 	 */
-	public void setDestination(SourceDestination dest);
+	public TranslationException(String message, Throwable cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
+
 }

@@ -20,36 +20,35 @@
  */
 package com.googlecode.socofo.core.api;
 
-import com.googlecode.socofo.rules.api.RuleSet;
+import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 /**
- * A job for transforming a source code into a transformed source code.
+ * The scheduler. Implementations of this class are scheduling and
+ * starting/stopping translation jobs.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface TranslationJob extends Runnable {
-	/**
-	 * Sets the source code
-	 * 
-	 * @param sourceCode
-	 *            the source code to transform
-	 */
-	public void setSource(SourceRoot sourceCode);
+public interface Scheduler {
+
+	public void setRules(URL formatterXml);
 
 	/**
-	 * Sets the transformation rules for transforming the source code.
-	 * 
-	 * @param r
-	 *            the rules
+	 * Starts the scheduler. The scheduler will create a separate thread group
+	 * and executes the jobs in there.
 	 */
-	public void setRule(RuleSet r);
+	public void startScheduler();
 
-	/**
-	 * Sets the destination of the transformed source code.
-	 * 
-	 * @param dest
-	 *            the destination of the transformed source code
-	 */
-	public void setDestination(SourceDestination dest);
+	public void addWaiterThreads(Thread currentThread);
+
+	public List<String> getErrorMessages();
+
+	public List<TranslationJob> createLocalJobs(File baseDir, File targetDir,
+			SourceTypes... types);
+
+	public void addJobs(List<TranslationJob> jobs);
+
+	public int getActiveJobsCount();
 }

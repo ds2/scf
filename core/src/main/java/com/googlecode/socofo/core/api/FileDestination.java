@@ -37,4 +37,18 @@ public interface FileDestination extends SourceDestination {
 	 *            the file destination
 	 */
 	void setFile(File f);
+
+	/**
+	 * Creates a destination file based on the base directory, the target
+	 * directory and the source file location.
+	 * 
+	 * @param baseDir
+	 *            the base directory
+	 * @param targetDir
+	 *            the target directory
+	 * @param sourceFile
+	 *            the source file, under baseDir
+	 * @return a full destination file
+	 */
+	File parseDestination(File baseDir, File targetDir, File sourceFile);
 }
