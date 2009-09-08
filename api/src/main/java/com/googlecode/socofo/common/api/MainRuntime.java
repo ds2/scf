@@ -20,12 +20,32 @@
  */
 package com.googlecode.socofo.common.api;
 
+import java.io.File;
+import java.net.URL;
+
 /**
  * @author kaeto23
  * 
  */
 public interface MainRuntime {
 	public static final String PARAM_RULESURL = "--rulesUrl";
+	public static final String PARAM_BASEDIR = "--base";
+	public static final String PARAM_TARGETDIR = "--target";
+	public static final String PARAM_HELP = "--help";
+	public static final String PARAM_TYPES = "--types";
 
-	int execute(String... args);
+	int execute();
+
+	void parseParams(String... args);
+
+	File getBaseDirectory();
+
+	File getTargetDirectory();
+
+	boolean showHelpScreen();
+
+	void resetSettings();
+
+	URL getRulesUrl();
+
 }

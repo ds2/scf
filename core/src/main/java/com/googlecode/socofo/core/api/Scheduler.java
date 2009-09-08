@@ -45,6 +45,17 @@ public interface Scheduler {
 
 	public List<String> getErrorMessages();
 
+	/**
+	 * Creates a list of jobs from the local filesystem.
+	 * 
+	 * @param baseDir
+	 *            the base directory
+	 * @param targetDir
+	 *            the target directory
+	 * @param types
+	 *            the types to scan for
+	 * @return a list of jobs
+	 */
 	public List<TranslationJob> createLocalJobs(File baseDir, File targetDir,
 			SourceTypes... types);
 

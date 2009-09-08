@@ -57,7 +57,13 @@ public class FileDestinationImpl implements FileDestination {
 		OutputStreamWriter fw = null;
 		FileOutputStream fos = null;
 		try {
-			dest.createNewFile();
+			File parentDir = dest.getParentFile();
+			parentDir.mkdirs();
+			boolean fileCreated = dest.createNewFile();
+			if (!fileCreated) {
+				throw new IOException("File " + dest.getAbsolutePath()
+						+ " could not be created!");
+			}
 			fos = new FileOutputStream(dest);
 			if (enc == null) {
 				fw = new OutputStreamWriter(fos);

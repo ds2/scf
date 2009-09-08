@@ -64,6 +64,7 @@ public class SchedulerImpl implements Scheduler {
 	@Inject
 	private RulesLoader rulesLoader = null;
 	private RuleSet ruleSet = null;
+	private List<String> errorMsgs;
 
 	/**
 	 * 
@@ -71,6 +72,7 @@ public class SchedulerImpl implements Scheduler {
 	public SchedulerImpl() {
 		jobs = new ArrayList<TranslationJob>();
 		threadGrp = new ThreadGroup("SchedulerTranslationJobs");
+		errorMsgs = new ArrayList<String>();
 	}
 
 	/*
@@ -228,8 +230,7 @@ public class SchedulerImpl implements Scheduler {
 	 */
 	@Override
 	public List<String> getErrorMessages() {
-		// TODO Auto-generated method stub
-		return null;
+		return errorMsgs;
 	}
 
 	/*
@@ -257,6 +258,7 @@ public class SchedulerImpl implements Scheduler {
 	public void startScheduler() {
 		log.entering(SchedulerImpl.class.getName(), "startScheduler");
 		for (TranslationJob job : jobs) {
+			log.finest("Starting job " + job);
 			Thread t = new Thread(threadGrp, job);
 			t.start();
 		}

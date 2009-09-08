@@ -20,8 +20,10 @@
  */
 package com.googlecode.socofo.core.impl;
 
+import com.google.inject.name.Named;
 import com.googlecode.socofo.core.api.SourceDestination;
 import com.googlecode.socofo.core.api.SourceRoot;
+import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.rules.api.RuleSet;
 
@@ -30,13 +32,11 @@ import com.googlecode.socofo.rules.api.RuleSet;
  * 
  */
 public class TranslationJobImpl implements TranslationJob {
-
-	/**
-	 * 
-	 */
-	public TranslationJobImpl() {
-		// TODO Auto-generated constructor stub
-	}
+	private SourceDestination dest = null;
+	private RuleSet rules = null;
+	private SourceRoot source = null;
+	@Named("xml")
+	private SourceTransformer xmlTransformer = null;
 
 	/*
 	 * (non-Javadoc)
@@ -47,8 +47,7 @@ public class TranslationJobImpl implements TranslationJob {
 	 */
 	@Override
 	public void setDestination(SourceDestination dest) {
-		// TODO Auto-generated method stub
-
+		this.dest = dest;
 	}
 
 	/*
@@ -60,8 +59,7 @@ public class TranslationJobImpl implements TranslationJob {
 	 */
 	@Override
 	public void setRule(RuleSet r) {
-		// TODO Auto-generated method stub
-
+		rules = r;
 	}
 
 	/*
@@ -73,14 +71,16 @@ public class TranslationJobImpl implements TranslationJob {
 	 */
 	@Override
 	public void setSource(SourceRoot sourceCode) {
-		// TODO Auto-generated method stub
-
+		source = sourceCode;
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-
+		xmlTransformer.parseContent(source.getContent());
+		xmlTransformer.loadRules(rules);
+		xmlTransformer.performTranslation();
+		String result = xmlTransformer.getResult();
+		dest.writeContent(result, "utf-8");
 	}
 
 }

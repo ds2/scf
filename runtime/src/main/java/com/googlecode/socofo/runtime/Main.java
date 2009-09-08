@@ -38,7 +38,8 @@ public class Main {
 	public static void main(String[] args) {
 		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
 		MainRuntime mr = ij.getInstance(MainRuntime.class);
-		int rc = mr.execute(args);
+		mr.parseParams(args);
+		int rc = mr.execute();
 		System.out.println("rc=" + rc);
 	}
 

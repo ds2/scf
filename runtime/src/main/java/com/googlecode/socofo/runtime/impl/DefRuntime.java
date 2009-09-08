@@ -23,6 +23,8 @@ package com.googlecode.socofo.runtime.impl;
 import java.io.Console;
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -32,7 +34,6 @@ import com.googlecode.socofo.common.api.MainRuntime;
 import com.googlecode.socofo.core.api.Scheduler;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TranslationJob;
-import com.googlecode.socofo.runtime.Main;
 
 /**
  * @author kaeto23
@@ -53,6 +54,12 @@ public class DefRuntime implements MainRuntime {
 	private PrintWriter console = null;
 	@Inject
 	private Scheduler scheduler = null;
+	private File baseDir = null;
+	private File targetDir = null;
+
+	private boolean showHelp = false;
+
+	private URL rulesUrl;
 
 	/**
 	 * 
@@ -64,34 +71,6 @@ public class DefRuntime implements MainRuntime {
 		} else {
 			console = c.writer();
 		}
-	}
-
-	/**
-	 * Checks if the params request some help from the user.
-	 * 
-	 * @param params
-	 *            the parameters
-	 * 
-	 * @return TRUE if the user wants to display the help information, otherwise
-	 *         FALSE
-	 */
-	protected boolean wantsHelp(String... params) {
-		log.entering(Main.class.getName(), "wantsHelp", params);
-		boolean rc = false;
-		if ((params == null) || (params.length <= 0)) {
-			rc = true;
-		} else {
-			for (String param : params) {
-				if (param.equalsIgnoreCase("help")
-						|| param.equalsIgnoreCase("--help")) {
-					rc = true;
-				} else if (param.length() <= 0) {
-					rc = true;
-				}
-			}
-		}
-		log.exiting(Main.class.getName(), "wantsHelp", rc);
-		return rc;
 	}
 
 	/**
@@ -109,16 +88,14 @@ public class DefRuntime implements MainRuntime {
 				+ "=http://test.local/test/formatterRules.xml)");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.googlecode.socofo.common.api.MainRuntime#execute(java.lang.String[])
-	 */
+	protected void setTestScheduler(Scheduler instance) {
+		scheduler = instance;
+	}
+
 	@Override
-	public int execute(String... args) {
+	public int execute() {
 		int rc = 0;
-		if (wantsHelp(args)) {
+		if (showHelp) {
 			printHelp();
 			return 1;
 		}
@@ -126,17 +103,25 @@ public class DefRuntime implements MainRuntime {
 			log.severe("No scheduler set!");
 			return 2;
 		}
-		File baseDir = new File(".");
 		Thread currentThread = Thread.currentThread();
 		scheduler.addWaiterThreads(currentThread);
 		List<TranslationJob> jobs = null;
-		File targetDir = null;
+		scheduler.setRules(rulesUrl);
+		baseDir = getBaseDirectory();
+		log.info("Using base directory " + baseDir);
+		log.info("Using target directory " + targetDir);
 		jobs = scheduler.createLocalJobs(baseDir, targetDir, SourceTypes.XML);
+		if (jobs.size() <= 0) {
+			log.warning("No source files found!");
+			return 4;
+		}
 		scheduler.addJobs(jobs);
 		scheduler.startScheduler();
 		try {
 			wait();
 		} catch (InterruptedException e) {
+			e.getLocalizedMessage();
+		} catch (IllegalMonitorStateException e) {
 			e.getLocalizedMessage();
 		}
 		List<String> errorMessages = scheduler.getErrorMessages();
@@ -150,6 +135,80 @@ public class DefRuntime implements MainRuntime {
 		console.println("finished");
 		log.exiting(DefRuntime.class.getName(), "execute", rc);
 		return rc;
+	}
+
+	public int execute(String... args) {
+		parseParams(args);
+		return execute();
+	}
+
+	@Override
+	public File getBaseDirectory() {
+		if (baseDir == null) {
+			baseDir = new File("");
+		}
+		return baseDir;
+	}
+
+	@Override
+	public File getTargetDirectory() {
+		return targetDir;
+	}
+
+	@Override
+	public void parseParams(String... args) {
+		log.entering(DefRuntime.class.getName(), "parseParams", args);
+		if (args != null && args.length > 0) {
+			for (String arg : args) {
+				log.finest("current arg is " + arg);
+				if (arg == null || arg.length() <= 0) {
+					continue;
+				}
+				if (arg.startsWith(PARAM_BASEDIR) && baseDir == null) {
+					String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
+					baseDir = new File(argSeq);
+					if (!baseDir.exists()) {
+						log
+								.warning("Directory " + baseDir
+										+ " does not exist!");
+					}
+				} else if (arg.startsWith(PARAM_RULESURL) && rulesUrl == null) {
+					try {
+						rulesUrl = new URL(arg.substring(PARAM_RULESURL
+								.length() + 1));
+					} catch (MalformedURLException e) {
+						log.throwing(DefRuntime.class.getName(), "parseParams",
+								e);
+					}
+				} else if (arg.startsWith(PARAM_TARGETDIR) && targetDir == null) {
+					String argSeq = arg.substring(PARAM_TARGETDIR.length() + 1);
+					targetDir = new File(argSeq);
+				} else if (arg.startsWith(PARAM_HELP)) {
+					showHelp = true;
+				}
+			}
+		} else {
+			showHelp = true;
+		}
+		log.exiting(DefRuntime.class.getName(), "parseParams");
+	}
+
+	@Override
+	public boolean showHelpScreen() {
+		return showHelp;
+	}
+
+	@Override
+	public void resetSettings() {
+		baseDir = null;
+		targetDir = null;
+		showHelp = false;
+		rulesUrl = null;
+	}
+
+	@Override
+	public URL getRulesUrl() {
+		return rulesUrl;
 	}
 
 }
