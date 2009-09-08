@@ -20,10 +20,12 @@
  */
 package com.googlecode.socofo.core.impl;
 
+import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.googlecode.socofo.core.api.SourceDestination;
 import com.googlecode.socofo.core.api.SourceRoot;
 import com.googlecode.socofo.core.api.SourceTransformer;
+import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.rules.api.RuleSet;
 
@@ -36,6 +38,7 @@ public class TranslationJobImpl implements TranslationJob {
 	private RuleSet rules = null;
 	private SourceRoot source = null;
 	@Named("xml")
+	@Inject
 	private SourceTransformer xmlTransformer = null;
 
 	/*
@@ -76,10 +79,15 @@ public class TranslationJobImpl implements TranslationJob {
 
 	@Override
 	public void run() {
-		xmlTransformer.parseContent(source.getContent());
-		xmlTransformer.loadRules(rules);
-		xmlTransformer.performTranslation();
-		String result = xmlTransformer.getResult();
+		String result = "";
+		SourceTransformer tr = null;
+		if (source.getType() == SourceTypes.XML) {
+			tr = xmlTransformer;
+		}
+		tr.parseContent(source.getContent());
+		tr.loadRules(rules);
+		tr.performTranslation();
+		result = tr.getResult();
 		dest.writeContent(result, "utf-8");
 	}
 

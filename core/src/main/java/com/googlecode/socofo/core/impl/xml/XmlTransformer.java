@@ -88,11 +88,11 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	@Override
 	public void loadRules(final RuleSet r) {
-		if (r == null) {
-			log.warning("No rules given!");
-			return;
+		log.entering(XmlTransformer.class.getName(), "loadRules", r);
+		if (r != null) {
+			rules = r.getXmlFormatRules();
 		}
-		rules = r.getXmlFormatRules();
+		log.exiting(XmlTransformer.class.getName(), "loadRules", rules);
 	}
 
 	/**

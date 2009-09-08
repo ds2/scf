@@ -67,7 +67,7 @@ public class DefRuntimeTest {
 			URL rulesUrl = rulesUrlFile.toURI().toURL();
 			to.parseParams(MainRuntime.PARAM_BASEDIR + "=src/test/resources",
 					MainRuntime.PARAM_RULESURL + "=" + rulesUrl.toString(),
-					MainRuntime.PARAM_TARGETDIR + "=delme");
+					MainRuntime.PARAM_TARGETDIR + "=target/result");
 			int rc = to.execute();
 			assertEquals(0, rc);
 		} catch (MalformedURLException e) {

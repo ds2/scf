@@ -111,7 +111,12 @@ public class RulesLoaderImpl implements RulesLoader {
 		try {
 			Unmarshaller um = jb.createUnmarshaller();
 			Object o = um.unmarshal(is);
-			rc = RuleSetXml.class.cast(o);
+			if (!(o instanceof RuleSetXml)) {
+				log
+						.severe("The given stream does not contain a ruleset definition!");
+			} else {
+				rc = RuleSetXml.class.cast(o);
+			}
 		} catch (JAXBException e) {
 			log.throwing(RulesLoaderImpl.class.getName(), "loadRules", e);
 		} finally {
@@ -129,7 +134,7 @@ public class RulesLoaderImpl implements RulesLoader {
 			urlConn.setReadTimeout(readTimeout);
 			urlConn.connect();
 			InputStream is = urlConn.getInputStream();
-			loadRules(is);
+			return loadRules(is);
 		} catch (IOException e) {
 			log
 					.throwing(RulesLoaderImpl.class.getName(),

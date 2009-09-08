@@ -61,7 +61,7 @@ public class FileDestinationImpl implements FileDestination {
 			parentDir.mkdirs();
 			boolean fileCreated = dest.createNewFile();
 			if (!fileCreated) {
-				throw new IOException("File " + dest.getAbsolutePath()
+				LOG.warning("File " + dest.getAbsolutePath()
 						+ " could not be created!");
 			}
 			fos = new FileOutputStream(dest);

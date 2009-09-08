@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import org.junit.Before;
@@ -37,6 +38,7 @@ import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
+import com.googlecode.socofo.rules.api.RulesLoader;
 import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 
 /**
@@ -45,6 +47,7 @@ import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
  */
 public class SchedulerImplTest {
 	private SchedulerImpl to = null;
+	private URL rulesUrl = null;
 
 	/**
 	 * @throws java.lang.Exception
@@ -55,6 +58,9 @@ public class SchedulerImplTest {
 		Injector ij = Guice.createInjector(new CoreInjectionPlan(),
 				new CommonsInjectionPlan(), new RulesInjectionPlan());
 		to.setTestDetector(ij.getInstance(SourceTypeDetector.class));
+		to.setTestRulesLoader(ij.getInstance(RulesLoader.class));
+		File rulesFile = new File("src/test/resources/rules.xml");
+		rulesUrl = rulesFile.toURI().toURL();
 	}
 
 	/**
@@ -76,6 +82,7 @@ public class SchedulerImplTest {
 	public final void testCreateLocalJobs() {
 		File baseDir = new File("src");
 		File targetDir = new File("target/transformed");
+		to.setRules(rulesUrl);
 		List<TranslationJob> jobs = to.createLocalJobs(baseDir, targetDir,
 				SourceTypes.XML);
 		assertNotNull(jobs);

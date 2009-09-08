@@ -34,6 +34,13 @@ public interface MainRuntime {
 	public static final String PARAM_HELP = "--help";
 	public static final String PARAM_TYPES = "--types";
 
+	public static final int ERROR_SHOWHELP = 1;
+	public static final int ERROR_NOSOURCEBASE = 2;
+	public static final int ERROR_NOSOURCES = 3;
+	public static final int ERROR_NORULES = 4;
+	public static final int ERROR_NOSCHEDULER = 5;
+	public static final int ERROR_TRANSFORM = 6;
+
 	int execute();
 
 	void parseParams(String... args);

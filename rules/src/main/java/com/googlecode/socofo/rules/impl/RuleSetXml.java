@@ -51,8 +51,7 @@ public class RuleSetXml implements RuleSet {
 	 */
 	@Override
 	public XmlFormatRules getXmlFormatRules() {
-		// TODO Auto-generated method stub
-		return null;
+		return xmlRules;
 	}
 
 }

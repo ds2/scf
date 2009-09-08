@@ -127,6 +127,10 @@ public class SchedulerImpl implements Scheduler {
 			log.warning("No types given!");
 			return rc;
 		}
+		if (ruleSet == null) {
+			log.warning("No rules given!");
+			return rc;
+		}
 		List<File> sourceFiles = getFiles(baseDir, types);
 		log.finer("Got source files, counting " + sourceFiles.size());
 		for (File sourceFile : sourceFiles) {
@@ -140,7 +144,7 @@ public class SchedulerImpl implements Scheduler {
 				FileDestination fd = ij.getInstance(FileDestination.class);
 				fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));
 				job.setDestination(fd);
-				job.setRule(null);
+				job.setRule(ruleSet);
 				rc.add(job);
 			} catch (LoadingException e) {
 				log.throwing(SchedulerImpl.class.getName(), "createLocalJobs",
@@ -272,6 +276,11 @@ public class SchedulerImpl implements Scheduler {
 
 	protected void setTestDetector(SourceTypeDetector instance) {
 		localDetector = instance;
+	}
+
+	public void setTestRulesLoader(RulesLoader instance) {
+		// TODO Auto-generated method stub
+		rulesLoader = instance;
 	}
 
 }
