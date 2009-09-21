@@ -97,15 +97,15 @@ public class DefRuntime implements MainRuntime {
 		int rc = 0;
 		if (showHelp) {
 			printHelp();
-			return ERROR_SHOWHELP;
+			return RC_SHOWHELP;
 		}
 		if (scheduler == null) {
 			log.severe("No scheduler set!");
-			return ERROR_NOSCHEDULER;
+			return RC_NOSCHEDULER;
 		}
 		if (rulesUrl == null) {
 			log.severe("No rulesUrl given!");
-			return ERROR_NORULES;
+			return RC_NORULES;
 		}
 		Thread currentThread = Thread.currentThread();
 		scheduler.addWaiterThreads(currentThread);
@@ -117,7 +117,7 @@ public class DefRuntime implements MainRuntime {
 		jobs = scheduler.createLocalJobs(baseDir, targetDir, SourceTypes.XML);
 		if (jobs.size() <= 0) {
 			log.warning("No source files found!");
-			return ERROR_NOSOURCES;
+			return RC_NOSOURCES;
 		}
 		scheduler.addJobs(jobs);
 		log.finer("Starting scheduler");
@@ -132,7 +132,7 @@ public class DefRuntime implements MainRuntime {
 		}
 		List<String> errorMessages = scheduler.getErrorMessages();
 		if (!errorMessages.isEmpty()) {
-			rc = ERROR_TRANSFORM;
+			rc = RC_TRANSFORM;
 			console.println("Some errors occurred:");
 			for (String msg : errorMessages) {
 				console.println("*) " + msg);

@@ -69,10 +69,9 @@ public class DefRuntimeTest {
 					MainRuntime.PARAM_RULESURL + "=" + rulesUrl.toString(),
 					MainRuntime.PARAM_TARGETDIR + "=target/result");
 			int rc = to.execute();
-			assertEquals(0, rc);
+			assertEquals(MainRuntime.RC_SUCCESS, rc);
 		} catch (MalformedURLException e) {
 		}
-
 	}
 
 	/**

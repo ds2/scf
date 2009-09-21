@@ -205,6 +205,7 @@ public class BaseXmlObject implements XmlObject {
 		sb.append(",startSeq=").append(startSeq);
 		sb.append(",endSeq=").append(endSeq);
 		sb.append(",endTag=").append(endTag);
+		sb.append(",lvl=").append(level);
 		sb.append(")");
 		return sb.toString();
 	}

@@ -102,12 +102,8 @@ public class SchedulerImpl implements Scheduler {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.googlecode.socofo.core.api.Scheduler#createLocalJobs(java.io.File,
-	 * java.io.File, com.googlecode.socofo.core.api.SourceTypes[])
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<TranslationJob> createLocalJobs(File baseDir, File targetDir,
@@ -227,20 +223,16 @@ public class SchedulerImpl implements Scheduler {
 		return rc;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.googlecode.socofo.core.api.Scheduler#getErrorMessages()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<String> getErrorMessages() {
 		return errorMsgs;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.googlecode.socofo.core.api.Scheduler#setRules(java.net.URL)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setRules(URL formatterXml) {
@@ -253,22 +245,24 @@ public class SchedulerImpl implements Scheduler {
 		log.exiting(SchedulerImpl.class.getName(), "setRules", ruleSet);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.googlecode.socofo.core.api.Scheduler#startScheduler()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void startScheduler() {
 		log.entering(SchedulerImpl.class.getName(), "startScheduler");
 		for (TranslationJob job : jobs) {
 			log.finest("Starting job " + job);
-			Thread t = new Thread(threadGrp, job);
+			final Thread t = new Thread(threadGrp, job);
 			t.start();
 		}
+		log.finest("Active threads now: " + threadGrp.activeCount());
 		log.exiting(SchedulerImpl.class.getName(), "startScheduler");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getActiveJobsCount() {
 		return threadGrp.activeCount();
