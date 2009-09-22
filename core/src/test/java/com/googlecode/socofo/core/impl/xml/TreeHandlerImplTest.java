@@ -171,4 +171,12 @@ public class TreeHandlerImplTest {
 		assertEquals(1, endEl.getLevel());
 	}
 
+	public final void testSetLevel7() {
+		assertNotNull(to);
+		to.setLevel(null);
+		ProcessingInstruction pi = new ProcessingInstruction();
+		to.setLevel(pi);
+		assertEquals(0, pi.getLevel());
+	}
+
 }

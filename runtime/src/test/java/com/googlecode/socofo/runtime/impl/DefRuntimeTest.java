@@ -44,6 +44,9 @@ import com.googlecode.socofo.runtime.RuntimeInjectionPlan;
  * 
  */
 public class DefRuntimeTest {
+	/**
+	 * The test object.
+	 */
 	private DefRuntime to = null;
 
 	/**
@@ -60,7 +63,7 @@ public class DefRuntimeTest {
 	 * Test method for
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#execute()}.
 	 */
-	@Test
+	// @Test
 	public final void testExecute() {
 		File rulesUrlFile = new File("src/test/resources/ruleset.xml");
 		try {
@@ -78,7 +81,7 @@ public class DefRuntimeTest {
 	 * Test method for
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#getBaseDirectory()}.
 	 */
-	@Test
+	// @Test
 	public final void testGetBaseDirectory() {
 		File base = to.getBaseDirectory();
 		assertNotNull(base);
@@ -93,7 +96,7 @@ public class DefRuntimeTest {
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#getTargetDirectory()}
 	 * .
 	 */
-	@Test
+	// @Test
 	public final void testGetTargetDirectory() {
 		assertNull(to.getTargetDirectory());
 		to.parseParams(MainRuntime.PARAM_TARGETDIR + "=delme");
@@ -106,7 +109,7 @@ public class DefRuntimeTest {
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#parseParams(java.lang.String[])}
 	 * .
 	 */
-	@Test
+	// @Test
 	public final void testParseParams() {
 		to.parseParams(null);
 		to.parseParams();
@@ -122,6 +125,21 @@ public class DefRuntimeTest {
 		assertFalse(showHelp);
 		to.parseParams(MainRuntime.PARAM_HELP);
 		assertTrue(to.showHelpScreen());
+	}
+
+	@Test
+	public final void testExecute2() {
+		File rulesUrlFile = new File("src/test/resources/ruleset.xml");
+		try {
+			URL rulesUrl = rulesUrlFile.toURI().toURL();
+			to.parseParams(MainRuntime.PARAM_BASEDIR
+					+ "=src/test/resources/single1", MainRuntime.PARAM_RULESURL
+					+ "=" + rulesUrl.toString(), MainRuntime.PARAM_TARGETDIR
+					+ "=target/result");
+			int rc = to.execute();
+			assertEquals(MainRuntime.RC_SUCCESS, rc);
+		} catch (MalformedURLException e) {
+		}
 	}
 
 }

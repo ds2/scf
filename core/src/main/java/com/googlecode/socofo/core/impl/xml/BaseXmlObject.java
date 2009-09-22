@@ -245,7 +245,11 @@ public class BaseXmlObject implements XmlObject {
 				} else {
 					sw.addToLine(" ");
 				}
-				sw.addToLine(getLevel(), keyValuePair.getKey() + "="
+				int indentLevel = getLevel();
+				if (indentLevel <= 0) {
+					indentLevel = 1;
+				}
+				sw.addToLine(indentLevel, keyValuePair.getKey() + "="
 						+ keyValuePair.getValue());
 			}
 		}
@@ -266,19 +270,22 @@ public class BaseXmlObject implements XmlObject {
 				innerContentClean, firstIndent, rules.getCommentsRules()
 						.getBreakType());
 		boolean isFirstLine = true;
+		log.finer("Entering innerLine loop");
 		for (String line : lines) {
 			final StringBuffer lineToPrint = new StringBuffer();
 			if (this instanceof Comment) {
 				lineToPrint.append(commentPrefix);
 			}
 			lineToPrint.append(line);
+			log.finest("current line to print: " + lineToPrint);
 			// decide to use NEWLINE
 			if (!isFirstLine) {
 				sw.commitLine(false);
-				isFirstLine = false;
 			}
 			sw.addToLine(lineToPrint.toString());
+			isFirstLine = false;
 		}
+		log.finer("Finished innerLine loop, checking FinalBracket");
 
 		// align final bracket
 		FinalBracketPolicy fbp = rules.getAlignFinalBracketOnNewline();
