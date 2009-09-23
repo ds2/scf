@@ -20,7 +20,7 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -83,7 +83,7 @@ public class BaseXmlObject implements XmlObject {
 	 * Inits the base object.
 	 */
 	public BaseXmlObject() {
-		attributes = new HashMap<String, String>();
+		attributes = new LinkedHashMap<String, String>();
 	}
 
 	/**

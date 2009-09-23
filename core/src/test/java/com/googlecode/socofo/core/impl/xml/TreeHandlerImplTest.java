@@ -184,9 +184,35 @@ public class TreeHandlerImplTest {
 		StartElement a = new StartElement("a");
 		to.setLevel(a);
 		assertEquals(1, a.getLevel());
+		XmlObject xo = new EmptyElement("b");
+		to.setLevel(xo);
+		assertEquals(2, xo.getLevel());
 		EndElement aEnd = new EndElement("a");
 		to.setLevel(aEnd);
 		assertEquals(1, a.getLevel());
+		xo = new Comment();
+		to.setLevel(xo);
+		assertEquals(1, xo.getLevel());
 	}
 
+	@Test
+	public final void testSetLevel8() {
+		assertNotNull(to);
+		to.setLevel(null);
+		ProcessingInstruction pi = new ProcessingInstruction();
+		to.setLevel(pi);
+		assertEquals(1, pi.getLevel());
+		StartElement a = new StartElement("a");
+		to.setLevel(a);
+		assertEquals(1, a.getLevel());
+		XmlObject xo = new EmptyElement("b");
+		to.setLevel(xo);
+		assertEquals(2, xo.getLevel());
+		EndElement aEnd = new EndElement("a");
+		to.setLevel(aEnd);
+		assertEquals(1, a.getLevel());
+		xo = new Comment();
+		to.setLevel(xo);
+		assertEquals(1, xo.getLevel());
+	}
 }

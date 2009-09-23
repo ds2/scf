@@ -62,6 +62,7 @@ public class TreeHandlerImpl implements TreeHandler {
 		boolean isVirtual = (xo instanceof Text);
 		isVirtual |= (xo instanceof ProcessingInstruction);
 		boolean isSingle = (xo instanceof Comment);
+		isSingle |= xo instanceof EmptyElement;
 		LOG.finest("isVirtual=" + isVirtual);
 		if (xo.isEndTag()) {
 			XmlObject lastEl = xmlStack.lastElement();

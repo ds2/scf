@@ -20,6 +20,7 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
+
 /**
  * @author kaeto23
  * 
@@ -32,4 +33,5 @@ public class ProcessingInstruction extends BaseXmlObject {
 		startSeq = "<?";
 		endSeq = "?>";
 	}
+
 }
