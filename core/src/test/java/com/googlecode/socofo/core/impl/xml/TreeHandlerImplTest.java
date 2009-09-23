@@ -165,18 +165,28 @@ public class TreeHandlerImplTest {
 		assertEquals(2, c.getLevel());
 		ProcessingInstruction pi = new ProcessingInstruction();
 		to.setLevel(pi);
-		assertEquals(2, pi.getLevel());
+		assertEquals(1, pi.getLevel());
 		EndElement endEl = new EndElement("a");
 		to.setLevel(endEl);
 		assertEquals(1, endEl.getLevel());
 	}
 
+	@Test
 	public final void testSetLevel7() {
 		assertNotNull(to);
 		to.setLevel(null);
 		ProcessingInstruction pi = new ProcessingInstruction();
 		to.setLevel(pi);
-		assertEquals(0, pi.getLevel());
+		assertEquals(1, pi.getLevel());
+		Comment com = new Comment();
+		to.setLevel(com);
+		assertEquals(1, com.getLevel());
+		StartElement a = new StartElement("a");
+		to.setLevel(a);
+		assertEquals(1, a.getLevel());
+		EndElement aEnd = new EndElement("a");
+		to.setLevel(aEnd);
+		assertEquals(1, a.getLevel());
 	}
 
 }

@@ -21,21 +21,31 @@
 package com.googlecode.socofo.core.impl.xml;
 
 /**
- * @author kaeto23
+ * A comment element.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class Comment extends BaseXmlObject {
 
 	/**
-	 * 
+	 * the svuid.
+	 */
+	private static final long serialVersionUID = -1912085221637691489L;
+
+	/**
+	 * Constructs an empty comment tag.
 	 */
 	public Comment() {
 		startSeq = "<!--";
 		endSeq = "-->";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setInnerContent(String s) {
+	public void setInnerContent(final String s) {
 		if (s == null) {
 			super.setInnerContent(s);
 			return;

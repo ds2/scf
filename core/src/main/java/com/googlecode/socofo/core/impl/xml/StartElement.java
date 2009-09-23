@@ -17,12 +17,31 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
+/**
+ * A start element.
+ * 
+ * @author Dirk Strauss
+ * @version 1.0
+ */
 public class StartElement extends BaseXmlObject {
+	/**
+	 * the svuid.
+	 */
+	private static final long serialVersionUID = -7491883866292574868L;
 
-	public StartElement(String elName) {
+	/**
+	 * Constructs a start element with the given element name.
+	 * 
+	 * @param elName
+	 *            the element name
+	 */
+	public StartElement(final String elName) {
 		super(elName);
 	}
 
+	/**
+	 * Constructs an empty start element (without a name).
+	 */
 	public StartElement() {
 		super();
 	}

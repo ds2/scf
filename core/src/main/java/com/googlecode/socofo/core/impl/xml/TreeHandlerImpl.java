@@ -61,6 +61,7 @@ public class TreeHandlerImpl implements TreeHandler {
 		int currentLevel = xmlStack.size();
 		boolean isVirtual = (xo instanceof Text);
 		isVirtual |= (xo instanceof ProcessingInstruction);
+		boolean isSingle = (xo instanceof Comment);
 		LOG.finest("isVirtual=" + isVirtual);
 		if (xo.isEndTag()) {
 			XmlObject lastEl = xmlStack.lastElement();
@@ -76,11 +77,17 @@ public class TreeHandlerImpl implements TreeHandler {
 				xmlStack.remove(xmlStack.size() - 1);
 				currentLevel = xmlStack.size();
 			}
+		} else if (isSingle) {
+			currentLevel = currentLevel + 1;
 		} else if (!isVirtual) {
 			xmlStack.add(xo);
 			currentLevel = xmlStack.size();
 		}
+		if (currentLevel == 0) {
+			currentLevel = 1;
+		}
 		xo.setLevel(currentLevel);
+		LOG.finest("xml stack size is now " + xmlStack.size());
 		LOG.exiting(TreeHandlerImpl.class.getName(), "setLevel", currentLevel);
 	}
 
