@@ -63,7 +63,7 @@ public class DefRuntimeTest {
 	 * Test method for
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#execute()}.
 	 */
-	// @Test
+	@Test
 	public final void testExecute() {
 		File rulesUrlFile = new File("src/test/resources/ruleset.xml");
 		try {
@@ -81,7 +81,7 @@ public class DefRuntimeTest {
 	 * Test method for
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#getBaseDirectory()}.
 	 */
-	// @Test
+	@Test
 	public final void testGetBaseDirectory() {
 		File base = to.getBaseDirectory();
 		assertNotNull(base);
@@ -96,7 +96,7 @@ public class DefRuntimeTest {
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#getTargetDirectory()}
 	 * .
 	 */
-	// @Test
+	@Test
 	public final void testGetTargetDirectory() {
 		assertNull(to.getTargetDirectory());
 		to.parseParams(MainRuntime.PARAM_TARGETDIR + "=delme");
@@ -109,7 +109,7 @@ public class DefRuntimeTest {
 	 * {@link com.googlecode.socofo.runtime.impl.DefRuntime#parseParams(java.lang.String[])}
 	 * .
 	 */
-	// @Test
+	@Test
 	public final void testParseParams() {
 		to.parseParams(null);
 		to.parseParams();
