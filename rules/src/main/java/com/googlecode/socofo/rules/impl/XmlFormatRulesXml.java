@@ -57,7 +57,7 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	@XmlElement(required = false)
 	private Boolean insertWsAtEmptyElement = false;
 	@XmlElement
-	private Boolean sortAttributes;
+	private Boolean sortAttributes = false;
 	@XmlElements(value = { @XmlElement(type = NamespaceRuleXml.class, name = "enforceNamespace") })
 	private List<NamespaceRule> namespaceRules = null;
 	@XmlElement(type = TextBlocksXml.class)

@@ -142,4 +142,19 @@ public class DefRuntimeTest {
 		}
 	}
 
+	@Test
+	public final void testExecuteTxt1() {
+		File rulesUrlFile = new File("src/test/resources/ruleset.xml");
+		try {
+			URL rulesUrl = rulesUrlFile.toURI().toURL();
+			to.parseParams(MainRuntime.PARAM_BASEDIR
+					+ "=src/test/resources/txt1", MainRuntime.PARAM_RULESURL
+					+ "=" + rulesUrl.toString(), MainRuntime.PARAM_TARGETDIR
+					+ "=target/result/txt1");
+			int rc = to.execute();
+			assertEquals(MainRuntime.RC_SUCCESS, rc);
+		} catch (MalformedURLException e) {
+		}
+	}
+
 }

@@ -20,6 +20,8 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +79,14 @@ public class BaseXmlObject implements XmlObject {
 	 * Flag to indicate that this tag is an end tag
 	 */
 	protected boolean endTag = false;
+	/**
+	 * the level of the element.
+	 */
 	private int level;
+	/**
+	 * Flag value to allow ordering of attributes of this xml object.
+	 */
+	protected boolean allowAttributeOrdering = true;
 
 	/**
 	 * Inits the base object.
@@ -213,13 +222,19 @@ public class BaseXmlObject implements XmlObject {
 	/**
 	 * Writes an xml object to the source writer.
 	 * 
+	 * @param lastObject
+	 *            the last object, from the last write run
+	 * 
 	 * @param indent
 	 *            the current indent
+	 * @param sw
+	 * @param rules
+	 * @param lh
 	 */
 	public void writeElement(final XmlObject lastObject, final int indent,
 			SourceWriter sw, XmlFormatRules rules, LineHandler lh) {
-		log.entering(BaseXmlObject.class.getName(), "writeElement",
-				new Object[] { indent, this });
+		log.entering(getClass().getName(), "writeElement", new Object[] {
+				indent, this });
 		NewlineRules nlRules = rules.getNewlineRules();
 		if (nlRules == null) {
 			log.warning("No NL rules found, using defaults");
@@ -233,25 +248,95 @@ public class BaseXmlObject implements XmlObject {
 			sw.commitLine(false);
 			sw.addToLine(getLevel() - 1, "");
 		}
+		boolean isElementText = false;
+		isElementText = (lastObject instanceof StartElement)
+				&& this instanceof Text;
+		log.finest("isElementText is " + isElementText);
 		sw.addToLine(0, getStartSequence());
 		if (getElementName() != null) {
 			sw.addToLine(getElementName());
 		}
 		if (hasAttributes()) {
-			for (Entry<String, String> keyValuePair : getAttributes()
-					.entrySet()) {
-				if (nlRules != null && nlRules.getAfterEachXmlAttribute()) {
-					sw.commitLine(false);
-				} else {
-					sw.addToLine(" ");
-				}
-				int indentLevel = getLevel();
-				if (indentLevel <= 0) {
-					indentLevel = 1;
-				}
-				sw.addToLine(indentLevel, keyValuePair.getKey() + "="
-						+ keyValuePair.getValue());
+			printAttributes(rules, nlRules, sw);
+		}
+		printInnerText(rules, sw, lh);
+		printObjectEnd(lastObject, rules, sw, nlRules);
+
+		log.exiting(getClass().getName(), "writeElement");
+	}
+
+	private void printObjectEnd(XmlObject lastObject, XmlFormatRules rules,
+			SourceWriter sw, NewlineRules nlRules) {
+		log.entering(getClass().getName(), "printObjectEnd");
+		// align final bracket
+		FinalBracketPolicy fbp = rules.getAlignFinalBracketOnNewline();
+		if (fbp == null) {
+			fbp = FinalBracketPolicy.Never;
+		}
+		switch (fbp) {
+		case Always:
+			if (!(lastObject instanceof Text)) {
+				log.finer("Committing line (1)");
+				sw.commitLine(false);
 			}
+			break;
+		case Never:
+			break;
+		case OnAttributes:
+			if (hasAttributes() && !(lastObject instanceof Text)) {
+				log.finer("Committing line (2)");
+				sw.commitLine(false);
+				sw.addToLine(getLevel() - 1, "");
+			}
+			break;
+		default:
+			break;
+		}
+		sw.addToLine(getEndSequence());
+
+		log.finer("Checking if line can be committed now");
+		if (isEndTag()) {
+			boolean commitLine = false;
+			commitLine |= nlRules.getOnLevelChange();
+			commitLine |= nlRules.getAfterXmlEndTag();
+			if (commitLine) {
+				log.finer("Committing line (3)");
+				sw.commitLine(false);
+			}
+		}
+		log.exiting(getClass().getName(), "printObjectEnd");
+	}
+
+	private void printAttributes(XmlFormatRules rules, NewlineRules nlRules,
+			SourceWriter sw) {
+		log.entering(getClass().getName(), "printAttributes");
+		Map<String, String> attributes = getAttributes();
+		// order attributes?
+		if (rules.getSortAttributes()) {
+			attributes = getOrderedMap(attributes);
+		}
+		for (Entry<String, String> keyValuePair : attributes.entrySet()) {
+			if (nlRules != null && nlRules.getAfterEachXmlAttribute()) {
+				sw.commitLine(false);
+			} else {
+				sw.addToLine(" ");
+			}
+			int indentLevel = getLevel();
+			if (indentLevel <= 0) {
+				indentLevel = 1;
+			}
+			sw.addToLine(indentLevel, keyValuePair.getKey() + "="
+					+ keyValuePair.getValue());
+		}
+		log.exiting(getClass().getName(), "printAttributes");
+	}
+
+	private void printInnerText(XmlFormatRules rules, SourceWriter sw,
+			LineHandler lh) {
+		log.entering(getClass().getName(), "printInnerText");
+		if (innerContent == null || innerContent.length() <= 0) {
+			log.exiting(getClass().getName(), "printInnerContent");
+			return;
 		}
 		// write inner content
 		int additionalIndent = 0;
@@ -264,7 +349,7 @@ public class BaseXmlObject implements XmlObject {
 		final int commentLineWidth = lh.calculateContentLineWidth(rules
 				.getCommonAttributes().getMaxLinewidth(), additionalIndent);
 		final String innerContentClean = lh.cleanComment(getInnerContent());
-		int firstIndent = rules.getCommonAttributes().getMaxLinewidth()
+		final int firstIndent = rules.getCommonAttributes().getMaxLinewidth()
 				- currentLineLength;
 		final List<String> lines = lh.breakContent(commentLineWidth,
 				innerContentClean, firstIndent, rules.getCommentsRules()
@@ -286,37 +371,37 @@ public class BaseXmlObject implements XmlObject {
 			isFirstLine = false;
 		}
 		log.finer("Finished innerLine loop, checking FinalBracket");
+		log.exiting(getClass().getName(), "printInnerText");
+	}
 
-		// align final bracket
-		FinalBracketPolicy fbp = rules.getAlignFinalBracketOnNewline();
-		if (fbp == null) {
-			fbp = FinalBracketPolicy.Never;
-		}
-		switch (fbp) {
-		case Always:
-			sw.commitLine(false);
-			break;
-		case Never:
-			break;
-		case OnAttributes:
-			if (hasAttributes()) {
-				sw.commitLine(false);
-				sw.addToLine(getLevel() - 1, "");
+	/**
+	 * Returns an ordered map of the given map. Ordering is done by the keys.
+	 * 
+	 * @param origMap
+	 *            the original map to copy
+	 * @return the ordered map
+	 */
+	protected Map<String, String> getOrderedMap(
+			final Map<String, String> origMap) {
+		log.entering(getClass().getName(), "getOrderedMap", origMap);
+		final Map<String, String> rc = new LinkedHashMap<String, String>();
+		final String[] keys = origMap.keySet().toArray(new String[0]);
+		Arrays.sort(keys);
+		final List<String> keysList2 = Arrays.asList(keys);
+		final List<String> keysList = new ArrayList<String>();
+		keysList.addAll(keysList2);
+		if (this instanceof ProcessingInstruction) {
+			if (keysList.contains("version")) {
+				keysList.remove("version");
+				keysList.add(0, "version");
 			}
-			break;
-		default:
-			break;
 		}
-		sw.addToLine(getEndSequence());
-
-		log.finer("Checking if line can be committed now");
-		if (nlRules.getOnLevelChange()) {
-			sw.commitLine(false);
+		for (String key : keysList) {
+			final String val = origMap.get(key);
+			rc.put(key, val);
 		}
-		if (nlRules.getAfterXmlEndTag() && isEndTag()) {
-			sw.commitLine(false);
-		}
-		log.exiting(BaseXmlObject.class.getName(), "writeElement");
+		log.exiting(getClass().getName(), "getOrderedMap", rc);
+		return rc;
 	}
 
 	/**
@@ -331,7 +416,7 @@ public class BaseXmlObject implements XmlObject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setLevel(int l) {
+	public void setLevel(final int l) {
 		level = l;
 	}
 
