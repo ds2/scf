@@ -216,4 +216,15 @@ public class XmlTransformerTest {
 		assertEquals("<a>\n  <b\n    a=\"13\"\n  >test</b>\n</a>\n", result);
 	}
 
+	@Test
+	public final void testTranslation6() {
+		String xmlSample = "<a><b>this is a long text</b></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		to.performTranslation();
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b>this\nis a long text</b>\n</a>\n", result);
+	}
+
 }
