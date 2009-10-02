@@ -20,6 +20,9 @@
  */
 package com.googlecode.socofo.core.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.googlecode.socofo.core.api.SourceDestination;
@@ -27,11 +30,14 @@ import com.googlecode.socofo.core.api.SourceRoot;
 import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TranslationJob;
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.RuleSet;
 
 /**
- * @author kaeto23
+ * The basic implementation of a translation job.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class TranslationJobImpl implements TranslationJob {
 	private SourceDestination dest = null;
@@ -40,43 +46,42 @@ public class TranslationJobImpl implements TranslationJob {
 	@Named("xml")
 	@Inject
 	private SourceTransformer xmlTransformer = null;
+	private List<TranslationException> errors = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ds2.enterspace.core.api.TranslationJob#setDestination(ds2.enterspace.
-	 * core.api.SourceDestination)
+	/**
+	 * Inits the job.
+	 */
+	public TranslationJobImpl() {
+		errors = new ArrayList<TranslationException>();
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setDestination(SourceDestination dest) {
 		this.dest = dest;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ds2.enterspace.core.api.TranslationJob#setRule(ds2.enterspace.rules.api
-	 * .RuleSet)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setRule(RuleSet r) {
 		rules = r;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ds2.enterspace.core.api.TranslationJob#setSource(ds2.enterspace.core.
-	 * api.SourceRoot)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setSource(SourceRoot sourceCode) {
 		source = sourceCode;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void run() {
 		String result = "";
@@ -84,11 +89,23 @@ public class TranslationJobImpl implements TranslationJob {
 		if (source.getType() == SourceTypes.XML) {
 			tr = xmlTransformer;
 		}
-		tr.parseContent(source.getContent());
-		tr.loadRules(rules);
-		tr.performTranslation();
-		result = tr.getResult();
-		dest.writeContent(result, "utf-8");
+		try {
+			tr.parseContent(source.getContent());
+			tr.setRules(rules);
+			tr.performTranslation();
+			result = tr.getResult();
+			dest.writeContent(result, "utf-8");
+		} catch (TranslationException e) {
+			errors.add(e);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<TranslationException> getErrors() {
+		return errors;
 	}
 
 }

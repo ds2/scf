@@ -33,6 +33,7 @@ import com.google.inject.Inject;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceWriter;
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.grammar.XmlGrammar;
 import com.googlecode.socofo.grammar.XmlParser;
 import com.googlecode.socofo.rules.api.RuleSet;
@@ -73,6 +74,7 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	@Inject
 	private TreeHandler treeHandler = null;
+	private RuleSet ruleSet;
 
 	/**
 	 * {@inheritDoc}
@@ -87,10 +89,11 @@ public class XmlTransformer implements SourceTransformer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void loadRules(final RuleSet r) {
+	public void setRules(final RuleSet r) {
 		log.entering(XmlTransformer.class.getName(), "loadRules", r);
 		if (r != null) {
 			rules = r.getXmlFormatRules();
+			ruleSet = r;
 		}
 		log.exiting(XmlTransformer.class.getName(), "loadRules", rules);
 	}
@@ -114,9 +117,11 @@ public class XmlTransformer implements SourceTransformer {
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws TranslationException
 	 */
 	@Override
-	public void performTranslation() {
+	public void performTranslation() throws TranslationException {
 		log.entering(XmlTransformer.class.getName(), "performTranslation");
 		if (sw == null) {
 			log.severe("No source writer has been injected!");
@@ -260,6 +265,15 @@ public class XmlTransformer implements SourceTransformer {
 
 	public void setTestTreehandler(TreeHandler th) {
 		treeHandler = th;
+	}
+
+	public XmlFormatRules getRuleSet() {
+		return rules;
+	}
+
+	@Override
+	public RuleSet getRules() {
+		return ruleSet;
 	}
 
 }

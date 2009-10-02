@@ -31,13 +31,24 @@ import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.core.api.FileDestination;
 
 /**
- * @author kaeto23
+ * Impl of a FileDestination.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class FileDestinationImpl implements FileDestination {
+	/**
+	 * The destination file to overwrite.
+	 */
 	private File dest = null;
+	/**
+	 * A logger.
+	 */
 	private static final Logger LOG = Logger
 			.getLogger(FileDestinationImpl.class.getName());
+	/**
+	 * The iohelper.
+	 */
 	@Inject
 	private IOHelper iohelper = null;
 
@@ -46,6 +57,7 @@ public class FileDestinationImpl implements FileDestination {
 	 */
 	@Override
 	public void writeContent(String s, String enc) {
+		LOG.entering(FileDestinationImpl.class.getName(), "writeContent");
 		if (dest == null) {
 			LOG.severe("No destination set!");
 			return;
@@ -61,8 +73,8 @@ public class FileDestinationImpl implements FileDestination {
 			parentDir.mkdirs();
 			boolean fileCreated = dest.createNewFile();
 			if (!fileCreated) {
-				LOG.warning("File " + dest.getAbsolutePath()
-						+ " could not be created!");
+				LOG.info("File " + dest.getAbsolutePath()
+						+ " could not be created! Trying again.");
 			}
 			fos = new FileOutputStream(dest);
 			if (enc == null) {
@@ -80,7 +92,7 @@ public class FileDestinationImpl implements FileDestination {
 			iohelper.closeWriter(fw);
 			iohelper.closeOutputstream(fos);
 		}
-
+		LOG.exiting(FileDestinationImpl.class.getName(), "writeContent");
 	}
 
 	@Override

@@ -39,6 +39,7 @@ import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.exceptions.LoadingException;
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.core.impl.io.SourceFileFilter;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
 import com.googlecode.socofo.rules.api.RuleSet;
@@ -228,6 +229,14 @@ public class SchedulerImpl implements Scheduler {
 	 */
 	@Override
 	public List<String> getErrorMessages() {
+		for (TranslationJob job : jobs) {
+			List<TranslationException> translationErrors = job.getErrors();
+			for (TranslationException e : translationErrors) {
+				log.throwing(SchedulerImpl.class.getName(), "getErrorMessages",
+						e);
+				errorMsgs.add(e.getLocalizedMessage());
+			}
+		}
 		return errorMsgs;
 	}
 

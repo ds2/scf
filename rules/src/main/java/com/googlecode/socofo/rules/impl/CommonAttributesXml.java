@@ -41,6 +41,8 @@ public class CommonAttributesXml implements CommonAttributes {
 	private String indentSequence = null;
 	@XmlElement(required = false, defaultValue = "4")
 	private int tabSize = 4;
+	@XmlElement(defaultValue = "false")
+	private Boolean stopOnLongline = false;
 
 	@Override
 	public String getIndentSequence() {
@@ -55,6 +57,11 @@ public class CommonAttributesXml implements CommonAttributes {
 	@Override
 	public int getTabSize() {
 		return tabSize;
+	}
+
+	@Override
+	public Boolean getStopOnLongline() {
+		return stopOnLongline;
 	}
 
 }

@@ -28,6 +28,7 @@
 			<maxLineWidth>80</maxLineWidth>
 			<indentSequence>  </indentSequence>
 			<tabSize>4</tabSize>
+			<stopOnLongline>true</stopOnLongline>
 		</commonAttributes>
 		<separateAttributesPerLine>true</separateAttributesPerLine>
 		<alignFinalBracketOnNewline>OnAttributes</alignFinalBracketOnNewline>

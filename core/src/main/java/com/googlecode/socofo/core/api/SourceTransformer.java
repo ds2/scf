@@ -20,6 +20,7 @@
  */
 package com.googlecode.socofo.core.api;
 
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.RuleSet;
 
 /**
@@ -27,16 +28,19 @@ import com.googlecode.socofo.rules.api.RuleSet;
  * source language. Implementations of this interface parse the content for XML,
  * Java or whatsoever.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface SourceTransformer {
 	/**
 	 * Parses the given String of data into tokens and prepares the translation.
 	 * 
 	 * @param s
+	 *            the content to parse
+	 * @throws TranslationException
+	 *             if the content could not be parsed successfully.
 	 */
-	public void parseContent(String s);
+	public void parseContent(String s) throws TranslationException;
 
 	/**
 	 * Loads the rules for the formation result.
@@ -44,12 +48,15 @@ public interface SourceTransformer {
 	 * @param r
 	 *            the ruleset
 	 */
-	public void loadRules(RuleSet r);
+	public void setRules(RuleSet r);
 
 	/**
 	 * Performs the translation. This method should be run in a separate thread.
+	 * 
+	 * @throws TranslationException
+	 *             if a translation error occurred
 	 */
-	public void performTranslation();
+	public void performTranslation() throws TranslationException;
 
 	/**
 	 * Returns the formatted result.
@@ -57,4 +64,11 @@ public interface SourceTransformer {
 	 * @return the formatted result
 	 */
 	public String getResult();
+
+	/**
+	 * Returns the loaded rules.
+	 * 
+	 * @return the loaded rules, or null if not yet loaded
+	 */
+	public RuleSet getRules();
 }

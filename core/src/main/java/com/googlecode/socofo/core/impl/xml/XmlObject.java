@@ -25,6 +25,7 @@ import java.util.Map;
 
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
 
 /**
@@ -129,6 +130,9 @@ public interface XmlObject extends Serializable {
 	/**
 	 * Writes this element to the source writer.
 	 * 
+	 * @param lastObject
+	 *            the last xml object that has been processed
+	 * 
 	 * @param indent
 	 *            the possible indent to use
 	 * @param sw
@@ -137,9 +141,11 @@ public interface XmlObject extends Serializable {
 	 *            the xml format rules
 	 * @param lh
 	 *            the line handler
+	 * @throws TranslationException
+	 *             if the line became too long
 	 */
 	void writeElement(XmlObject lastObject, final int indent, SourceWriter sw,
-			XmlFormatRules rules, LineHandler lh);
+			XmlFormatRules rules, LineHandler lh) throws TranslationException;
 
 	/**
 	 * Returns the tree level of this element.

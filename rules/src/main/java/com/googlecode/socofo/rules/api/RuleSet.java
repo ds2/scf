@@ -23,9 +23,17 @@ package com.googlecode.socofo.rules.api;
 import java.io.Serializable;
 
 /**
- * @author kaeto23
+ * The contract for a bunch of transformation rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface RuleSet extends Serializable {
+	/**
+	 * Returns the rules for formatting xml source code.
+	 * 
+	 * @return the rules for xml source code
+	 */
 	XmlFormatRules getXmlFormatRules();
+
 }

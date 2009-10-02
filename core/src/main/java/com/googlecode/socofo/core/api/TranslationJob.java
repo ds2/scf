@@ -20,6 +20,9 @@
  */
 package com.googlecode.socofo.core.api;
 
+import java.util.List;
+
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.RuleSet;
 
 /**
@@ -52,4 +55,6 @@ public interface TranslationJob extends Runnable {
 	 *            the destination of the transformed source code
 	 */
 	public void setDestination(SourceDestination dest);
+
+	public List<TranslationException> getErrors();
 }

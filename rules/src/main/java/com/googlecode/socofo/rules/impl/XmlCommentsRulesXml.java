@@ -25,14 +25,14 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.googlecode.socofo.rules.api.BreakFormat;
 import com.googlecode.socofo.rules.api.CommentParsing;
-import com.googlecode.socofo.rules.api.XmlCommentsRules;
+import com.googlecode.socofo.rules.api.XmlCommentsRulesUpdater;
 
 /**
  * @author kaeto23
  * 
  */
 @XmlType(name = "XmlCommentsRulesType")
-public class XmlCommentsRulesXml implements XmlCommentsRules {
+public class XmlCommentsRulesXml implements XmlCommentsRulesUpdater {
 	/**
 	 * the svuid
 	 */
@@ -47,6 +47,7 @@ public class XmlCommentsRulesXml implements XmlCommentsRules {
 	private CommentParsing parsing = CommentParsing.NoParsing;
 	@XmlElement
 	private String commentIndentSpacer = "";
+	private Boolean indentComment = true;
 
 	/**
 	 * {@inheritDoc}
@@ -80,6 +81,26 @@ public class XmlCommentsRulesXml implements XmlCommentsRules {
 	@Override
 	public String getCommentIndentSpacer() {
 		return commentIndentSpacer;
+	}
+
+	@Override
+	public Boolean isIndentComment() {
+		return indentComment;
+	}
+
+	@Override
+	public void setBreakAfterBegin(boolean b) {
+		breakAfterBegin = b;
+	}
+
+	@Override
+	public void setBreakBeforeEnd(boolean b) {
+		breakBeforeEnd = b;
+	}
+
+	@Override
+	public void setIndentComment(boolean b) {
+		indentComment = b;
 	}
 
 }

@@ -39,10 +39,12 @@ import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.exceptions.LoadingException;
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
 import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.RulesLoader;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
+import com.googlecode.socofo.rules.api.XmlFormatRulesUpdater;
 import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 
 /**
@@ -93,7 +95,7 @@ public class XmlTransformerTest {
 		to.setTestSw(ij.getInstance(SourceWriter.class));
 		to.setTestLh(ij.getInstance(LineHandler.class));
 		to.setTestTreehandler(ij.getInstance(TreeHandler.class));
-		to.loadRules(new RuleSet() {
+		to.setRules(new RuleSet() {
 
 			@Override
 			public XmlFormatRules getXmlFormatRules() {
@@ -107,13 +109,13 @@ public class XmlTransformerTest {
 
 	/**
 	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#loadRules(com.googlecode.socofo.rules.api.RuleSet)}
+	 * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#setRules(com.googlecode.socofo.rules.api.RuleSet)}
 	 * .
 	 */
 	@Test
 	public final void testLoadRules() {
-		to.loadRules(null);
-		to.loadRules(new RuleSet() {
+		to.setRules(null);
+		to.setRules(new RuleSet() {
 
 			@Override
 			public XmlFormatRules getXmlFormatRules() {
@@ -150,7 +152,11 @@ public class XmlTransformerTest {
 		String xmlSample = sr.getContent();
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
-		to.performTranslation();
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
 		String result = to.getResult();
 		assertNotNull(result);
 		assertTrue(result.length() > 0);
@@ -166,7 +172,11 @@ public class XmlTransformerTest {
 		String xmlSample = "<a><b/></a>";
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
-		to.performTranslation();
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals("<a>\n  <b/>\n</a>\n", result);
@@ -177,7 +187,11 @@ public class XmlTransformerTest {
 		String xmlSample = "<a><b></b></a>";
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
-		to.performTranslation();
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals("<a>\n  <b></b>\n</a>\n", result);
@@ -188,7 +202,11 @@ public class XmlTransformerTest {
 		String xmlSample = "<a><b>text</b></a>";
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
-		to.performTranslation();
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals("<a>\n  <b>text</b>\n</a>\n", result);
@@ -199,7 +217,11 @@ public class XmlTransformerTest {
 		String xmlSample = "<a><b a=\"13\"/></a>";
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
-		to.performTranslation();
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals("<a>\n  <b\n    a=\"13\"\n  />\n</a>\n", result);
@@ -210,7 +232,11 @@ public class XmlTransformerTest {
 		String xmlSample = "<a><b a=\"13\">test</b></a>";
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
-		to.performTranslation();
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals("<a>\n  <b\n    a=\"13\"\n  >test</b>\n</a>\n", result);
@@ -221,10 +247,65 @@ public class XmlTransformerTest {
 		String xmlSample = "<a><b>this is a long text</b></a>";
 		assertNotNull(xmlSample);
 		to.parseContent(xmlSample);
-		to.performTranslation();
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals("<a>\n  <b>this\nis a long text</b>\n</a>\n", result);
 	}
 
+	@Test
+	public final void testTranslation7() {
+		String xmlSample = "<a><b><!-- this is a long text --></b></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals(
+				"<a>\n  <b>\n    <!--this is\na long text-->\n  </b>\n</a>\n",
+				result);
+	}
+
+	@Test
+	public final void testTranslation8() {
+		String xmlSample = "<a><!-- this is a long text --></a>";
+		assertNotNull(xmlSample);
+		XmlFormatRules rs = to.getRuleSet();
+		XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+		updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+		updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+		updater.getCommentsRulesUpdater().setIndentComment(false);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <!--\nthis is a long text\n  -->\n</a>\n", result);
+	}
+
+	@Test
+	public final void testTranslation9() {
+		String xmlSample = "<a><!-- this is a long text --></a>";
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <!--this\nis a long text-->\n</a>\n", result);
+	}
 }

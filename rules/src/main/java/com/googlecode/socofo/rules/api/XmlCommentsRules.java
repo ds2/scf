@@ -63,4 +63,12 @@ public interface XmlCommentsRules extends Serializable {
 	 * @return a comment indent spacer, or null if not used
 	 */
 	String getCommentIndentSpacer();
+
+	/**
+	 * Returns if any comment should be indented using the level of the comment
+	 * element. Default is true.
+	 * 
+	 * @return TRUE if comment should be indented, otherwise FALSE
+	 */
+	Boolean isIndentComment();
 }

@@ -26,14 +26,17 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.googlecode.socofo.rules.api.CommonAttributes;
 import com.googlecode.socofo.rules.api.FinalBracketPolicy;
 import com.googlecode.socofo.rules.api.NamespaceRule;
 import com.googlecode.socofo.rules.api.NewlineRules;
+import com.googlecode.socofo.rules.api.NewlineRulesUpdater;
 import com.googlecode.socofo.rules.api.TextBlocks;
 import com.googlecode.socofo.rules.api.XmlCommentsRules;
-import com.googlecode.socofo.rules.api.XmlFormatRules;
+import com.googlecode.socofo.rules.api.XmlCommentsRulesUpdater;
+import com.googlecode.socofo.rules.api.XmlFormatRulesUpdater;
 
 /**
  * @author kaeto23
@@ -41,7 +44,7 @@ import com.googlecode.socofo.rules.api.XmlFormatRules;
  */
 @XmlRootElement(name = "xml-format")
 @XmlSeeAlso( { NamespaceRuleXml.class, CommonAttributesXml.class })
-public class XmlFormatRulesXml implements XmlFormatRules {
+public class XmlFormatRulesXml implements XmlFormatRulesUpdater {
 	/**
 	 * the svuid
 	 */
@@ -128,6 +131,16 @@ public class XmlFormatRulesXml implements XmlFormatRules {
 	@Override
 	public NewlineRules getNewlineRules() {
 		return newlineRules;
+	}
+
+	@XmlTransient
+	public NewlineRulesUpdater getNewlineRulesUpdater() {
+		return (NewlineRulesUpdater) newlineRules;
+	}
+
+	@Override
+	public XmlCommentsRulesUpdater getCommentsRulesUpdater() {
+		return (XmlCommentsRulesUpdater) commentsRules;
 	}
 
 }

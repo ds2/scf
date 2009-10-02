@@ -23,14 +23,14 @@ package com.googlecode.socofo.rules.impl;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.googlecode.socofo.rules.api.NewlineRules;
+import com.googlecode.socofo.rules.api.NewlineRulesUpdater;
 
 /**
  * @author kaeto23
  * 
  */
 @XmlType(name = "NewlineRulesType")
-public class NewlineRulesXml implements NewlineRules {
+public class NewlineRulesXml implements NewlineRulesUpdater {
 	/**
 	 * the svuid
 	 */
@@ -44,7 +44,9 @@ public class NewlineRulesXml implements NewlineRules {
 	@XmlElement
 	private Boolean afterEachXmlAttribute = false;
 	@XmlElement
-	private Boolean onLevelChange=false;
+	private Boolean onLevelChange = false;
+	@XmlElement
+	private Boolean separateCommentTags = false;
 
 	/**
 	 * {@inheritDoc}
@@ -77,6 +79,7 @@ public class NewlineRulesXml implements NewlineRules {
 	public Boolean getBeforeIfStatements() {
 		return beforeIfStatements;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */

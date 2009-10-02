@@ -25,11 +25,14 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.CommonAttributes;
 
 /**
- * @author kaeto23
+ * The basic impl of the SourceWriter.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class SourceWriterImpl implements SourceWriter {
 	/**
@@ -47,12 +50,15 @@ public class SourceWriterImpl implements SourceWriter {
 	/**
 	 * the NewLine terminator
 	 */
-	private String NEWLINE = "\n";
+	private String newline = "\n";
 	/**
 	 * A logger
 	 */
 	private static final transient Logger log = Logger
 			.getLogger(SourceWriterImpl.class.getName());
+	/**
+	 * The line handler.
+	 */
 	@Inject
 	private LineHandler lh = null;
 
@@ -68,7 +74,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean addLine(int indents, String s) {
+	public boolean addLine(int indents, String s) throws TranslationException {
 		commitLine(false);
 		if (indents < 0) {
 			log.severe("Indents of " + indents + " are impossible!");
@@ -103,13 +109,26 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addToLine(int currentIndent, String s) {
+	public boolean addToLine(int currentIndent, String s) {
 		if (s == null) {
 			log.warning("No content given!");
-			return;
+			return false;
 		}
-		addIndents(currentLine, currentIndent);
-		currentLine.append(s);
+		final StringBuffer tmpBuffer = new StringBuffer();
+		addIndents(tmpBuffer, currentIndent);
+		tmpBuffer.append(s);
+		final String insertStr = tmpBuffer.toString();
+		tmpBuffer.insert(0, currentLine);
+		final int lineLength = getLineLength(tmpBuffer.toString());
+		boolean rc = true;
+		if (lineLength <= ca.getMaxLinewidth()) {
+			// ok
+			currentLine.append(insertStr);
+		} else {
+			log.warning("Line becomes too long: " + currentLine + insertStr);
+			rc = false;
+		}
+		return rc;
 	}
 
 	/**
@@ -129,8 +148,10 @@ public class SourceWriterImpl implements SourceWriter {
 			log.warning("No buffer given!");
 			return;
 		}
-		for (int i = 0; i < count; i++) {
-			s.append(ca.getIndentSequence());
+		synchronized (s) {
+			for (int i = 0; i < count; i++) {
+				s.append(ca.getIndentSequence());
+			}
 		}
 	}
 
@@ -138,7 +159,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void finish() {
+	public void finish() throws TranslationException {
 		commitLine(false);
 		clearBuffer(currentLine);
 	}
@@ -166,11 +187,17 @@ public class SourceWriterImpl implements SourceWriter {
 
 	/**
 	 * {@inheritDoc}
+	 * 
 	 */
 	@Override
-	public boolean commitLine(boolean ignoreLineLength) {
+	public boolean commitLine(boolean ignoreLineLength)
+			throws TranslationException {
 		if (!ignoreLineLength && currentLine.length() > ca.getMaxLinewidth()) {
 			log.warning("line too long to commit: " + currentLine);
+			if (ca.getStopOnLongline()) {
+				throw new TranslationException("Line too long to commit: "
+						+ currentLine);
+			}
 			return false;
 		}
 		if (currentLine.length() <= 0) {
@@ -179,7 +206,7 @@ public class SourceWriterImpl implements SourceWriter {
 		}
 		sb.append(currentLine.toString());
 		log.finest("commiting this content: " + currentLine.toString());
-		sb.append(NEWLINE);
+		sb.append(newline);
 		clearBuffer(currentLine);
 		return true;
 	}
@@ -209,18 +236,23 @@ public class SourceWriterImpl implements SourceWriter {
 		return currentLine.toString();
 	}
 
+	public int getLineLength(String line) {
+		if (lh == null) {
+			throw new IllegalStateException("No line handler has been setup!");
+		}
+		int tabSize = ca.getTabSize();
+		int rc = lh.getLineWidth(tabSize, line);
+		return rc;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public int getCurrentLineLength() {
 		int rc = 0;
-		int tabSize = ca.getTabSize();
 		String currentLineStr = currentLine.toString();
-		if (lh == null) {
-			throw new IllegalStateException("No line handler has been setup!");
-		}
-		rc = lh.getLineWidth(tabSize, currentLineStr);
+		rc = getLineLength(currentLineStr);
 		return rc;
 	}
 

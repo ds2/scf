@@ -20,6 +20,7 @@
  */
 package com.googlecode.socofo.core.api;
 
+import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.CommonAttributes;
 
 /**
@@ -27,8 +28,8 @@ import com.googlecode.socofo.rules.api.CommonAttributes;
  * this class usually write to a stream which becomes the new source file
  * content.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface SourceWriter {
 
@@ -42,8 +43,10 @@ public interface SourceWriter {
 	 * @param s
 	 *            the source code to add to this line, right after the indents
 	 * @return TRUE if successful, FALSE in case of the line becoming too long
+	 * @throws TranslationException
+	 *             if the line was too long to commit
 	 */
-	public boolean addLine(int indents, String s);
+	public boolean addLine(int indents, String s) throws TranslationException;
 
 	/**
 	 * Adds a sequence of data to the current line
@@ -70,8 +73,11 @@ public interface SourceWriter {
 	/**
 	 * Finalizes the cache. Usually, this will end the source writer, clears the
 	 * cache and prepares the result.
+	 * 
+	 * @throws TranslationException
+	 *             if the last line could not be committed successfully.
 	 */
-	public void finish();
+	public void finish() throws TranslationException;
 
 	/**
 	 * Sets the common attributes (line width, indent sequence etc.) to use
@@ -89,8 +95,10 @@ public interface SourceWriter {
 	 *            the count of indents to add to the current line
 	 * @param s
 	 *            the string to add
+	 * @return TRUE if successful, otherwise FALSE in case of line becoming too
+	 *         long, or something else.
 	 */
-	public void addToLine(int currentIndent, String s);
+	public boolean addToLine(int currentIndent, String s);
 
 	/**
 	 * Commits the current buffered line to the final source code. And clears
@@ -100,8 +108,11 @@ public interface SourceWriter {
 	 *            flag to indicate that the line length check can be ignored.
 	 *            Set TRUE to ignore line length, default is FALSE
 	 * @return TRUE if line was commited successful, otherwise FALSE
+	 * @throws TranslationException
+	 *             if a line became too long
 	 */
-	public boolean commitLine(boolean ignoreLinelength);
+	public boolean commitLine(boolean ignoreLinelength)
+			throws TranslationException;
 
 	/**
 	 * Returns the result of the currentLine buffer.
@@ -116,4 +127,16 @@ public interface SourceWriter {
 	 * @return the length of the current line (special counting for tab chars)
 	 */
 	public int getCurrentLineLength();
+
+	/**
+	 * Calculates the line length from the given string sequence. This typically
+	 * counts the letters and tab chars. The tab chars are handled separately
+	 * using the common attributes which contain how much WS signs represent a
+	 * single tab char.
+	 * 
+	 * @param indentSequence
+	 *            the string sequence to calculate the length
+	 * @return the length
+	 */
+	public int getLineLength(String indentSequence);
 }

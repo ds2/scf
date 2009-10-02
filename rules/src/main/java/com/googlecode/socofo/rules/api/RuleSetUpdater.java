@@ -18,36 +18,19 @@
 /**
  * 
  */
-package com.googlecode.socofo.core.exceptions;
+package com.googlecode.socofo.rules.api;
 
 /**
- * A simple exception when a translation job encounters a problem.
+ * The contract for value-changing rulesets.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public class TranslationException extends Exception {
-
+public interface RuleSetUpdater extends RuleSet {
 	/**
-	 * the svuid.
+	 * Returns the setters for changing the rules for xml sources.
+	 * 
+	 * @return the setters contract
 	 */
-	private static final long serialVersionUID = 3370510780566872127L;
-
-	/**
-	 * @param message
-	 */
-	public TranslationException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public TranslationException(String message, Throwable cause) {
-		super(message, cause);
-		// TODO Auto-generated constructor stub
-	}
-
+	XmlFormatRulesUpdater getXmlFormatRulesUpdater();
 }

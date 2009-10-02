@@ -18,36 +18,14 @@
 /**
  * 
  */
-package com.googlecode.socofo.core.exceptions;
+package com.googlecode.socofo.rules.api;
 
 /**
- * A simple exception when a translation job encounters a problem.
+ * @author kaeto23
  * 
- * @author Dirk Strauss
- * @version 1.0
  */
-public class TranslationException extends Exception {
+public interface XmlFormatRulesUpdater extends XmlFormatRules {
+	NewlineRulesUpdater getNewlineRulesUpdater();
 
-	/**
-	 * the svuid.
-	 */
-	private static final long serialVersionUID = 3370510780566872127L;
-
-	/**
-	 * @param message
-	 */
-	public TranslationException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public TranslationException(String message, Throwable cause) {
-		super(message, cause);
-		// TODO Auto-generated constructor stub
-	}
-
+	XmlCommentsRulesUpdater getCommentsRulesUpdater();
 }

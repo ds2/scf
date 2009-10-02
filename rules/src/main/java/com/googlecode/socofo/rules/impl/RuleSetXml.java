@@ -22,9 +22,11 @@ package com.googlecode.socofo.rules.impl;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import com.googlecode.socofo.rules.api.RuleSet;
+import com.googlecode.socofo.rules.api.RuleSetUpdater;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
+import com.googlecode.socofo.rules.api.XmlFormatRulesUpdater;
 
 /**
  * The root implementation for formatter rules.
@@ -33,25 +35,32 @@ import com.googlecode.socofo.rules.api.XmlFormatRules;
  * @version 1.0
  */
 @XmlRootElement(name = "formatter-rules")
-public class RuleSetXml implements RuleSet {
+public class RuleSetXml implements RuleSetUpdater {
+	/**
+	 * the svuid.
+	 */
+	private static final long serialVersionUID = -1139524431473006111L;
+	/**
+	 * the xml rules.
+	 */
 	@XmlElement(name = "xml-rules", type = XmlFormatRulesXml.class)
 	private XmlFormatRules xmlRules = null;
 
 	/**
-	 * 
-	 */
-	public RuleSetXml() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.googlecode.socofo.rules.api.RuleSet#getXmlFormatRules()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public XmlFormatRules getXmlFormatRules() {
 		return xmlRules;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@XmlTransient
+	@Override
+	public XmlFormatRulesUpdater getXmlFormatRulesUpdater() {
+		return (XmlFormatRulesUpdater) xmlRules;
 	}
 
 }

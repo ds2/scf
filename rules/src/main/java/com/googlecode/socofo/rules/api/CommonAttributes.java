@@ -49,4 +49,13 @@ public interface CommonAttributes extends Serializable {
 	 * @return the count of spaces for a tab. Usually 4.
 	 */
 	int getTabSize();
+
+	/**
+	 * Shall the transformation stop in case of a line becoming too long? This
+	 * is a debug parameter and should be set to FALSE in production.
+	 * 
+	 * @return TRUE if an exception should be thrown in case of a line becoming
+	 *         too long, otherwise FALSE
+	 */
+	Boolean getStopOnLongline();
 }
