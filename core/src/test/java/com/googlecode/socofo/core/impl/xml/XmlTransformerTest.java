@@ -254,7 +254,7 @@ public class XmlTransformerTest {
 		}
 		String result = to.getResult();
 		assertNotNull(result);
-		assertEquals("<a>\n  <b>this\nis a long text</b>\n</a>\n", result);
+		assertEquals("<a>\n  <b>this is a long text</b>\n</a>\n", result);
 	}
 
 	@Test
@@ -270,7 +270,7 @@ public class XmlTransformerTest {
 		String result = to.getResult();
 		assertNotNull(result);
 		assertEquals(
-				"<a>\n  <b>\n    <!--this is\na long text-->\n  </b>\n</a>\n",
+				"<a>\n  <b>\n    <!--this is a long text-->\n  </b>\n</a>\n",
 				result);
 	}
 
@@ -306,6 +306,26 @@ public class XmlTransformerTest {
 		}
 		String result = to.getResult();
 		assertNotNull(result);
-		assertEquals("<a>\n  <!--this\nis a long text-->\n</a>\n", result);
+		assertEquals("<a>\n  <!--this is a long text-->\n</a>\n", result);
+	}
+
+	@Test
+	public final void testTranslation10() {
+		String xmlSample = "<a><!-- this is a long text --></a>";
+		assertNotNull(xmlSample);
+		XmlFormatRules rs = to.getRuleSet();
+		XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+		updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+		updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+		updater.getCommentsRulesUpdater().setIndentComment(true);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <!--\nthis is a long text\n  -->\n</a>\n", result);
 	}
 }
