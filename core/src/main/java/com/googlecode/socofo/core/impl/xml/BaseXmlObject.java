@@ -369,8 +369,21 @@ public class BaseXmlObject implements XmlObject {
 		log.exiting(BaseXmlObject.class.getName(), "printAttributes");
 	}
 
-	private void printInnerText(XmlFormatRules rules, SourceWriter sw,
-			LineHandler lh) throws TranslationException {
+	/**
+	 * Prints the inner textual content of a tag.
+	 * 
+	 * @param rules
+	 *            the xml rules
+	 * @param sw
+	 *            the source writer
+	 * @param lh
+	 *            the line handler
+	 * @throws TranslationException
+	 *             if a source writer exception occurrs
+	 */
+	private void printInnerText(final XmlFormatRules rules,
+			final SourceWriter sw, final LineHandler lh)
+			throws TranslationException {
 		log.entering(BaseXmlObject.class.getName(), "printInnerText");
 		if (innerContent == null || innerContent.length() <= 0) {
 			log.exiting(getClass().getName(), "printInnerContent");
@@ -402,7 +415,15 @@ public class BaseXmlObject implements XmlObject {
 		final List<String> lines = lh.breakContent(commentLineWidth,
 				innerContentClean, firstIndent, rules.getCommentsRules()
 						.getBreakType());
-		boolean isFirstLine = true;
+		boolean isOnStartLine = true;
+		String commentIndent = "";
+		if (rules.getCommentsRules().isIndentComment()) {
+			commentIndent = lh.getSequence(getLevel(), rules
+					.getCommonAttributes().getIndentSequence());
+		}
+		if (currentLineLength <= 0) {
+			isOnStartLine = false;
+		}
 		log.finer("Entering innerLine loop");
 		for (String line : lines) {
 			final StringBuffer lineToPrint = new StringBuffer();
@@ -412,11 +433,14 @@ public class BaseXmlObject implements XmlObject {
 			lineToPrint.append(line);
 			log.finest("current line to print: " + lineToPrint);
 			// decide to use NEWLINE
-			if (!isFirstLine) {
+			if (!isOnStartLine) {
 				sw.commitLine(false);
 			}
+			if (!isOnStartLine) {
+				lineToPrint.insert(0, commentIndent);
+			}
 			sw.addToLine(lineToPrint.toString());
-			isFirstLine = false;
+			isOnStartLine = false;
 		}
 		log.finer("Finished innerLine loop, checking FinalBracket");
 		if (this instanceof Comment

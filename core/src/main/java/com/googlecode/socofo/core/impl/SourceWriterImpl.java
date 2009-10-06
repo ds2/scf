@@ -132,14 +132,14 @@ public class SourceWriterImpl implements SourceWriter {
 	}
 
 	/**
-	 * Adds a number of indents to the given string buffer
+	 * Adds a number of indents to the given string buffer.
 	 * 
 	 * @param s
 	 *            the string buffer to use
 	 * @param count
 	 *            the count of indents to add
 	 */
-	private void addIndents(StringBuffer s, int count) {
+	private void addIndents(final StringBuffer s, final int count) {
 		if (count < 0) {
 			log.warning("Count is too low: " + count);
 			return;
@@ -149,9 +149,7 @@ public class SourceWriterImpl implements SourceWriter {
 			return;
 		}
 		synchronized (s) {
-			for (int i = 0; i < count; i++) {
-				s.append(ca.getIndentSequence());
-			}
+			s.append(lh.getSequence(count, ca.getIndentSequence()));
 		}
 	}
 

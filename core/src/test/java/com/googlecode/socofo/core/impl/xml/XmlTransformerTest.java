@@ -326,6 +326,7 @@ public class XmlTransformerTest {
 		}
 		String result = to.getResult();
 		assertNotNull(result);
-		assertEquals("<a>\n  <!--\nthis is a long text\n  -->\n</a>\n", result);
+		assertEquals("<a>\n  <!--\n    this is a long text\n  -->\n</a>\n",
+				result);
 	}
 }

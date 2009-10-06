@@ -24,7 +24,6 @@ import java.util.List;
 
 import com.googlecode.socofo.rules.api.BreakFormat;
 
-
 /**
  * A formatter for breaking too long lines of code into several lines
  * 
@@ -100,4 +99,15 @@ public interface LineHandler {
 	 * @return the width of the given string.
 	 */
 	int getLineWidth(int tabSize, String s);
+
+	/**
+	 * Returns the given string several times as a single string.
+	 * 
+	 * @param level
+	 *            the repeat count
+	 * @param indentSequence
+	 *            the sequence to repeat
+	 * @return a single string containing the given sequence several times.
+	 */
+	String getSequence(int level, String indentSequence);
 }

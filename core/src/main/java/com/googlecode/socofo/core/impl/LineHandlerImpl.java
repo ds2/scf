@@ -297,4 +297,19 @@ public class LineHandlerImpl implements LineHandler {
 		return rc;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getSequence(final int level, final String indentSequence) {
+		if (level <= 0 || indentSequence == null) {
+			return "";
+		}
+		final StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < level; i++) {
+			sb.append(indentSequence);
+		}
+		return sb.toString();
+	}
+
 }
