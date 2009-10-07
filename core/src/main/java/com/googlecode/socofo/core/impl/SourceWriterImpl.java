@@ -254,4 +254,8 @@ public class SourceWriterImpl implements SourceWriter {
 		return rc;
 	}
 
+	public void setTestLineHandler(LineHandlerImpl lineHandlerImpl) {
+		lh = lineHandlerImpl;
+	}
+
 }

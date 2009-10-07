@@ -47,6 +47,7 @@ public class SourceWriterImplTest {
 	@Before
 	public void setUp() throws Exception {
 		to = new SourceWriterImpl();
+		to.setTestLineHandler(new LineHandlerImpl());
 		to.setCommonAttributes(getAttributes());
 		to.prepare();
 	}
