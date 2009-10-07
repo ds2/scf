@@ -21,3 +21,8 @@ syntax: regexp
 \.checkstyle$
 syntax: regexp
 \.pmd$
+\.orig\..*$
+\.orig$
+\.chg\..*$
+\.rej$
+\.conflict\~$
