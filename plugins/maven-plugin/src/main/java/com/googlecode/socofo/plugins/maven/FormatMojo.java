@@ -20,9 +20,12 @@
  */
 package com.googlecode.socofo.plugins.maven;
 
+import java.io.File;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 
 /**
  * Mojo to format all source codes.
@@ -33,6 +36,14 @@ import org.apache.maven.plugin.MojoFailureException;
  * @phase pre-compile
  */
 public class FormatMojo extends AbstractMojo {
+	/**
+	 * The current project to scan.
+	 * 
+	 * @parameter expression="${project}"
+	 * @required
+	 * @readonly
+	 */
+	private MavenProject currentPrj = null;
 
 	/**
 	 * 
@@ -46,7 +57,25 @@ public class FormatMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		getLog().info("This goal will format all source code");
+		getLog().info(
+				"This goal will format all source code in "
+						+ currentPrj.getArtifactId());
+		String srcDirStr = currentPrj.getBuild().getSourceDirectory();
+		if (srcDirStr == null) {
+			getLog().info("No sources found!");
+			return;
+		}
+		File srcDir = new File(srcDirStr);
+		if (!srcDir.exists()) {
+			getLog().info(
+					"Source directory " + srcDir.getAbsolutePath()
+							+ " does not exist. Ignoring.");
+			return;
+		}
+		if (!srcDir.canRead()) {
+			getLog().info("Cannot read sources in " + srcDir.getAbsolutePath());
+			return;
+		}
 	}
 
 }

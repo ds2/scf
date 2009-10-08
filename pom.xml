@@ -78,6 +78,7 @@
                         <exclude>**/test*.txt</exclude>
                         <exclude>**/.checkstyle</exclude>
                         <exclude>**/.pmd</exclude>
+                        <exclude>README.txt</exclude>
                     </excludes>
                     <encoding>utf-8</encoding>
                     <mapping>
