@@ -21,11 +21,23 @@
 package com.googlecode.socofo.rules.api;
 
 /**
- * @author kaeto23
+ * The contract for getting the setters for various xml transformations.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface XmlFormatRulesUpdater extends XmlFormatRules {
+	/**
+	 * Returns the updater for the NEWLINE rules.
+	 * 
+	 * @return the setter for the NEWLINE rules
+	 */
 	NewlineRulesUpdater getNewlineRulesUpdater();
 
+	/**
+	 * Returns the updater for the xml comments rules.
+	 * 
+	 * @return the updater
+	 */
 	XmlCommentsRulesUpdater getCommentsRulesUpdater();
 }

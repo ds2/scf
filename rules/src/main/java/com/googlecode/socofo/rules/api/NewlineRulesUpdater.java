@@ -21,8 +21,11 @@
 package com.googlecode.socofo.rules.api;
 
 /**
- * @author kaeto23
+ * Setter contract for setting some newline rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface NewlineRulesUpdater extends NewlineRules {
+	// nothing yet
 }

@@ -23,42 +23,68 @@ package com.googlecode.socofo.rules.impl;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.googlecode.socofo.rules.api.CommonAttributes;
+import com.googlecode.socofo.rules.api.CommonAttributesUpdater;
 
 /**
- * @author kaeto23
+ * The basic implementation of the xml common attributes rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @XmlType(name = "CommonAttributesType")
-public class CommonAttributesXml implements CommonAttributes {
+public class CommonAttributesXml implements CommonAttributesUpdater {
 	/**
 	 * the svuid
 	 */
 	private static final long serialVersionUID = 8599603676435230001L;
+	/**
+	 * the maximum line width.
+	 */
 	@XmlElement(required = true)
 	private int maxLineWidth = 0;
+	/**
+	 * the indent sequence.
+	 */
 	@XmlElement(required = true)
 	private String indentSequence = null;
+	/**
+	 * the tab size.
+	 */
 	@XmlElement(required = false, defaultValue = "4")
 	private int tabSize = 4;
+	/**
+	 * the flag to stop on too long lines.
+	 */
 	@XmlElement(defaultValue = "false")
 	private Boolean stopOnLongline = false;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getIndentSequence() {
 		return indentSequence;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getMaxLinewidth() {
 		return maxLineWidth;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getTabSize() {
 		return tabSize;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Boolean getStopOnLongline() {
 		return stopOnLongline;

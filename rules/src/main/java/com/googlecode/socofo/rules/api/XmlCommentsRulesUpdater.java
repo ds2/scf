@@ -21,13 +21,33 @@
 package com.googlecode.socofo.rules.api;
 
 /**
- * @author kaeto23
+ * Contract for setting some xml comments rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface XmlCommentsRulesUpdater extends XmlCommentsRules {
+	/**
+	 * Flag to single the comment begin sequence.
+	 * 
+	 * @param b
+	 *            the new value
+	 */
 	void setBreakAfterBegin(boolean b);
 
+	/**
+	 * Flag to single the comment end sequence.
+	 * 
+	 * @param b
+	 *            the new value
+	 */
 	void setBreakBeforeEnd(boolean b);
 
+	/**
+	 * Flag to indent comment texts.
+	 * 
+	 * @param b
+	 *            the new value
+	 */
 	void setIndentComment(boolean b);
 }
