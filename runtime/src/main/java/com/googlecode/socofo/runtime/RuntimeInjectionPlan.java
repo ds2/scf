@@ -29,25 +29,18 @@ import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 import com.googlecode.socofo.runtime.impl.DefRuntime;
 
 /**
- * @author kaeto23
+ * The injection plan for the runtime.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class RuntimeInjectionPlan implements Module {
 
 	/**
-	 * 
-	 */
-	public RuntimeInjectionPlan() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.inject.Module#configure(com.google.inject.Binder)
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void configure(Binder binder) {
+	public void configure(final Binder binder) {
 		binder.install(new CommonsInjectionPlan());
 		binder.install(new RulesInjectionPlan());
 		binder.install(new CoreInjectionPlan());

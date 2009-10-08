@@ -36,8 +36,10 @@ import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TranslationJob;
 
 /**
- * @author kaeto23
+ * The default implementation of the runtime.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Singleton
 public class DefRuntime implements MainRuntime {
@@ -52,20 +54,34 @@ public class DefRuntime implements MainRuntime {
 	 * the console to write log information to.
 	 */
 	private PrintWriter console = null;
+	/**
+	 * The scheduler.
+	 */
 	@Inject
 	private Scheduler scheduler = null;
+	/**
+	 * The base directory that contains the source code files.
+	 */
 	private File baseDir = null;
+	/**
+	 * The target directory to write the transformed source code to.
+	 */
 	private File targetDir = null;
 
+	/**
+	 * Flag to indicate that the help screen should be displayed.
+	 */
 	private boolean showHelp = false;
-
+	/**
+	 * The url to the transformation rules.
+	 */
 	private URL rulesUrl;
 
 	/**
-	 * 
+	 * Inits the runtime.
 	 */
 	public DefRuntime() {
-		Console c = System.console();
+		final Console c = System.console();
 		if (c == null) {
 			console = new PrintWriter(System.out);
 		} else {
@@ -88,10 +104,19 @@ public class DefRuntime implements MainRuntime {
 				+ "=http://test.local/test/formatterRules.xml)");
 	}
 
-	protected void setTestScheduler(Scheduler instance) {
+	/**
+	 * Sets the scheduler for the tests.
+	 * 
+	 * @param instance
+	 *            an instance of a scheduler
+	 */
+	protected void setTestScheduler(final Scheduler instance) {
 		scheduler = instance;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int execute() {
 		int rc = 0;
@@ -107,7 +132,7 @@ public class DefRuntime implements MainRuntime {
 			log.severe("No rulesUrl given!");
 			return RC_NORULES;
 		}
-		Thread currentThread = Thread.currentThread();
+		final Thread currentThread = Thread.currentThread();
 		scheduler.addWaiterThreads(currentThread);
 		List<TranslationJob> jobs = null;
 		scheduler.setRules(rulesUrl);
@@ -125,12 +150,11 @@ public class DefRuntime implements MainRuntime {
 		while (scheduler.getActiveJobsCount() > 0) {
 			try {
 				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (final InterruptedException e) {
+				log.throwing(DefRuntime.class.getName(), "execute", e);
 			}
 		}
-		List<String> errorMessages = scheduler.getErrorMessages();
+		final List<String> errorMessages = scheduler.getErrorMessages();
 		if (!errorMessages.isEmpty()) {
 			rc = RC_TRANSFORM;
 			console.println("Some errors occurred:");
@@ -143,11 +167,21 @@ public class DefRuntime implements MainRuntime {
 		return rc;
 	}
 
-	public int execute(String... args) {
+	/**
+	 * Convenient method for parseParams and execute, in one method.
+	 * 
+	 * @param args
+	 *            the parameters.
+	 * @return the result of the execution.
+	 */
+	public int execute(final String... args) {
 		parseParams(args);
 		return execute();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public File getBaseDirectory() {
 		if (baseDir == null) {
@@ -156,13 +190,19 @@ public class DefRuntime implements MainRuntime {
 		return baseDir;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public File getTargetDirectory() {
 		return targetDir;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void parseParams(String... args) {
+	public void parseParams(final String... args) {
 		log.entering(DefRuntime.class.getName(), "parseParams", args);
 		if (args != null && args.length > 0) {
 			for (String arg : args) {
@@ -170,28 +210,7 @@ public class DefRuntime implements MainRuntime {
 				if (arg == null || arg.length() <= 0) {
 					continue;
 				}
-				if (arg.startsWith(PARAM_BASEDIR) && baseDir == null) {
-					String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
-					baseDir = new File(argSeq);
-					if (!baseDir.exists()) {
-						log
-								.warning("Directory " + baseDir
-										+ " does not exist!");
-					}
-				} else if (arg.startsWith(PARAM_RULESURL) && rulesUrl == null) {
-					try {
-						rulesUrl = new URL(arg.substring(PARAM_RULESURL
-								.length() + 1));
-					} catch (MalformedURLException e) {
-						log.throwing(DefRuntime.class.getName(), "parseParams",
-								e);
-					}
-				} else if (arg.startsWith(PARAM_TARGETDIR) && targetDir == null) {
-					String argSeq = arg.substring(PARAM_TARGETDIR.length() + 1);
-					targetDir = new File(argSeq);
-				} else if (arg.startsWith(PARAM_HELP)) {
-					showHelp = true;
-				}
+				checkParam(arg);
 			}
 		} else {
 			showHelp = true;
@@ -199,11 +218,45 @@ public class DefRuntime implements MainRuntime {
 		log.exiting(DefRuntime.class.getName(), "parseParams");
 	}
 
+	/**
+	 * Checks a given param if it is a known parameter. This method fills the
+	 * internal fields.
+	 * 
+	 * @param arg
+	 *            the parameter to check
+	 */
+	private void checkParam(final String arg) {
+		if (arg.startsWith(PARAM_BASEDIR) && baseDir == null) {
+			final String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
+			baseDir = new File(argSeq);
+			if (!baseDir.exists()) {
+				log.warning("Directory " + baseDir + " does not exist!");
+			}
+		} else if (arg.startsWith(PARAM_RULESURL) && rulesUrl == null) {
+			try {
+				rulesUrl = new URL(arg.substring(PARAM_RULESURL.length() + 1));
+			} catch (final MalformedURLException e) {
+				log.throwing(DefRuntime.class.getName(), "parseParams", e);
+			}
+		} else if (arg.startsWith(PARAM_TARGETDIR) && targetDir == null) {
+			final String argSeq = arg.substring(PARAM_TARGETDIR.length() + 1);
+			targetDir = new File(argSeq);
+		} else if (arg.startsWith(PARAM_HELP)) {
+			showHelp = true;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean showHelpScreen() {
 		return showHelp;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void resetSettings() {
 		baseDir = null;
@@ -212,6 +265,9 @@ public class DefRuntime implements MainRuntime {
 		rulesUrl = null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public URL getRulesUrl() {
 		return rulesUrl;

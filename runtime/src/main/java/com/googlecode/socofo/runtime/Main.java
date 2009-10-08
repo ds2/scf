@@ -33,13 +33,16 @@ import com.googlecode.socofo.common.api.MainRuntime;
 public class Main {
 
 	/**
+	 * The main method.
+	 * 
 	 * @param args
+	 *            the runtime arguments.
 	 */
-	public static void main(String[] args) {
-		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
-		MainRuntime mr = ij.getInstance(MainRuntime.class);
+	public static void main(final String[] args) {
+		final Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
+		final MainRuntime mr = ij.getInstance(MainRuntime.class);
 		mr.parseParams(args);
-		int rc = mr.execute();
+		final int rc = mr.execute();
 		System.out.println("rc=" + rc);
 	}
 
