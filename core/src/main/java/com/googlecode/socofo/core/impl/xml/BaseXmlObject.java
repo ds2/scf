@@ -102,7 +102,7 @@ public class BaseXmlObject implements XmlObject {
 	 * @param elName
 	 *            the name of the element
 	 */
-	public BaseXmlObject(String elName) {
+	public BaseXmlObject(final String elName) {
 		this();
 		setElementName(elName);
 	}
@@ -111,7 +111,7 @@ public class BaseXmlObject implements XmlObject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setElementName(String s) {
+	public void setElementName(final String s) {
 		elName = s;
 	}
 
@@ -143,7 +143,7 @@ public class BaseXmlObject implements XmlObject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setAttributName(String s) {
+	public void setAttributName(final String s) {
 		currentAttributeName = s;
 	}
 
@@ -151,7 +151,7 @@ public class BaseXmlObject implements XmlObject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setAttributValue(String s) {
+	public void setAttributValue(final String s) {
 		attributes.put(currentAttributeName, s);
 	}
 
@@ -175,7 +175,7 @@ public class BaseXmlObject implements XmlObject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setEndSequence(String s) {
+	public void setEndSequence(final String s) {
 		endSeq = s;
 	}
 
@@ -191,7 +191,7 @@ public class BaseXmlObject implements XmlObject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setInnerContent(String s) {
+	public void setInnerContent(final String s) {
 		innerContent = s;
 	}
 
@@ -229,14 +229,17 @@ public class BaseXmlObject implements XmlObject {
 	 * @param indent
 	 *            the current indent
 	 * @param sw
+	 *            the source writer
 	 * @param rules
+	 *            the xml format rules
 	 * @param lh
+	 *            the line handler
 	 * @throws TranslationException
 	 *             if the line became too long
 	 */
 	public void writeElement(final XmlObject lastObject, final int indent,
-			SourceWriter sw, XmlFormatRules rules, LineHandler lh)
-			throws TranslationException {
+			final SourceWriter sw, final XmlFormatRules rules,
+			final LineHandler lh) throws TranslationException {
 		log.entering(getClass().getName(), "writeElement", new Object[] {
 				indent, this });
 		NewlineRules nlRules = rules.getNewlineRules();
@@ -258,8 +261,23 @@ public class BaseXmlObject implements XmlObject {
 		log.exiting(getClass().getName(), "writeElement");
 	}
 
-	private void printObjectBegin(int lastObjectLevel, XmlObject lastObject,
-			SourceWriter sw, XmlFormatRules rules) throws TranslationException {
+	/**
+	 * Prints the begin of the xml tag.
+	 * 
+	 * @param lastObjectLevel
+	 *            the level of the last xml object that has been printed
+	 * @param lastObject
+	 *            the last xml object. May be null
+	 * @param sw
+	 *            the source writer
+	 * @param rules
+	 *            the xml format rules
+	 * @throws TranslationException
+	 *             if an error occurred.
+	 */
+	private void printObjectBegin(final int lastObjectLevel,
+			final XmlObject lastObject, final SourceWriter sw,
+			final XmlFormatRules rules) throws TranslationException {
 		log.entering(BaseXmlObject.class.getName(), "printObjectBegin");
 		boolean commitLine = false;
 		commitLine |= getLevel() != lastObjectLevel;
@@ -284,6 +302,20 @@ public class BaseXmlObject implements XmlObject {
 		log.exiting(BaseXmlObject.class.getName(), "printObjectBegin");
 	}
 
+	/**
+	 * Prints the end sequence of the xml tag.
+	 * 
+	 * @param lastObject
+	 *            the last xml object that was printed to the source writer
+	 * @param rules
+	 *            the xml format rules
+	 * @param sw
+	 *            the source writer
+	 * @param nlRules
+	 *            the newline rules
+	 * @throws TranslationException
+	 *             if an error occurred
+	 */
 	private void printObjectEnd(final XmlObject lastObject,
 			final XmlFormatRules rules, final SourceWriter sw,
 			final NewlineRules nlRules) throws TranslationException {
@@ -339,15 +371,28 @@ public class BaseXmlObject implements XmlObject {
 		log.exiting(BaseXmlObject.class.getName(), "printObjectEnd");
 	}
 
-	private void printAttributes(XmlFormatRules rules, NewlineRules nlRules,
-			SourceWriter sw) throws TranslationException {
+	/**
+	 * Prints the attributes of this xml object using the source writer.
+	 * 
+	 * @param rules
+	 *            the xml format rules
+	 * @param nlRules
+	 *            the newline rules
+	 * @param sw
+	 *            the source writer to write the result to
+	 * @throws TranslationException
+	 *             if an error occurred
+	 */
+	private void printAttributes(final XmlFormatRules rules,
+			final NewlineRules nlRules, final SourceWriter sw)
+			throws TranslationException {
 		log.entering(BaseXmlObject.class.getName(), "printAttributes");
-		Map<String, String> attributes = getAttributes();
+		Map<String, String> attrs = getAttributes();
 		// order attributes?
 		if (rules.getSortAttributes()) {
-			attributes = getOrderedMap(attributes);
+			attrs = getOrderedMap(attrs);
 		}
-		for (Entry<String, String> keyValuePair : attributes.entrySet()) {
+		for (Entry<String, String> keyValuePair : attrs.entrySet()) {
 			if (nlRules != null && nlRules.getAfterEachXmlAttribute()) {
 				sw.commitLine(false);
 			} else {
@@ -357,9 +402,9 @@ public class BaseXmlObject implements XmlObject {
 			if (indentLevel <= 0) {
 				indentLevel = 1;
 			}
-			String attributeLine = keyValuePair.getKey() + "="
+			final String attributeLine = keyValuePair.getKey() + "="
 					+ keyValuePair.getValue();
-			boolean success = sw.addToLine(indentLevel, attributeLine);
+			final boolean success = sw.addToLine(indentLevel, attributeLine);
 			if (!success) {
 				// use new line
 				sw.commitLine(false);

@@ -21,15 +21,31 @@
 package com.googlecode.socofo.core.impl.xml;
 
 /**
- * @author kaeto23
+ * An xml end tag.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class EndElement extends BaseXmlObject {
+	/**
+	 * the svuid.
+	 */
+	private static final long serialVersionUID = -6178877282710074729L;
+
+	/**
+	 * Inits an empty end tag.
+	 */
 	public EndElement() {
 		this(null);
 	}
 
-	public EndElement(String string) {
+	/**
+	 * Inits an end tag with the given element name.
+	 * 
+	 * @param string
+	 *            the element name
+	 */
+	public EndElement(final String string) {
 		super(string);
 		startSeq = "</";
 		endTag = true;

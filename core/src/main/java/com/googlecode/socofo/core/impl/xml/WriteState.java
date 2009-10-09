@@ -21,9 +21,19 @@
 package com.googlecode.socofo.core.impl.xml;
 
 /**
- * @author kaeto23
+ * A write state. Will be discontinued.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public enum WriteState {
-	UNDEFINED, MustWriteElement;
+	/**
+	 * undefined write state. Usually, do not write NOW to the destination
+	 * stream.
+	 */
+	UNDEFINED,
+	/**
+	 * The element must be written now.
+	 */
+	MustWriteElement;
 }

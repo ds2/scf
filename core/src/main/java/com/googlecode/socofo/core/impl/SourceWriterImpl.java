@@ -74,7 +74,8 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean addLine(int indents, String s) throws TranslationException {
+	public boolean addLine(final int indents, final String s)
+			throws TranslationException {
 		commitLine(false);
 		if (indents < 0) {
 			log.severe("Indents of " + indents + " are impossible!");
@@ -89,7 +90,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean addToLine(String s) {
+	public boolean addToLine(final String s) {
 		if (s == null) {
 			return false;
 		}
@@ -109,7 +110,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean addToLine(int currentIndent, String s) {
+	public boolean addToLine(final int currentIndent, final String s) {
 		if (s == null) {
 			log.warning("No content given!");
 			return false;
@@ -175,7 +176,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setCommonAttributes(CommonAttributes c) {
+	public void setCommonAttributes(final CommonAttributes c) {
 		if (c == null) {
 			log.warning("No common attributes given!");
 			return;
@@ -188,7 +189,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 * 
 	 */
 	@Override
-	public boolean commitLine(boolean ignoreLineLength)
+	public boolean commitLine(final boolean ignoreLineLength)
 			throws TranslationException {
 		if (!ignoreLineLength && currentLine.length() > ca.getMaxLinewidth()) {
 			log.warning("line too long to commit: " + currentLine);
@@ -215,7 +216,7 @@ public class SourceWriterImpl implements SourceWriter {
 	 * @param s
 	 *            the buffer to clear
 	 */
-	private void clearBuffer(StringBuffer s) {
+	private void clearBuffer(final StringBuffer s) {
 		if (s == null) {
 			log.warning("No buffer given!");
 			return;
@@ -234,12 +235,16 @@ public class SourceWriterImpl implements SourceWriter {
 		return currentLine.toString();
 	}
 
-	public int getLineLength(String line) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getLineLength(final String line) {
 		if (lh == null) {
 			throw new IllegalStateException("No line handler has been setup!");
 		}
-		int tabSize = ca.getTabSize();
-		int rc = lh.getLineWidth(tabSize, line);
+		final int tabSize = ca.getTabSize();
+		final int rc = lh.getLineWidth(tabSize, line);
 		return rc;
 	}
 
@@ -249,12 +254,18 @@ public class SourceWriterImpl implements SourceWriter {
 	@Override
 	public int getCurrentLineLength() {
 		int rc = 0;
-		String currentLineStr = currentLine.toString();
+		final String currentLineStr = currentLine.toString();
 		rc = getLineLength(currentLineStr);
 		return rc;
 	}
 
-	public void setTestLineHandler(LineHandlerImpl lineHandlerImpl) {
+	/**
+	 * Sets the test line handler.
+	 * 
+	 * @param lineHandlerImpl
+	 *            the line handler used for tests
+	 */
+	public void setTestLineHandler(final LineHandlerImpl lineHandlerImpl) {
 		lh = lineHandlerImpl;
 	}
 

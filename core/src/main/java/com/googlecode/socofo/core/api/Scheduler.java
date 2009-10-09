@@ -32,7 +32,12 @@ import java.util.List;
  * @version 1.0
  */
 public interface Scheduler {
-
+	/**
+	 * Sets and loads the rules for the transformation.
+	 * 
+	 * @param formatterXml
+	 *            the url to the rules
+	 */
 	public void setRules(URL formatterXml);
 
 	/**
@@ -41,8 +46,19 @@ public interface Scheduler {
 	 */
 	public void startScheduler();
 
+	/**
+	 * Adds a thread that is notified when the transformation ends.
+	 * 
+	 * @param currentThread
+	 *            the thread to add
+	 */
 	public void addWaiterThreads(Thread currentThread);
 
+	/**
+	 * Returns a list of error messages from some failed transformations.
+	 * 
+	 * @return a list of error messages
+	 */
 	public List<String> getErrorMessages();
 
 	/**
@@ -59,7 +75,19 @@ public interface Scheduler {
 	public List<TranslationJob> createLocalJobs(File baseDir, File targetDir,
 			SourceTypes... types);
 
+	/**
+	 * Adds additional jobs to the scheduler.
+	 * 
+	 * @param jobs
+	 *            some more jobs to perform
+	 */
 	public void addJobs(List<TranslationJob> jobs);
 
+	/**
+	 * Returns the POSSIBLE count of running translation jobs.
+	 * 
+	 * @return the possible count of running jobs. Please be aware that this
+	 *         count may NOT reflect the real count of running jobs.
+	 */
 	public int getActiveJobsCount();
 }

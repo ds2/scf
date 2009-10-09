@@ -56,5 +56,10 @@ public interface TranslationJob extends Runnable {
 	 */
 	public void setDestination(SourceDestination dest);
 
+	/**
+	 * Returns a list of translation errors.
+	 * 
+	 * @return a list of translation errors
+	 */
 	public List<TranslationException> getErrors();
 }

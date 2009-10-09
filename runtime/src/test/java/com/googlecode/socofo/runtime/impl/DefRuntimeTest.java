@@ -25,6 +25,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -65,15 +66,16 @@ public class DefRuntimeTest {
 	 */
 	@Test
 	public final void testExecute() {
-		File rulesUrlFile = new File("src/test/resources/ruleset.xml");
+		final File rulesUrlFile = new File("src/test/resources/ruleset.xml");
 		try {
-			URL rulesUrl = rulesUrlFile.toURI().toURL();
+			final URL rulesUrl = rulesUrlFile.toURI().toURL();
 			to.parseParams(MainRuntime.PARAM_BASEDIR + "=src/test/resources",
 					MainRuntime.PARAM_RULESURL + "=" + rulesUrl.toString(),
 					MainRuntime.PARAM_TARGETDIR + "=target/result");
-			int rc = to.execute();
+			final int rc = to.execute();
 			assertEquals(MainRuntime.RC_SUCCESS, rc);
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
+			fail(e.getLocalizedMessage());
 		}
 	}
 
@@ -127,18 +129,22 @@ public class DefRuntimeTest {
 		assertTrue(to.showHelpScreen());
 	}
 
+	/**
+	 * Another test case.
+	 */
 	@Test
 	public final void testExecute2() {
-		File rulesUrlFile = new File("src/test/resources/ruleset.xml");
+		final File rulesUrlFile = new File("src/test/resources/ruleset.xml");
 		try {
-			URL rulesUrl = rulesUrlFile.toURI().toURL();
+			final URL rulesUrl = rulesUrlFile.toURI().toURL();
 			to.parseParams(MainRuntime.PARAM_BASEDIR
 					+ "=src/test/resources/single1", MainRuntime.PARAM_RULESURL
 					+ "=" + rulesUrl.toString(), MainRuntime.PARAM_TARGETDIR
 					+ "=target/result");
-			int rc = to.execute();
+			final int rc = to.execute();
 			assertEquals(MainRuntime.RC_SUCCESS, rc);
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
+			fail(e.getLocalizedMessage());
 		}
 	}
 

@@ -21,19 +21,32 @@
 package com.googlecode.socofo.core.impl.xml;
 
 /**
- * @author kaeto23
+ * The xml tag for empty elements.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class EmptyElement extends BaseXmlObject {
 
 	/**
-	 * 
+	 * the svuid.
+	 */
+	private static final long serialVersionUID = -6457821970190011369L;
+
+	/**
+	 * Inis an empty element, without an element name.
 	 */
 	public EmptyElement() {
 		this(null);
 	}
 
-	public EmptyElement(String elName) {
+	/**
+	 * Inits an empty element with the given element name.
+	 * 
+	 * @param elName
+	 *            the element name
+	 */
+	public EmptyElement(final String elName) {
 		super(elName);
 		endSeq = "/>";
 	}

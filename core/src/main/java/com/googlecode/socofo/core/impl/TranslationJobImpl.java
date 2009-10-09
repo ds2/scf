@@ -40,12 +40,27 @@ import com.googlecode.socofo.rules.api.RuleSet;
  * @version 1.0
  */
 public class TranslationJobImpl implements TranslationJob {
+	/**
+	 * The destination of the transformation result.
+	 */
 	private SourceDestination dest = null;
+	/**
+	 * The rule set.
+	 */
 	private RuleSet rules = null;
+	/**
+	 * The source to transform.
+	 */
 	private SourceRoot source = null;
+	/**
+	 * The xml transformer to transform the source code.
+	 */
 	@Named("xml")
 	@Inject
 	private SourceTransformer xmlTransformer = null;
+	/**
+	 * A list of translation errors.
+	 */
 	private List<TranslationException> errors = null;
 
 	/**
@@ -59,15 +74,15 @@ public class TranslationJobImpl implements TranslationJob {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setDestination(SourceDestination dest) {
-		this.dest = dest;
+	public void setDestination(final SourceDestination d) {
+		this.dest = d;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setRule(RuleSet r) {
+	public void setRule(final RuleSet r) {
 		rules = r;
 	}
 
@@ -75,7 +90,7 @@ public class TranslationJobImpl implements TranslationJob {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setSource(SourceRoot sourceCode) {
+	public void setSource(final SourceRoot sourceCode) {
 		source = sourceCode;
 	}
 
@@ -95,7 +110,7 @@ public class TranslationJobImpl implements TranslationJob {
 			tr.performTranslation();
 			result = tr.getResult();
 			dest.writeContent(result, "utf-8");
-		} catch (TranslationException e) {
+		} catch (final TranslationException e) {
 			errors.add(e);
 		}
 	}

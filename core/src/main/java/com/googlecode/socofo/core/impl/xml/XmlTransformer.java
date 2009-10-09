@@ -20,7 +20,6 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
-import java.util.Stack;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -74,6 +73,9 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	@Inject
 	private TreeHandler treeHandler = null;
+	/**
+	 * The loaded rule set.
+	 */
 	private RuleSet ruleSet;
 
 	/**
@@ -112,7 +114,7 @@ public class XmlTransformer implements SourceTransformer {
 		grammar = new XmlGrammar(input);
 		TokenStream tr = null;
 		tr = new CommonTokenStream(grammar);
-		XmlParser parser = new XmlParser(tr);
+		new XmlParser(tr);
 	}
 
 	/**
@@ -140,7 +142,6 @@ public class XmlTransformer implements SourceTransformer {
 		int currentIndent = 0;
 		log.finer("Starting token run");
 		XmlObject currentObject = null;
-		Stack<String> elementStack = new Stack<String>();
 		XmlObject lastObject = null;
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + ") for this run: "
@@ -263,14 +264,28 @@ public class XmlTransformer implements SourceTransformer {
 		this.lh = i;
 	}
 
-	public void setTestTreehandler(TreeHandler th) {
+	/**
+	 * Sets the test tree handler.
+	 * 
+	 * @param th
+	 *            the tree handler, used for tests
+	 */
+	public void setTestTreehandler(final TreeHandler th) {
 		treeHandler = th;
 	}
 
+	/**
+	 * Returns the xml format rules.
+	 * 
+	 * @return the xml format rules
+	 */
 	public XmlFormatRules getRuleSet() {
 		return rules;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RuleSet getRules() {
 		return ruleSet;

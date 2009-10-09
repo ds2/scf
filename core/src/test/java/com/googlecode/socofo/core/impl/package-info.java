@@ -16,16 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * 
+ * The test classes for some core implementations.
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.core.impl;
 
-/**
- * The contract for setting some common attributes.
- * 
- * @author Dirk Strauss
- * @version 1.0
- */
-public interface CommonAttributesUpdater extends CommonAttributes {
-	// nothing yet
-}

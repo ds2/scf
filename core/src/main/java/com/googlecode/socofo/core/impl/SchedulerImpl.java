@@ -49,26 +49,50 @@ import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 /**
  * The scheduler impl.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Singleton
 public class SchedulerImpl implements Scheduler {
+	/**
+	 * a logger.
+	 */
 	private static final Logger log = Logger.getLogger(SchedulerImpl.class
 			.getName());
+	/**
+	 * A list of translation jobs to do.
+	 */
 	private List<TranslationJob> jobs = null;
+	/**
+	 * The thread group to add the translation jobs to.
+	 */
 	private ThreadGroup threadGrp = null;
+	/**
+	 * The source type detector.
+	 */
 	@Inject
-	SourceTypeDetector localDetector = null;
+	private SourceTypeDetector localDetector = null;
+	/**
+	 * The injector for generating on-demand instances of translation jobs.
+	 */
 	@Inject
 	private Injector ij = null;
+	/**
+	 * The rules loader.
+	 */
 	@Inject
 	private RulesLoader rulesLoader = null;
+	/**
+	 * The rule set.
+	 */
 	private RuleSet ruleSet = null;
+	/**
+	 * A list of error messages.
+	 */
 	private List<String> errorMsgs;
 
 	/**
-	 * 
+	 * Inits the scheduler.
 	 */
 	public SchedulerImpl() {
 		jobs = new ArrayList<TranslationJob>();
@@ -76,46 +100,40 @@ public class SchedulerImpl implements Scheduler {
 		errorMsgs = new ArrayList<String>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.googlecode.socofo.core.api.Scheduler#addJobs(java.util.List)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void addJobs(List<TranslationJob> jobs) {
-		if (jobs == null) {
+	public void addJobs(final List<TranslationJob> j) {
+		if (j == null) {
 			log.warning("No jobs given!");
 			return;
 		}
-		this.jobs.addAll(jobs);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.googlecode.socofo.core.api.Scheduler#addWaiterThreads(java.lang.Thread
-	 * )
-	 */
-	@Override
-	public void addWaiterThreads(Thread currentThread) {
-		// TODO Auto-generated method stub
-
+		this.jobs.addAll(j);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<TranslationJob> createLocalJobs(File baseDir, File targetDir,
-			SourceTypes... types) {
+	public void addWaiterThreads(final Thread currentThread) {
+		// nothing to do yet
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<TranslationJob> createLocalJobs(final File baseDir,
+			final File td, final SourceTypes... types) {
 		log.entering(SchedulerImpl.class.getName(), "createLocalJobs",
-				new Object[] { baseDir, targetDir, types });
-		List<TranslationJob> rc = new ArrayList<TranslationJob>();
+				new Object[] { baseDir, td, types });
+		final List<TranslationJob> rc = new ArrayList<TranslationJob>();
 		if (baseDir == null) {
 			log.warning("No base directory given!");
 			return rc;
 		}
+		File targetDir = td;
 		if (targetDir == null) {
 			log.info("Overwriting local files!");
 			targetDir = baseDir;
@@ -128,22 +146,23 @@ public class SchedulerImpl implements Scheduler {
 			log.warning("No rules given!");
 			return rc;
 		}
-		List<File> sourceFiles = getFiles(baseDir, types);
+		final List<File> sourceFiles = getFiles(baseDir, types);
 		log.finer("Got source files, counting " + sourceFiles.size());
 		for (File sourceFile : sourceFiles) {
 			log.finest("Got this source file: " + sourceFile.getAbsolutePath());
-			TranslationJob job = getInjector()
-					.getInstance(TranslationJob.class);
-			FileRoot fr = ij.getInstance(FileRoot.class);
+			final TranslationJob job = getInjector().getInstance(
+					TranslationJob.class);
+			final FileRoot fr = ij.getInstance(FileRoot.class);
 			try {
 				fr.setFile(sourceFile);
 				job.setSource(fr);
-				FileDestination fd = ij.getInstance(FileDestination.class);
+				final FileDestination fd = ij
+						.getInstance(FileDestination.class);
 				fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));
 				job.setDestination(fd);
 				job.setRule(ruleSet);
 				rc.add(job);
-			} catch (LoadingException e) {
+			} catch (final LoadingException e) {
 				log.throwing(SchedulerImpl.class.getName(), "createLocalJobs",
 						e);
 			}
@@ -155,6 +174,11 @@ public class SchedulerImpl implements Scheduler {
 		return rc;
 	}
 
+	/**
+	 * Returns and loads the injector.
+	 * 
+	 * @return the injector
+	 */
 	private synchronized Injector getInjector() {
 		if (ij == null) {
 			ij = Guice.createInjector(new CoreInjectionPlan(),
@@ -207,9 +231,9 @@ public class SchedulerImpl implements Scheduler {
 	 *            the list of allowed types.
 	 * @return all source files matching the given source types
 	 */
-	private List<File> scanFilesAndDirectories(File[] foundFiles,
-			SourceTypes... types) {
-		List<File> rc = new ArrayList<File>();
+	private List<File> scanFilesAndDirectories(final File[] foundFiles,
+			final SourceTypes... types) {
+		final List<File> rc = new ArrayList<File>();
 		if (foundFiles != null && foundFiles.length > 0) {
 			for (File foundFile : foundFiles) {
 				log.finest("found " + foundFile);
@@ -230,7 +254,8 @@ public class SchedulerImpl implements Scheduler {
 	@Override
 	public List<String> getErrorMessages() {
 		for (TranslationJob job : jobs) {
-			List<TranslationException> translationErrors = job.getErrors();
+			final List<TranslationException> translationErrors = job
+					.getErrors();
 			for (TranslationException e : translationErrors) {
 				log.throwing(SchedulerImpl.class.getName(), "getErrorMessages",
 						e);
@@ -244,7 +269,7 @@ public class SchedulerImpl implements Scheduler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setRules(URL formatterXml) {
+	public void setRules(final URL formatterXml) {
 		log.entering(SchedulerImpl.class.getName(), "setRules", formatterXml);
 		if (formatterXml == null) {
 			log.warning("No url given!");
@@ -277,12 +302,23 @@ public class SchedulerImpl implements Scheduler {
 		return threadGrp.activeCount();
 	}
 
-	protected void setTestDetector(SourceTypeDetector instance) {
+	/**
+	 * Sets the test detector.
+	 * 
+	 * @param instance
+	 *            the detector used for tests
+	 */
+	protected void setTestDetector(final SourceTypeDetector instance) {
 		localDetector = instance;
 	}
 
-	public void setTestRulesLoader(RulesLoader instance) {
-		// TODO Auto-generated method stub
+	/**
+	 * Sets the test rules loader.
+	 * 
+	 * @param instance
+	 *            the rules loader used for tests
+	 */
+	public void setTestRulesLoader(final RulesLoader instance) {
 		rulesLoader = instance;
 	}
 

@@ -30,10 +30,11 @@ import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.StreamRoot;
 
-
 /**
- * @author kaeto23
+ * The implementation for reading sources via a stream.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class StreamRootImpl implements StreamRoot {
 	/**
@@ -51,24 +52,28 @@ public class StreamRootImpl implements StreamRoot {
 	@Inject
 	@Named("defaultEncoding")
 	private String encoding = null;
-	private SourceTypes type=null;
+	/**
+	 * The declared type of the stream source.
+	 */
+	private SourceTypes type = null;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void loadStream(InputStream is, String enc) {
+	public void loadStream(final InputStream is, final String enc) {
 		if (is == null) {
 			return;
 		}
 		if (enc != null) {
 			this.encoding = enc;
 		}
-		BufferedInputStream bis = new BufferedInputStream(is);
-		byte[] buffer = new byte[6000];
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final BufferedInputStream bis = new BufferedInputStream(is);
+		final byte[] buffer = new byte[6000];
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int numRead = 0;
 		while (true) {
-			int numRead = iohelper.read(bis, buffer);
+			numRead = iohelper.read(bis, buffer);
 			if (numRead < 0) {
 				break;
 			}
@@ -95,12 +100,13 @@ public class StreamRootImpl implements StreamRoot {
 	public SourceTypes getType() {
 		return type;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setType(SourceTypes type) {
-		this.type=type;
+	public void setType(final SourceTypes t) {
+		this.type = t;
 	}
 
 }

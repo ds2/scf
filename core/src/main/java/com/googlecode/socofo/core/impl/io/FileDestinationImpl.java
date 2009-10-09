@@ -56,7 +56,7 @@ public class FileDestinationImpl implements FileDestination {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void writeContent(String s, String enc) {
+	public void writeContent(final String s, final String enc) {
 		LOG.entering(FileDestinationImpl.class.getName(), "writeContent");
 		if (dest == null) {
 			LOG.severe("No destination set!");
@@ -69,9 +69,9 @@ public class FileDestinationImpl implements FileDestination {
 		OutputStreamWriter fw = null;
 		FileOutputStream fos = null;
 		try {
-			File parentDir = dest.getParentFile();
+			final File parentDir = dest.getParentFile();
 			parentDir.mkdirs();
-			boolean fileCreated = dest.createNewFile();
+			final boolean fileCreated = dest.createNewFile();
 			if (!fileCreated) {
 				LOG.info("File " + dest.getAbsolutePath()
 						+ " could not be created! Trying again.");
@@ -84,7 +84,7 @@ public class FileDestinationImpl implements FileDestination {
 			}
 			fw.write(s);
 			fw.flush();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOG
 					.throwing(FileDestinationImpl.class.getName(),
 							"writeContent", e);
@@ -95,13 +95,27 @@ public class FileDestinationImpl implements FileDestination {
 		LOG.exiting(FileDestinationImpl.class.getName(), "writeContent");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setFile(File f) {
+	public void setFile(final File f) {
 		dest = f;
 	}
 
-	protected String parseDestination2(String baseDirStr, String targetDirStr,
-			String sourceFileStr) {
+	/**
+	 * Calculates the source file destination.
+	 * 
+	 * @param baseDirStr
+	 *            the base directory
+	 * @param targetDirStr
+	 *            the target directory
+	 * @param sourceFileStr
+	 *            the source file absolute path
+	 * @return the target file absolute path
+	 */
+	protected String parseDestination2(final String baseDirStr,
+			final String targetDirStr, final String sourceFileStr) {
 		LOG.entering(FileDestinationImpl.class.getName(), "parseDestination2",
 				new Object[] { baseDirStr, targetDirStr, sourceFileStr });
 		if (baseDirStr == null) {
@@ -120,7 +134,7 @@ public class FileDestinationImpl implements FileDestination {
 		}
 		String rc = sourceFileStr;
 		if (targetDirStr != null) {
-			String base = sourceFileStr.substring(baseDirStr.length());
+			final String base = sourceFileStr.substring(baseDirStr.length());
 			rc = targetDirStr + base;
 		}
 		LOG.exiting(FileDestinationImpl.class.getName(), "parseDestination2",
@@ -128,8 +142,12 @@ public class FileDestinationImpl implements FileDestination {
 		return rc;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public File parseDestination(File baseDir, File targetDir, File sourceFile) {
+	public File parseDestination(final File baseDir, final File targetDir,
+			final File sourceFile) {
 		LOG.entering(FileDestinationImpl.class.getName(), "parseDestination",
 				new Object[] { baseDir, targetDir, sourceFile });
 		if (baseDir == null) {
@@ -140,20 +158,26 @@ public class FileDestinationImpl implements FileDestination {
 			LOG.severe("No source file given!");
 			return null;
 		}
-		String baseDirStr = baseDir.getAbsolutePath();
-		String targetDirStr = targetDir == null ? baseDirStr : targetDir
+		final String baseDirStr = baseDir.getAbsolutePath();
+		final String targetDirStr = targetDir == null ? baseDirStr : targetDir
 				.getAbsolutePath();
-		String sourceFileStr = sourceFile.getAbsolutePath();
-		String newBase = parseDestination2(baseDirStr, targetDirStr,
+		final String sourceFileStr = sourceFile.getAbsolutePath();
+		final String fileDestStr = parseDestination2(baseDirStr, targetDirStr,
 				sourceFileStr);
-		File rc = new File(newBase);
+		final File rc = new File(fileDestStr);
 		LOG
 				.exiting(FileDestinationImpl.class.getName(),
 						"parseDestination", rc);
 		return rc;
 	}
 
-	public void setTestIohelper(IOHelper i) {
+	/**
+	 * Sets the test io helper.
+	 * 
+	 * @param i
+	 *            the iohelper for test runs
+	 */
+	public void setTestIohelper(final IOHelper i) {
 		iohelper = i;
 	}
 

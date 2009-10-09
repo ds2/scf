@@ -21,13 +21,20 @@
 package com.googlecode.socofo.core.impl.xml;
 
 /**
- * @author kaeto23
+ * A xml class for whitespaces.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class Whitespaces extends BaseXmlObject {
 
 	/**
-	 * 
+	 * the svuid.
+	 */
+	private static final long serialVersionUID = -138374784583626980L;
+
+	/**
+	 * Inits the whitespace.
 	 */
 	public Whitespaces() {
 		startSeq = "";

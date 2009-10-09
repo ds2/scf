@@ -28,42 +28,52 @@ import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
 
 /**
- * @author kaeto23
+ * A file filter for filtering several source files.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class SourceFileFilter implements FileFilter {
+	/**
+	 * the detector for the source files.
+	 */
 	private SourceTypeDetector localDetector = null;
+	/**
+	 * A list of allowed source file types.
+	 */
 	private List<SourceTypes> allowedTypes = null;
 
 	/**
+	 * Inits the filter.
+	 * 
+	 * @param detector
+	 *            the detector for source types
+	 * @param sourceTypes
+	 *            the list of allowed source types
 	 * 
 	 */
-	public SourceFileFilter(SourceTypeDetector detector,
-			List<SourceTypes> sourceTypes) {
+	public SourceFileFilter(final SourceTypeDetector detector,
+			final List<SourceTypes> sourceTypes) {
 		localDetector = detector;
 		allowedTypes = sourceTypes;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.io.FileFilter#accept(java.io.File)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean accept(File pathname) {
+	public boolean accept(final File pathname) {
+		boolean rc = false;
 		if (pathname.isDirectory()) {
-			// may contain more source files
-			return true;
+			rc = true;
+		} else {
+			final SourceTypes fileType = localDetector
+					.guessTypeByFilename(pathname.getName());
+			if (fileType != null && allowedTypes.contains(fileType)) {
+				rc = true;
+			}
 		}
-		final SourceTypes fileType = localDetector.guessTypeByFilename(pathname
-				.getName());
-		if (fileType == null) {
-			return false;
-		}
-		if (allowedTypes.contains(fileType)) {
-			return true;
-		}
-		return false;
+		return rc;
 	}
 
 }
