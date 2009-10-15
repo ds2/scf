@@ -273,4 +273,28 @@ public class DefRuntime implements MainRuntime {
 		return rulesUrl;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setBaseDirectory(final File srcDir) {
+		baseDir = srcDir;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setTargetDirectory(final File t) {
+		this.targetDir = t;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setRules(final URL r) {
+		this.rulesUrl = r;
+	}
+
 }

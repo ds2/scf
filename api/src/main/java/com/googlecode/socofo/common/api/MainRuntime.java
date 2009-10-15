@@ -130,4 +130,10 @@ public interface MainRuntime {
 	 */
 	URL getRulesUrl();
 
+	void setBaseDirectory(File srcDir);
+
+	void setTargetDirectory(File targetDir);
+
+	void setRules(URL rulesUrl);
+
 }

@@ -21,11 +21,18 @@
 package com.googlecode.socofo.plugins.maven;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.googlecode.socofo.common.api.MainRuntime;
+import com.googlecode.socofo.runtime.RuntimeInjectionPlan;
 
 /**
  * Mojo to format all source codes.
@@ -44,12 +51,17 @@ public class FormatMojo extends AbstractMojo {
 	 * @readonly
 	 */
 	private MavenProject currentPrj = null;
+	/**
+	 * The runtime that performs the actions.
+	 */
+	private MainRuntime socofo = null;
 
 	/**
 	 * 
 	 */
 	public FormatMojo() {
-		// TODO Auto-generated constructor stub
+		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
+		socofo = ij.getInstance(MainRuntime.class);
 	}
 
 	/**
@@ -60,6 +72,7 @@ public class FormatMojo extends AbstractMojo {
 		getLog().info(
 				"This goal will format all source code in "
 						+ currentPrj.getArtifactId());
+		getLog().debug("Searching for source directory...");
 		String srcDirStr = currentPrj.getBuild().getSourceDirectory();
 		if (srcDirStr == null) {
 			getLog().info("No sources found!");
@@ -76,6 +89,21 @@ public class FormatMojo extends AbstractMojo {
 			getLog().info("Cannot read sources in " + srcDir.getAbsolutePath());
 			return;
 		}
+		socofo.setBaseDirectory(srcDir);
+		getLog().debug("Searching target directory..");
+		String targetDirStr = currentPrj.getBuild().getOutputDirectory();
+		File targetDir = new File(targetDirStr, "../results");
+		getLog().info("target dir is " + targetDir.getAbsolutePath());
+		socofo.setTargetDirectory(targetDir);
+		String rulesUrlStr = "";
+		URL rulesUrl;
+		try {
+			rulesUrl = new URL(rulesUrlStr);
+		} catch (MalformedURLException e) {
+			throw new MojoFailureException("Bad rules url: " + rulesUrlStr);
+		}
+		socofo.setRules(rulesUrl);
+		int runtimeRc = socofo.execute();
+		getLog().info("Execution was " + runtimeRc);
 	}
-
 }
