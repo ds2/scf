@@ -139,4 +139,9 @@ public interface SourceWriter {
 	 * @return the length
 	 */
 	public int getLineLength(String indentSequence);
+
+	/**
+	 * Clears the current line buffer.
+	 */
+	public void clearCurrentLine();
 }

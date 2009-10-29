@@ -214,9 +214,12 @@ public class XmlTransformer implements SourceTransformer {
 			case XmlGrammar.PCDATA:
 				currentObject = new Text();
 				currentObject.setInnerContent(token.getText());
+				// insert WS detection here
+				// if (!currentObject.hasEmptyInnerContent()) {
 				treeHandler.setLevel(currentObject);
 				currentObject.writeElement(lastObject, currentIndent, sw,
 						rules, lh);
+				// }
 				lastObject = currentObject;
 				currentObject = null;
 				break;

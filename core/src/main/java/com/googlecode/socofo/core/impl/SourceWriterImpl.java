@@ -269,4 +269,12 @@ public class SourceWriterImpl implements SourceWriter {
 		lh = lineHandlerImpl;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void clearCurrentLine() {
+		clearBuffer(currentLine);
+	}
+
 }

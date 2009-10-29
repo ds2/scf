@@ -161,4 +161,11 @@ public interface XmlObject extends Serializable {
 	 *            the tree level
 	 */
 	void setLevel(int l);
+
+	/**
+	 * A check if the inner content is basically empty.
+	 * 
+	 * @return TRUE if the inner content is empty, otherwise FALSE
+	 */
+	boolean hasEmptyInnerContent();
 }

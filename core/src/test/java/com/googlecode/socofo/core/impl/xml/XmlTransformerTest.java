@@ -329,4 +329,86 @@ public class XmlTransformerTest {
 		assertEquals("<a>\n  <!--\n    this is a long text\n  -->\n</a>\n",
 				result);
 	}
+
+	@Test
+	public final void testTranslation11() {
+		String xmlSample = "<a>\n  <b>hallo</b>  \n</a>\n";
+		assertNotNull(xmlSample);
+		XmlFormatRules rs = to.getRuleSet();
+		XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+		updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+		updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+		updater.getCommentsRulesUpdater().setIndentComment(true);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<a>\n  <b>hallo</b>\n</a>\n", result);
+	}
+
+	@Test
+	public final void testTranslation12() {
+		String xmlSample = "<?xml version=\"1.0\"?><a xsi:ns=\"bla bla\">\n  <b>\n  <txt>Hallo, Welt</txt>\n  </b>  \n</a>\n";
+		assertNotNull(xmlSample);
+		XmlFormatRules rs = to.getRuleSet();
+		XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+		updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+		updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+		updater.getCommentsRulesUpdater().setIndentComment(true);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals("<?xml\n" + "  version=\"1.0\"\n" + "?><a\n"
+				+ "  xsi:ns=\"bla bla\"\n" + ">\n" + "  <b>\n"
+				+ "    <txt>Hallo, Welt</txt>\n" + "  </b>\n" + "</a>\n",
+				result);
+	}
+
+	@Test
+	public final void testTranslation13() {
+		String xmlSample = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<tns:xml-format xmlns:tns=\"http://www.ds2/ns/socofo\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.ds2/ns/socofo http://www.ds2/ns/socofo \">\n"
+				+ "  <commonAttributes>\n"
+				+ "    <maxLineWidth>80</maxLineWidth>\n"
+				+ "    <indentSequence>  </indentSequence>\n"
+				+ "    <tabSize>4</tabSize>\n"
+				+ "  </commonAttributes></tns:xml-format>";
+		assertNotNull(xmlSample);
+		XmlFormatRules rs = to.getRuleSet();
+		XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+		updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+		updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+		updater.getCommentsRulesUpdater().setIndentComment(true);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertEquals(
+				"<?xml\n"
+						+ "  version=\"1.0\"\n"
+						+ "  encoding=\"UTF-8\"\n"
+						+ "?><tns:xml-format\n"
+						+ "  xmlns:tns=\"http://www.ds2/ns/socofo\"\n"
+						+ "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+						+ "  xsi:schemaLocation=\"http://www.ds2/ns/socofo http://www.ds2/ns/socofo \">\n"
+						+ "  <commonAttributes>\n"
+						+ "    <maxLineWidth>80</maxLineWidth>\n"
+						+ "    <indentSequence></indentSequence>\n"
+						+ "    <tabSize>4</tabSize>\n"
+						+ "  </commonAttributes>\n" + "</tns:xml-format>\n",
+				result);
+	}
 }

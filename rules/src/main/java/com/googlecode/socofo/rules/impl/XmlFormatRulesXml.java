@@ -143,4 +143,21 @@ public class XmlFormatRulesXml implements XmlFormatRulesUpdater {
 		return (XmlCommentsRulesUpdater) commentsRules;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		sb.append(getClass().getName());
+		sb.append("(");
+		sb.append("sepAttrPerLine=").append(separateAttributesPerLine);
+		sb.append(",finalBracketOnNl=").append(alignFinalBracketOnNewline);
+		sb.append(",clearBlankLns=").append(clearBlankLines);
+		sb.append(",insertWsEmptyEl=").append(insertWsAtEmptyElement);
+		sb.append(",sortAttrs=").append(sortAttributes);
+		sb.append(")");
+		return sb.toString();
+	}
+
 }

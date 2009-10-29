@@ -283,8 +283,14 @@ public class BaseXmlObject implements XmlObject {
 		commitLine |= getLevel() != lastObjectLevel;
 		commitLine |= (this instanceof Comment)
 				&& (rules.getCommentsRules().getBreakAfterBegin());
+		commitLine |= (this instanceof EndElement)
+				&& (sw.getCurrentLineLength() <= 0);
 		if (commitLine) {
+			log.finer("Committing currentLine");
 			sw.commitLine(false);
+		}
+		log.finer("Assure possible indent?");
+		if (commitLine) {
 			sw.addToLine(getLevel() - 1, "");
 		}
 		boolean isElementText = false;
@@ -367,6 +373,12 @@ public class BaseXmlObject implements XmlObject {
 		} else if (this instanceof Comment
 				&& rules.getCommentsRules().getBreakBeforeEnd()) {
 			sw.commitLine(false);
+		}
+		log
+				.finer("Checking currentLine buffer if the content makes sense for the next run");
+		if (sw.getCurrentLine().trim().length() <= 0 && this instanceof Text
+				&& this.hasEmptyInnerContent()) {
+			sw.clearCurrentLine();
 		}
 		log.exiting(BaseXmlObject.class.getName(), "printObjectEnd");
 	}
@@ -539,6 +551,14 @@ public class BaseXmlObject implements XmlObject {
 	@Override
 	public void setLevel(final int l) {
 		level = l;
+	}
+
+	@Override
+	public boolean hasEmptyInnerContent() {
+		if (innerContent == null) {
+			return true;
+		}
+		return innerContent.trim().length() <= 0;
 	}
 
 }
