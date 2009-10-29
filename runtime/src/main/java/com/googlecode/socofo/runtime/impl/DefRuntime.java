@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -77,6 +78,8 @@ public class DefRuntime implements MainRuntime {
 	 */
 	private URL rulesUrl;
 
+	private List<SourceTypes> types = null;
+
 	/**
 	 * Inits the runtime.
 	 */
@@ -87,6 +90,7 @@ public class DefRuntime implements MainRuntime {
 		} else {
 			console = c.writer();
 		}
+		types = new ArrayList<SourceTypes>();
 	}
 
 	/**
@@ -102,6 +106,14 @@ public class DefRuntime implements MainRuntime {
 				+ " = sets the url where the formatter rules can be found ("
 				+ PARAM_RULESURL
 				+ "=http://test.local/test/formatterRules.xml)");
+		console.println(PARAM_BASEDIR
+				+ " = the base directory to scan for source files");
+		console
+				.println(PARAM_TARGETDIR
+						+ " = the directory to write the results to; default is the base directory");
+		console
+				.println(PARAM_TYPES
+						+ " = a list of types to transform; Supported types currently: xml");
 	}
 
 	/**
@@ -132,6 +144,10 @@ public class DefRuntime implements MainRuntime {
 			log.severe("No rulesUrl given!");
 			return RC_NORULES;
 		}
+		if (types.size() <= 0) {
+			log.severe("No types given to scan for!");
+			return RC_NOTYPES;
+		}
 		final Thread currentThread = Thread.currentThread();
 		scheduler.addWaiterThreads(currentThread);
 		List<TranslationJob> jobs = null;
@@ -139,7 +155,8 @@ public class DefRuntime implements MainRuntime {
 		baseDir = getBaseDirectory();
 		log.info("Using base directory " + baseDir);
 		log.info("Using target directory " + targetDir);
-		jobs = scheduler.createLocalJobs(baseDir, targetDir, SourceTypes.XML);
+		jobs = scheduler.createLocalJobs(baseDir, targetDir, types
+				.toArray(new SourceTypes[0]));
 		if (jobs.size() <= 0) {
 			log.warning("No source files found!");
 			return RC_NOSOURCES;
@@ -243,6 +260,14 @@ public class DefRuntime implements MainRuntime {
 			targetDir = new File(argSeq);
 		} else if (arg.startsWith(PARAM_HELP)) {
 			showHelp = true;
+		} else if (arg.startsWith(PARAM_TYPES)) {
+			final String argSeq = arg.substring(PARAM_TYPES.length() + 1);
+			final String[] typesIds = argSeq.split(",");
+			for (String typeId : typesIds) {
+				if (typeId != null && typeId.equalsIgnoreCase("xml")) {
+					types.add(SourceTypes.XML);
+				}
+			}
 		}
 	}
 
@@ -295,6 +320,10 @@ public class DefRuntime implements MainRuntime {
 	@Override
 	public void setRules(final URL r) {
 		this.rulesUrl = r;
+	}
+
+	public List<SourceTypes> getTypes() {
+		return types;
 	}
 
 }

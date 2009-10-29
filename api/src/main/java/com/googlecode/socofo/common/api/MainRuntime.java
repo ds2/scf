@@ -81,6 +81,10 @@ public interface MainRuntime {
 	 * the return code for having a set of transformation errors.
 	 */
 	public static final int RC_TRANSFORM = 6;
+	/**
+	 * the return code for having no source types.
+	 */
+	public static final int RC_NOTYPES = 7;
 
 	/**
 	 * Executes the scanner, starts the translation jobs etc.

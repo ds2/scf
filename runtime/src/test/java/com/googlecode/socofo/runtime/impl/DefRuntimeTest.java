@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +39,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.googlecode.socofo.common.api.MainRuntime;
 import com.googlecode.socofo.core.api.Scheduler;
+import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.runtime.RuntimeInjectionPlan;
 
 /**
@@ -71,7 +73,8 @@ public class DefRuntimeTest {
 			final URL rulesUrl = rulesUrlFile.toURI().toURL();
 			to.parseParams(MainRuntime.PARAM_BASEDIR + "=src/test/resources",
 					MainRuntime.PARAM_RULESURL + "=" + rulesUrl.toString(),
-					MainRuntime.PARAM_TARGETDIR + "=target/result");
+					MainRuntime.PARAM_TARGETDIR + "=target/result",
+					MainRuntime.PARAM_TYPES + "=xml");
 			final int rc = to.execute();
 			assertEquals(MainRuntime.RC_SUCCESS, rc);
 		} catch (final MalformedURLException e) {
@@ -115,6 +118,10 @@ public class DefRuntimeTest {
 	public final void testParseParams() {
 		to.parseParams(null);
 		to.parseParams();
+		to.parseParams(MainRuntime.PARAM_TYPES + "=xml");
+		List<SourceTypes> types = to.getTypes();
+		assertEquals(1, types.size());
+		assertEquals(SourceTypes.XML, types.get(0));
 	}
 
 	/**
@@ -140,7 +147,7 @@ public class DefRuntimeTest {
 			to.parseParams(MainRuntime.PARAM_BASEDIR
 					+ "=src/test/resources/single1", MainRuntime.PARAM_RULESURL
 					+ "=" + rulesUrl.toString(), MainRuntime.PARAM_TARGETDIR
-					+ "=target/result");
+					+ "=target/result", MainRuntime.PARAM_TYPES + "=xml");
 			final int rc = to.execute();
 			assertEquals(MainRuntime.RC_SUCCESS, rc);
 		} catch (final MalformedURLException e) {
@@ -156,7 +163,7 @@ public class DefRuntimeTest {
 			to.parseParams(MainRuntime.PARAM_BASEDIR
 					+ "=src/test/resources/txt1", MainRuntime.PARAM_RULESURL
 					+ "=" + rulesUrl.toString(), MainRuntime.PARAM_TARGETDIR
-					+ "=target/result/txt1");
+					+ "=target/result/txt1", MainRuntime.PARAM_TYPES + "=xml");
 			int rc = to.execute();
 			assertEquals(MainRuntime.RC_SUCCESS, rc);
 		} catch (MalformedURLException e) {
@@ -171,7 +178,8 @@ public class DefRuntimeTest {
 			to.parseParams(MainRuntime.PARAM_BASEDIR
 					+ "=src/test/resources/complex1",
 					MainRuntime.PARAM_RULESURL + "=" + rulesUrl.toString(),
-					MainRuntime.PARAM_TARGETDIR + "=target/result/complex1");
+					MainRuntime.PARAM_TARGETDIR + "=target/result/complex1",
+					MainRuntime.PARAM_TYPES + "=xml");
 			int rc = to.execute();
 			assertEquals(MainRuntime.RC_SUCCESS, rc);
 		} catch (MalformedURLException e) {
