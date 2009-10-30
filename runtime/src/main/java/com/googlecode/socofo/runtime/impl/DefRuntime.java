@@ -155,8 +155,7 @@ public class DefRuntime implements MainRuntime {
 		baseDir = getBaseDirectory();
 		log.info("Using base directory " + baseDir);
 		log.info("Using target directory " + targetDir);
-		jobs = scheduler.createLocalJobs(baseDir, targetDir, types
-				.toArray(new SourceTypes[0]));
+		jobs = scheduler.createLocalJobs(baseDir, targetDir, types);
 		if (jobs.size() <= 0) {
 			log.warning("No source files found!");
 			return RC_NOSOURCES;

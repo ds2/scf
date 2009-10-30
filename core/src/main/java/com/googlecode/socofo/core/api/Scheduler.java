@@ -73,7 +73,7 @@ public interface Scheduler {
 	 * @return a list of jobs
 	 */
 	public List<TranslationJob> createLocalJobs(File baseDir, File targetDir,
-			SourceTypes... types);
+			List<SourceTypes> types);
 
 	/**
 	 * Adds additional jobs to the scheduler.

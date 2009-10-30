@@ -21,7 +21,6 @@
 package com.googlecode.socofo.core.impl;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +34,11 @@ import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
 import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.FileRoot;
 import com.googlecode.socofo.core.api.Scheduler;
-import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
+import com.googlecode.socofo.core.api.SourcefileScanner;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.exceptions.LoadingException;
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.core.impl.io.SourceFileFilter;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
 import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.RulesLoader;
@@ -67,11 +65,7 @@ public class SchedulerImpl implements Scheduler {
 	 * The thread group to add the translation jobs to.
 	 */
 	private ThreadGroup threadGrp = null;
-	/**
-	 * The source type detector.
-	 */
-	@Inject
-	private SourceTypeDetector localDetector = null;
+
 	/**
 	 * The injector for generating on-demand instances of translation jobs.
 	 */
@@ -90,6 +84,11 @@ public class SchedulerImpl implements Scheduler {
 	 * A list of error messages.
 	 */
 	private List<String> errorMsgs;
+	/**
+	 * The scanner for source files.
+	 */
+	@Inject
+	private SourcefileScanner scanner = null;
 
 	/**
 	 * Inits the scheduler.
@@ -125,7 +124,7 @@ public class SchedulerImpl implements Scheduler {
 	 */
 	@Override
 	public List<TranslationJob> createLocalJobs(final File baseDir,
-			final File td, final SourceTypes... types) {
+			final File td, final List<SourceTypes> types) {
 		log.entering(SchedulerImpl.class.getName(), "createLocalJobs",
 				new Object[] { baseDir, td, types });
 		final List<TranslationJob> rc = new ArrayList<TranslationJob>();
@@ -138,7 +137,7 @@ public class SchedulerImpl implements Scheduler {
 			log.info("Overwriting local files!");
 			targetDir = baseDir;
 		}
-		if (types == null || types.length <= 0) {
+		if (types == null || types.size() <= 0) {
 			log.warning("No types given!");
 			return rc;
 		}
@@ -146,7 +145,7 @@ public class SchedulerImpl implements Scheduler {
 			log.warning("No rules given!");
 			return rc;
 		}
-		final List<File> sourceFiles = getFiles(baseDir, types);
+		final List<File> sourceFiles = scanner.scan(baseDir, types);
 		log.finer("Got source files, counting " + sourceFiles.size());
 		for (File sourceFile : sourceFiles) {
 			log.finest("Got this source file: " + sourceFile.getAbsolutePath());
@@ -185,67 +184,6 @@ public class SchedulerImpl implements Scheduler {
 					new RulesInjectionPlan(), new CommonsInjectionPlan());
 		}
 		return ij;
-	}
-
-	/**
-	 * Returns all allowed files starting from the current base directory.
-	 * 
-	 * @param baseDir
-	 *            the base directory
-	 * @param types
-	 *            the list of allowed types
-	 * @return a list of found files matching the source type criteria
-	 */
-	protected List<File> getFiles(final File baseDir,
-			final SourceTypes... types) {
-		log.entering(SchedulerImpl.class.getName(), "getFiles", new Object[] {
-				baseDir, types });
-		final List<File> rc = new ArrayList<File>();
-		if (baseDir == null) {
-			log.warning("No base directory given, returning empty list!");
-			return rc;
-		}
-		if (types == null || types.length <= 0) {
-			log.warning("No types given, returning empty list!");
-			return rc;
-		}
-		final List<SourceTypes> allowedTypes = new ArrayList<SourceTypes>();
-		for (SourceTypes type : types) {
-			allowedTypes.add(type);
-		}
-		final FileFilter fileFilter = new SourceFileFilter(localDetector,
-				allowedTypes);
-		final File[] foundFiles = baseDir.listFiles(fileFilter);
-		rc.addAll(scanFilesAndDirectories(foundFiles, types));
-		log.exiting(SchedulerImpl.class.getName(), "getFiles", rc.size());
-		return rc;
-	}
-
-	/**
-	 * Scans the given list of files for the given source type and returns them.
-	 * 
-	 * @param foundFiles
-	 *            the found files. If one of them is a directory, this method
-	 *            checks the content of the directory.
-	 * @param types
-	 *            the list of allowed types.
-	 * @return all source files matching the given source types
-	 */
-	private List<File> scanFilesAndDirectories(final File[] foundFiles,
-			final SourceTypes... types) {
-		final List<File> rc = new ArrayList<File>();
-		if (foundFiles != null && foundFiles.length > 0) {
-			for (File foundFile : foundFiles) {
-				log.finest("found " + foundFile);
-				if (foundFile.isDirectory() && !rc.contains(foundFile)) {
-					log.finer("Calling scan of child directory " + foundFile);
-					rc.addAll(getFiles(foundFile, types));
-					continue;
-				}
-				rc.add(foundFile);
-			}
-		}
-		return rc;
 	}
 
 	/**
@@ -303,16 +241,6 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	/**
-	 * Sets the test detector.
-	 * 
-	 * @param instance
-	 *            the detector used for tests
-	 */
-	protected void setTestDetector(final SourceTypeDetector instance) {
-		localDetector = instance;
-	}
-
-	/**
 	 * Sets the test rules loader.
 	 * 
 	 * @param instance
@@ -320,6 +248,16 @@ public class SchedulerImpl implements Scheduler {
 	 */
 	public void setTestRulesLoader(final RulesLoader instance) {
 		rulesLoader = instance;
+	}
+
+	/**
+	 * Sets the test source file scanner.
+	 * 
+	 * @param instance
+	 *            the impl for testing purpose
+	 */
+	public void setTestSourcefileScanner(SourcefileScanner instance) {
+		scanner = instance;
 	}
 
 }

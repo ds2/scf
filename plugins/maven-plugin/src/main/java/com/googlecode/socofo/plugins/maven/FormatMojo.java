@@ -69,31 +69,32 @@ public class FormatMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		getLog().info(
+		getLog().debug(
 				"This goal will format all source code in "
 						+ currentPrj.getArtifactId());
 		getLog().debug("Searching for source directory...");
 		String srcDirStr = currentPrj.getBuild().getSourceDirectory();
 		if (srcDirStr == null) {
-			getLog().info("No sources found!");
+			getLog().error("No sources found!");
 			return;
 		}
 		File srcDir = new File(srcDirStr);
 		if (!srcDir.exists()) {
-			getLog().info(
+			getLog().error(
 					"Source directory " + srcDir.getAbsolutePath()
 							+ " does not exist. Ignoring.");
 			return;
 		}
 		if (!srcDir.canRead()) {
-			getLog().info("Cannot read sources in " + srcDir.getAbsolutePath());
+			getLog()
+					.error("Cannot read sources in " + srcDir.getAbsolutePath());
 			return;
 		}
 		socofo.setBaseDirectory(srcDir);
 		getLog().debug("Searching target directory..");
 		String targetDirStr = currentPrj.getBuild().getOutputDirectory();
 		File targetDir = new File(targetDirStr, "../results");
-		getLog().info("target dir is " + targetDir.getAbsolutePath());
+		getLog().debug("target dir is " + targetDir.getAbsolutePath());
 		socofo.setTargetDirectory(targetDir);
 		String rulesUrlStr = "";
 		URL rulesUrl;
@@ -103,6 +104,7 @@ public class FormatMojo extends AbstractMojo {
 			throw new MojoFailureException("Bad rules url: " + rulesUrlStr);
 		}
 		socofo.setRules(rulesUrl);
+		getLog().info("Starting transformation");
 		int runtimeRc = socofo.execute();
 		getLog().info("Execution was " + runtimeRc);
 	}

@@ -20,12 +20,12 @@
  */
 package com.googlecode.socofo.core.impl;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -34,8 +34,8 @@ import org.junit.Test;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
-import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
+import com.googlecode.socofo.core.api.SourcefileScanner;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
 import com.googlecode.socofo.rules.api.RulesLoader;
@@ -57,8 +57,9 @@ public class SchedulerImplTest {
 		to = new SchedulerImpl();
 		Injector ij = Guice.createInjector(new CoreInjectionPlan(),
 				new CommonsInjectionPlan(), new RulesInjectionPlan());
-		to.setTestDetector(ij.getInstance(SourceTypeDetector.class));
+		// to.setTestDetector(ij.getInstance(SourceTypeDetector.class));
 		to.setTestRulesLoader(ij.getInstance(RulesLoader.class));
+		to.setTestSourcefileScanner(ij.getInstance(SourcefileScanner.class));
 		File rulesFile = new File("src/test/resources/rules.xml");
 		rulesUrl = rulesFile.toURI().toURL();
 	}
@@ -84,23 +85,9 @@ public class SchedulerImplTest {
 		File targetDir = new File("target/transformed");
 		to.setRules(rulesUrl);
 		List<TranslationJob> jobs = to.createLocalJobs(baseDir, targetDir,
-				SourceTypes.XML);
+				Arrays.asList(SourceTypes.XML));
 		assertNotNull(jobs);
 		assertTrue(jobs.size() > 0);
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SchedulerImpl#getFiles(java.io.File, com.googlecode.socofo.core.api.SourceTypes[])}
-	 * .
-	 */
-	@Test
-	public final void testGetFiles() {
-		File baseDir = new File(".");
-		List<File> l = to.getFiles(baseDir, null);
-		assertEquals(0, l.size());
-		l = to.getFiles(baseDir, SourceTypes.XML);
-		assertTrue(l.size() > 1);
 	}
 
 	/**
