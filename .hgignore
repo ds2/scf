@@ -26,3 +26,4 @@ syntax: regexp
 \.chg\..*$
 \.rej$
 \.conflict\~$
+nb-configuration.xml$
