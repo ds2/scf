@@ -101,6 +101,7 @@
             <exclude>**/.checkstyle</exclude>
             <exclude>**/.pmd</exclude>
             <exclude>README.txt</exclude>
+            <exclude>**/license_header.txt</exclude>
           </excludes>
           <encoding>utf-8</encoding>
           <mapping>
