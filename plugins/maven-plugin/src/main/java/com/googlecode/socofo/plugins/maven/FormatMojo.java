@@ -23,6 +23,7 @@ package com.googlecode.socofo.plugins.maven;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -55,7 +56,7 @@ public class FormatMojo extends AbstractMojo {
 	/**
 	 * URL to the formatter xml.
 	 * 
-	 * @parameter
+	 * @parameter expression="${formatterUrl}"
 	 * @required
 	 */
 	private String formatterUrl;
@@ -71,7 +72,7 @@ public class FormatMojo extends AbstractMojo {
 	/**
 	 * The list of types to scan for.
 	 * 
-	 * @parameter
+	 * @parameter expression="${types}" property="scanTypes"
 	 * @required
 	 */
 	private List<String> types;
@@ -82,13 +83,13 @@ public class FormatMojo extends AbstractMojo {
 	/**
 	 * The base directory to scan for files.
 	 * 
-	 * @parameter default="${project.build.sourceDirectory}"
+	 * @parameter expression="${baseDir}" default-value="${project.build.sourceDirectory}"
 	 */
 	private File baseDir;
 	/**
 	 * The directory to write the results to.
 	 * 
-	 * @parameter default="${project.build.outputDirectory}/../results"
+	 * @parameter expression="${project.build.outputDirectory}/../results"
 	 */
 	private File resultDir;
 
@@ -98,6 +99,7 @@ public class FormatMojo extends AbstractMojo {
 	public FormatMojo() {
 		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
 		socofo = ij.getInstance(MainRuntime.class);
+		types = new ArrayList<String>();
 	}
 
 	/**
@@ -137,5 +139,15 @@ public class FormatMojo extends AbstractMojo {
 		getLog().info("Starting transformation");
 		int runtimeRc = socofo.execute();
 		getLog().info("Execution was " + runtimeRc);
+	}
+
+	public void setScanTypes(String s) {
+		if (s == null || s.length() <= 0) {
+			return;
+		}
+		String[] types = s.split(",");
+		for (String type : types) {
+			this.types.add(type);
+		}
 	}
 }
