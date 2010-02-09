@@ -24,6 +24,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
+import com.googlecode.socofo.rules.api.RuleSet;
+
 /**
  * The scheduler. Implementations of this class are scheduling and
  * starting/stopping translation jobs.
@@ -90,4 +92,11 @@ public interface Scheduler {
 	 *         count may NOT reflect the real count of running jobs.
 	 */
 	public int getActiveJobsCount();
+
+	/**
+	 * Returns the ruleset for this scheduler.
+	 * 
+	 * @return the ruleset
+	 */
+	public RuleSet getRuleset();
 }

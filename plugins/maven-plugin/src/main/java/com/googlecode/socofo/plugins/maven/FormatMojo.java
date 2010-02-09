@@ -83,7 +83,7 @@ public class FormatMojo extends AbstractMojo {
 	/**
 	 * The base directory to scan for files.
 	 * 
-	 * @parameter expression="${baseDir}" default-value="${project.build.sourceDirectory}"
+	 * @parameter expression="${baseDir}" default-value="${project.build.sourceDirectory}/.."
 	 */
 	private File baseDir;
 	/**

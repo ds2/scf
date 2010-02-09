@@ -159,6 +159,9 @@ public class DefRuntime implements MainRuntime {
 		scheduler.addWaiterThreads(currentThread);
 		List<TranslationJob> jobs = null;
 		scheduler.setRules(rulesUrl);
+		if (scheduler.getRuleset() == null) {
+			return RC_NORULES;
+		}
 		baseDir = getBaseDirectory();
 		log.info("Using base directory " + baseDir);
 		log.info("Using target directory " + targetDir);

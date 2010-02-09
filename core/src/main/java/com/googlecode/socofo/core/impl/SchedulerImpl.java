@@ -214,6 +214,9 @@ public class SchedulerImpl implements Scheduler {
 			return;
 		}
 		ruleSet = rulesLoader.loadRulesFromUrl(formatterXml);
+		if (ruleSet != null) {
+			log.info("Rules loaded from " + formatterXml + ", successful.");
+		}
 		log.exiting(SchedulerImpl.class.getName(), "setRules", ruleSet);
 	}
 
@@ -258,6 +261,14 @@ public class SchedulerImpl implements Scheduler {
 	 */
 	public void setTestSourcefileScanner(SourcefileScanner instance) {
 		scanner = instance;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public RuleSet getRuleset() {
+		return ruleSet;
 	}
 
 }
