@@ -19,48 +19,64 @@ package com.googlecode.socofo.core.api;
 
 /**
  * A source type.
- *
- * @author  kaeto23
+ * 
+ * @author kaeto23
  */
 public enum SourceTypes {
 
-    /**
-     * the XML source code type.
-     */
-    XML,
+	/**
+	 * the XML source code type.
+	 */
+	XML,
 
-    /**
-     * The Java source code type.
-     */
-    Java,
+	/**
+	 * The Java source code type.
+	 */
+	Java,
 
-    /**
-     * The lua source code type.
-     */
-    Lua,
+	/**
+	 * The lua source code type.
+	 */
+	Lua,
 
-    /**
-     * The HTML source code type.
-     */
-    HTML,
+	/**
+	 * The HTML source code type.
+	 */
+	HTML,
 
-    /**
-     * The XHTML source code type.
-     */
-    XHTML,
+	/**
+	 * The XHTML source code type.
+	 */
+	XHTML,
 
-    /**
-     * The JSP source code type.
-     */
-    JSP,
+	/**
+	 * The JSP source code type.
+	 */
+	JSP,
 
-    /**
-     * The JSPX source code type.
-     */
-    JSPX,
+	/**
+	 * The JSPX source code type.
+	 */
+	JSPX,
 
-    /**
-     * The c# source code type.
-     */
-    CSharp;
+	/**
+	 * The c# source code type.
+	 */
+	CSharp;
+
+	/**
+	 * Returns the source type with the given name.
+	 * 
+	 * @param t
+	 *            the name of the source type
+	 * @return the source type, or null if not found.
+	 */
+	public static SourceTypes findByName(String t) {
+		for (SourceTypes type : values()) {
+			if (type.name().equalsIgnoreCase(t)) {
+				return type;
+			}
+		}
+		return null;
+	}
 }

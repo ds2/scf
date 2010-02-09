@@ -77,8 +77,14 @@ public class DefRuntime implements MainRuntime {
 	 * The url to the transformation rules.
 	 */
 	private URL rulesUrl;
-
+	/**
+	 * The list of source types to scan for.
+	 */
 	private List<SourceTypes> types = null;
+	/**
+	 * Some source filters.
+	 */
+	private List<String> sourceFilters = null;
 
 	/**
 	 * Inits the runtime.
@@ -91,6 +97,7 @@ public class DefRuntime implements MainRuntime {
 			console = c.writer();
 		}
 		types = new ArrayList<SourceTypes>();
+		sourceFilters = new ArrayList<String>();
 	}
 
 	/**
@@ -321,8 +328,38 @@ public class DefRuntime implements MainRuntime {
 		this.rulesUrl = r;
 	}
 
+	/**
+	 * Returns the source types to work with.
+	 * 
+	 * @return the source types
+	 */
 	public List<SourceTypes> getTypes() {
 		return types;
+	}
+
+	@Override
+	public void applySourceFilters(List<String> filters) {
+		if (filters == null || filters.size() <= 0) {
+			return;
+		}
+		sourceFilters.addAll(filters);
+	}
+
+	@Override
+	public void setTypes(List<String> types) {
+		if (types == null || types.size() <= 0) {
+			return;
+		}
+		for (String t : types) {
+			t = t.trim().toLowerCase();
+			SourceTypes detectedType = SourceTypes.findByName(t);
+			if (detectedType == null) {
+				log.warning("Could not find a type with the name " + t
+						+ "! Continue types scan.");
+				continue;
+			}
+			this.types.add(detectedType);
+		}
 	}
 
 }

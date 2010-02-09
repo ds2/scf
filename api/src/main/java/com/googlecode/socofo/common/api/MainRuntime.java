@@ -22,6 +22,7 @@ package com.googlecode.socofo.common.api;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 /**
  * The contract for a possible runtime scanner.
@@ -134,10 +135,47 @@ public interface MainRuntime {
 	 */
 	URL getRulesUrl();
 
+	/**
+	 * Sets the base directory to start scanning for source files.
+	 * 
+	 * @param srcDir
+	 *            the source directory.
+	 */
 	void setBaseDirectory(File srcDir);
 
+	/**
+	 * Sets the target directory to write the results to.
+	 * 
+	 * @param targetDir
+	 *            the target directory
+	 */
 	void setTargetDirectory(File targetDir);
 
+	/**
+	 * Sets the rules url.
+	 * 
+	 * @param rulesUrl
+	 *            the rules url
+	 */
 	void setRules(URL rulesUrl);
+
+	/**
+	 * Sets the source types to support when scanning for files.
+	 * 
+	 * @param types
+	 *            a list of types to scan for.
+	 */
+	void setTypes(List<String> types);
+
+	/**
+	 * Applies additional filters to the source scan. This list contains regular
+	 * expressions that are applied to the source file found via the types scan.
+	 * If applyable, the source file is added finally. If not, the source file
+	 * is dropped.
+	 * 
+	 * @param filters
+	 *            the list of regular expressions
+	 */
+	void applySourceFilters(List<String> filters);
 
 }

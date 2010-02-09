@@ -23,6 +23,7 @@ package com.googlecode.socofo.plugins.maven;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -52,9 +53,44 @@ public class FormatMojo extends AbstractMojo {
 	 */
 	private MavenProject currentPrj = null;
 	/**
+	 * URL to the formatter xml.
+	 * 
+	 * @parameter
+	 * @required
+	 */
+	private String formatterUrl;
+	/**
+	 * The source file filter. Compared to {@link #types}, this includes
+	 * patterns to exclude any file that does not match this pattern. So, while
+	 * the types param sets XML, you can set filters here to pom.xml to only
+	 * parse pom.xml files, and no other xml file.
+	 * 
+	 * @parameter
+	 */
+	private List<String> filters;
+	/**
+	 * The list of types to scan for.
+	 * 
+	 * @parameter
+	 * @required
+	 */
+	private List<String> types;
+	/**
 	 * The runtime that performs the actions.
 	 */
 	private MainRuntime socofo = null;
+	/**
+	 * The base directory to scan for files.
+	 * 
+	 * @parameter default="${project.build.sourceDirectory}"
+	 */
+	private File baseDir;
+	/**
+	 * The directory to write the results to.
+	 * 
+	 * @parameter default="${project.build.outputDirectory}/../results"
+	 */
+	private File resultDir;
 
 	/**
 	 * 
@@ -73,30 +109,22 @@ public class FormatMojo extends AbstractMojo {
 				"This goal will format all source code in "
 						+ currentPrj.getArtifactId());
 		getLog().debug("Searching for source directory...");
-		String srcDirStr = currentPrj.getBuild().getSourceDirectory();
-		if (srcDirStr == null) {
-			getLog().error("No sources found!");
-			return;
-		}
-		File srcDir = new File(srcDirStr);
-		if (!srcDir.exists()) {
+		if (!baseDir.exists()) {
 			getLog().error(
-					"Source directory " + srcDir.getAbsolutePath()
+					"Source directory " + baseDir.getAbsolutePath()
 							+ " does not exist. Ignoring.");
 			return;
 		}
-		if (!srcDir.canRead()) {
-			getLog()
-					.error("Cannot read sources in " + srcDir.getAbsolutePath());
+		if (!baseDir.canRead()) {
+			getLog().error(
+					"Cannot read sources in " + baseDir.getAbsolutePath());
 			return;
 		}
-		socofo.setBaseDirectory(srcDir);
+		socofo.setBaseDirectory(baseDir);
 		getLog().debug("Searching target directory..");
-		String targetDirStr = currentPrj.getBuild().getOutputDirectory();
-		File targetDir = new File(targetDirStr, "../results");
-		getLog().debug("target dir is " + targetDir.getAbsolutePath());
-		socofo.setTargetDirectory(targetDir);
-		String rulesUrlStr = "";
+		getLog().debug("target dir is " + resultDir.getAbsolutePath());
+		socofo.setTargetDirectory(resultDir);
+		String rulesUrlStr = formatterUrl;
 		URL rulesUrl;
 		try {
 			rulesUrl = new URL(rulesUrlStr);
@@ -104,6 +132,8 @@ public class FormatMojo extends AbstractMojo {
 			throw new MojoFailureException("Bad rules url: " + rulesUrlStr);
 		}
 		socofo.setRules(rulesUrl);
+		socofo.setTypes(types);
+		socofo.applySourceFilters(filters);
 		getLog().info("Starting transformation");
 		int runtimeRc = socofo.execute();
 		getLog().info("Execution was " + runtimeRc);

@@ -85,7 +85,7 @@
           </dependency>
         </dependencies>
         <configuration>
-            <!-- 
+          <!-- 
           <basedir>${basedir}</basedir>
           -->
           <header>/configs/license_header.txt</header>
@@ -102,6 +102,7 @@
             <exclude>**/.pmd</exclude>
             <exclude>README.txt</exclude>
             <exclude>**/license_header.txt</exclude>
+            <exclude>**/package-info.java</exclude>
           </excludes>
           <encoding>utf-8</encoding>
           <mapping>
@@ -146,6 +147,11 @@
       <id>java</id>
       <name>Java Repository</name>
       <url>http://download.java.net/maven/2</url>
+    </repository>
+    <repository>
+      <id>org.springframework.maven.milestone</id>
+      <name>Maven Central Compatible Spring Milestone Repository</name>
+      <url>http://maven.springframework.org/milestone</url>
     </repository>
   </repositories>
   <pluginRepositories>
