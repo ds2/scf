@@ -133,32 +133,15 @@
   </build>
   <repositories>
     <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>google.guice</id>
-      <name>Kamalook Guice Maven Repo</name>
-      <url>http://maven.kamalook.de</url>
-    </repository>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>java</id>
-      <name>Java Repository</name>
-      <url>http://download.java.net/maven/2</url>
-    </repository>
-    <repository>
-      <id>org.springframework.maven.milestone</id>
-      <name>Maven Central Compatible Spring Milestone Repository</name>
-      <url>http://maven.springframework.org/milestone</url>
+      <id>dev1</id>
+      <name>Developer 1 Stage directory</name>
+      <url>http://localhost:13080/nexus/content/groups/dev1/</url>
     </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
-      <id>java</id>
-      <name>Java Repo</name>
-      <url>http://download.java.net/maven/2</url>
+      <id>dev1</id>
+      <url>http://localhost:13080/nexus/content/groups/dev1/</url>
     </pluginRepository>
   </pluginRepositories>
   <dependencies>
@@ -260,4 +243,14 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <distributionManagement>
+    <repository>
+      <id>ds2.releases</id>
+      <url>dav:http://localhost:13080/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ds2.snapshots</id>
+      <url>dav:http://localhost:13080/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
