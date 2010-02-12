@@ -20,25 +20,22 @@
  */
 package com.googlecode.socofo.appengine;
 
-import java.util.logging.Logger;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author kaeto23
  * 
  */
 public class StartupListener implements ServletContextListener {
-	private static final Logger LOG = Logger.getLogger(StartupListener.class
-			.getName());
-
 	/**
-	 * 
+	 * A logger.
 	 */
-	public StartupListener() {
-		// TODO Auto-generated constructor stub
-	}
+	private static final Logger LOG = LoggerFactory
+			.getLogger(StartupListener.class);
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {

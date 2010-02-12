@@ -26,7 +26,8 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Singleton;
 import com.googlecode.socofo.common.api.IOHelper;
@@ -43,8 +44,8 @@ public class IOHelperImpl implements IOHelper {
 	 * A logger.
 	 * 
 	 */
-	private static final transient Logger LOG = Logger
-			.getLogger(IOHelperImpl.class.getName());
+	private static final transient Logger LOG = LoggerFactory
+			.getLogger(IOHelperImpl.class);
 
 	/**
 	 * {@inheritDoc}
@@ -52,13 +53,13 @@ public class IOHelperImpl implements IOHelper {
 	@Override
 	public void closeInputstream(final InputStream is) {
 		if (is == null) {
-			LOG.warning("No inputstream given!");
+			LOG.warn("No inputstream given!");
 			return;
 		}
 		try {
 			is.close();
 		} catch (final IOException e) {
-			LOG.throwing(IOHelperImpl.class.getName(), "closeInputstream", e);
+			LOG.debug("Error on closing stream", e);
 		}
 	}
 
@@ -67,15 +68,13 @@ public class IOHelperImpl implements IOHelper {
 	 */
 	@Override
 	public void closeReader(final Reader r) {
-		LOG.entering(IOHelperImpl.class.getName(), "closeReader", r);
 		if (r != null) {
 			try {
 				r.close();
 			} catch (final IOException e) {
-				LOG.throwing(IOHelper.class.getName(), "closeReader", e);
+				LOG.debug("closeReader error", e);
 			}
 		}
-		LOG.exiting(IOHelperImpl.class.getName(), "closeReader");
 	}
 
 	/**
@@ -84,13 +83,13 @@ public class IOHelperImpl implements IOHelper {
 	@Override
 	public void closeOutputstream(final OutputStream baos) {
 		if (baos == null) {
-			LOG.warning("No output stream given!");
+			LOG.warn("No output stream given!");
 			return;
 		}
 		try {
 			baos.close();
 		} catch (final IOException e) {
-			LOG.throwing(IOHelperImpl.class.getName(), "closeOutputstream", e);
+			LOG.debug("outputstream error", e);
 		}
 	}
 
@@ -101,13 +100,13 @@ public class IOHelperImpl implements IOHelper {
 	public String createString(final byte[] byteArray, final String encoding) {
 		String rc = null;
 		if (byteArray == null || byteArray.length <= 0) {
-			LOG.warning("No content given to translate!");
+			LOG.warn("No content given to translate!");
 			return rc;
 		}
 		try {
 			rc = new String(byteArray, encoding);
 		} catch (final UnsupportedEncodingException e) {
-			LOG.throwing(IOHelperImpl.class.getName(), "createString", e);
+			LOG.debug("Encoding not supported", e);
 		}
 		return rc;
 	}
@@ -121,7 +120,7 @@ public class IOHelperImpl implements IOHelper {
 		try {
 			rc = bis.read(buffer);
 		} catch (final IOException e) {
-			LOG.throwing(IOHelperImpl.class.getName(), "read", e);
+			LOG.debug("read error", e);
 			rc = -1;
 		}
 		return rc;
@@ -133,13 +132,13 @@ public class IOHelperImpl implements IOHelper {
 	@Override
 	public void closeWriter(final Writer w) {
 		if (w == null) {
-			LOG.warning("No writer given!");
+			LOG.warn("No writer given!");
 			return;
 		}
 		try {
 			w.close();
 		} catch (final IOException e) {
-			LOG.throwing(IOHelperImpl.class.getName(), "closeWriter", e);
+			LOG.debug("closeWriter error", e);
 		}
 	}
 
