@@ -23,7 +23,9 @@ package com.googlecode.socofo.core.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,8 +40,8 @@ public class LineHandlerImpl implements LineHandler {
 	/**
 	 * A logger
 	 */
-	private static final Logger log = Logger.getLogger(LineHandlerImpl.class
-			.getName());
+	private static final Logger log = LoggerFactory
+			.getLogger(LineHandlerImpl.class);
 	/**
 	 * Whitespace pattern
 	 */
@@ -60,35 +62,35 @@ public class LineHandlerImpl implements LineHandler {
 	@Override
 	public List<String> breakContent(int lineWidth, String content,
 			int firstIndent, BreakFormat breakType) {
-		log.entering(LineHandlerImpl.class.getName(), "breakContent",
-				new Object[] { lineWidth, content, firstIndent, breakType });
+		log.debug("entering", new Object[] { lineWidth, content, firstIndent,
+				breakType });
 		List<String> rc = new ArrayList<String>();
 		if (content == null || content.length() <= 0) {
 			return rc;
 		}
 		if (firstIndent >= lineWidth) {
-			log.severe("The indent is too big to handle!");
+			log.error("The indent is too big to handle!");
 			return rc;
 		}
-		log.finer("breaking content at default NEWLINE sequences");
+		log.debug("breaking content at default NEWLINE sequences");
 		Scanner scanner = new Scanner(content);
 		scanner.useDelimiter("\n");
-		log.finer("Entering line loop");
+		log.debug("Entering line loop");
 		boolean isFirstLine = true;
 		while (scanner.hasNext()) {
 			String line = scanner.next();
-			log.finest("current line is: " + line);
+			log.debug("current line is: {}", line);
 			if (line == null) {
-				log.finer("line has no content, continuing");
+				log.debug("line has no content, continuing");
 				continue;
 			}
 			if (line.length() <= 0 || breakType.equals(BreakFormat.NoBreak)) {
 				log
-						.finer("line is empty or has NOBREAK flag -> adding and continuing");
+						.debug("line is empty or has NOBREAK flag -> adding and continuing");
 				rc.add(line);
 				continue;
 			}
-			log.finer("Creating currentLine buffer, adding indent");
+			log.debug("Creating currentLine buffer, adding indent");
 			StringBuffer currentLine = new StringBuffer();
 			if (isFirstLine) {
 				for (int i = 0; i < firstIndent; i++) {
@@ -97,19 +99,17 @@ public class LineHandlerImpl implements LineHandler {
 				isFirstLine = false;
 			}
 			line = line.trim();
-			log.finest("Tokenizing line...");
+			log.debug("Tokenizing line...");
 			List<String> tokens = getTokens(line);
-			log
-					.finest("found " + tokens.size()
-							+ " tokens on the current line");
-			log.finer("entering token loop");
+			log.debug("found {} tokens on the current line", tokens.size());
+			log.debug("entering token loop");
 			for (int tokenIndex = 0; tokenIndex < tokens.size(); tokenIndex++) {
 				String token = tokens.get(tokenIndex);
-				log.finest("Working with token(" + tokenIndex + "): " + token);
+				log.debug("Working with token({}): {}", tokenIndex, token);
 				int tokenInsertOffset = currentLine.length();
 				currentLine.append(token);
 				if (getLengthOfBuffer(currentLine) > lineWidth) {
-					log.finest("currentLine is too long, shortening");
+					log.debug("currentLine is too long, shortening");
 					String beforeToken = "";
 					switch (breakType) {
 					case BeautyBreak:
@@ -129,21 +129,21 @@ public class LineHandlerImpl implements LineHandler {
 
 				}
 			}
-			log.finer("Checking last buffer");
+			log.debug("Checking last buffer");
 			if (currentLine.length() > 0) {
-				log.finest("adding last content of currentLineBuffer");
+				log.debug("adding last content of currentLineBuffer");
 				rc.add(currentLine.toString());
 			}
 			if (firstIndent > 0) {
-				log.finer("Clearing first indent template");
+				log.debug("Clearing first indent template");
 				String firstLine = rc.get(0);
 				firstLine = firstLine.trim();
 				rc.remove(0);
 				rc.add(0, firstLine);
 			}
-			log.finer("line finished");
+			log.debug("line finished");
 		}
-		log.finer("Removing leading empty lines");
+		log.debug("Removing leading empty lines");
 		for (int i = 0; i < rc.size(); i++) {
 			String line = rc.get(0);
 			if (line.trim().length() <= 0) {
@@ -152,7 +152,7 @@ public class LineHandlerImpl implements LineHandler {
 				break;
 			}
 		}
-		log.exiting(LineHandlerImpl.class.getName(), "breakContent", rc);
+		log.debug("exiting {}", rc);
 		return rc;
 	}
 
@@ -166,7 +166,7 @@ public class LineHandlerImpl implements LineHandler {
 	 * @see #wordPattern
 	 */
 	protected List<String> getTokens(final String line) {
-		log.entering(LineHandlerImpl.class.getName(), "getTokens", line);
+		log.debug("entering with: {}", line);
 		List<String> tokenList = new ArrayList<String>();
 		if (line == null || line.length() <= 0) {
 			return tokenList;
@@ -177,14 +177,14 @@ public class LineHandlerImpl implements LineHandler {
 			String wordSeq = wordMatcher.group();
 			tokenList.add(wordSeq);
 			lastOffset = wordMatcher.end();
-			log.finest("found a seq between " + wordMatcher.start() + " and "
-					+ lastOffset);
+			log.debug("found a seq between {} and {}", wordMatcher.start(),
+					lastOffset);
 		}
 		if (lastOffset < line.length()) {
 			// there is something missing
 			tokenList.add(line.substring(lastOffset));
 		}
-		log.exiting(LineHandlerImpl.class.getName(), "getTokens", tokenList);
+		log.debug("exiting: {}", tokenList);
 		return tokenList;
 	}
 
@@ -212,10 +212,10 @@ public class LineHandlerImpl implements LineHandler {
 		int rc = maxLineWidth;
 		rc -= ac;
 		if (rc < 0) {
-			log.warning("too much additional chars: " + ac);
+			log.warn("too much additional chars: {}", ac);
 			rc = 0;
 		} else if (rc == 0) {
-			log.warning("Width and additional chars are the same!");
+			log.warn("Width and additional chars are the same!");
 		}
 		return rc;
 	}
@@ -225,7 +225,7 @@ public class LineHandlerImpl implements LineHandler {
 	 */
 	@Override
 	public String cleanComment(String lines) {
-		log.entering(LineHandlerImpl.class.getName(), "cleanComment", lines);
+		log.warn("entering: {}", lines);
 		StringBuffer rc = new StringBuffer();
 		if (lines == null) {
 			return "";
@@ -248,7 +248,7 @@ public class LineHandlerImpl implements LineHandler {
 		if (rc2.length() > 0) {
 			rc2 = rc2.substring(0, rc2.length() - 1);
 		}
-		log.exiting(LineHandlerImpl.class.getName(), "cleanComment", rc2);
+		log.debug("exiting", rc2);
 		return rc2;
 	}
 
@@ -281,19 +281,19 @@ public class LineHandlerImpl implements LineHandler {
 	 */
 	@Override
 	public int getLineWidth(int tabSize, String s) {
-		log.entering(LineHandlerImpl.class.getName(), "getLineWidth", s);
+		log.debug("entering: {}", s);
 		int rc = 0;
 		if (s == null || s.length() <= 0) {
 			return rc;
 		}
 		rc = s.length();
-		log.finest("actual length is " + rc);
+		log.debug("actual length is " + rc);
 		// count all tab chars
 		int startOffset = 0;
 		while (s.indexOf("\t", startOffset++) >= 0) {
 			rc += (tabCharSize - 1);
 		}
-		log.exiting(LineHandlerImpl.class.getName(), "getLineWidth", rc);
+		log.debug("exiting: {}", rc);
 		return rc;
 	}
 
