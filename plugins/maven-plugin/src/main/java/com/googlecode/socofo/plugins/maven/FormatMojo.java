@@ -21,18 +21,25 @@
 package com.googlecode.socofo.plugins.maven;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.common.api.MainRuntime;
 import com.googlecode.socofo.runtime.RuntimeInjectionPlan;
 
@@ -92,6 +99,11 @@ public class FormatMojo extends AbstractMojo {
 	 * @parameter expression="${project.build.outputDirectory}/../results"
 	 */
 	private File resultDir;
+	/**
+	 * @parameter expression="${logConfig}"
+	 */
+	private File logConfig;
+	private IOHelper io;
 
 	/**
 	 * 
@@ -99,6 +111,7 @@ public class FormatMojo extends AbstractMojo {
 	public FormatMojo() {
 		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
 		socofo = ij.getInstance(MainRuntime.class);
+		io=ij.getInstance(IOHelper.class);
 		types = new ArrayList<String>();
 	}
 
@@ -110,6 +123,23 @@ public class FormatMojo extends AbstractMojo {
 		getLog().debug(
 				"This goal will format all source code in "
 						+ currentPrj.getArtifactId());
+		getLog().debug("Checking Logger config");
+		if(logConfig!=null) {
+			FileInputStream fis=null;
+			try {
+				fis = new FileInputStream(logConfig);
+				LogManager.getLogManager().readConfiguration(fis);
+				getLog().info("Logger config changed");
+			} catch (FileNotFoundException e) {
+				throw new MojoExecutionException("File "+logConfig+" not found!",e);
+			} catch (SecurityException e) {
+				throw new MojoExecutionException("Security error",e);
+			} catch (IOException e) {
+				throw new MojoExecutionException("IO error",e);
+			} finally {
+				io.closeInputstream(fis);
+			}
+		}
 		getLog().debug("Searching for source directory...");
 		if (!baseDir.exists()) {
 			getLog().error(

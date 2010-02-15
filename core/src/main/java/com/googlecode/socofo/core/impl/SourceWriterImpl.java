@@ -20,7 +20,8 @@
  */
 package com.googlecode.socofo.core.impl;
 
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.googlecode.socofo.core.api.LineHandler;
@@ -54,8 +55,8 @@ public class SourceWriterImpl implements SourceWriter {
 	/**
 	 * A logger
 	 */
-	private static final transient Logger log = Logger
-			.getLogger(SourceWriterImpl.class.getName());
+	private static final transient Logger log = LoggerFactory
+			.getLogger(SourceWriterImpl.class);
 	/**
 	 * The line handler.
 	 */
@@ -78,7 +79,7 @@ public class SourceWriterImpl implements SourceWriter {
 			throws TranslationException {
 		commitLine(false);
 		if (indents < 0) {
-			log.severe("Indents of " + indents + " are impossible!");
+			log.error("Indents of {} are impossible!", indents);
 			return false;
 		}
 		addIndents(currentLine, indents);
@@ -112,7 +113,7 @@ public class SourceWriterImpl implements SourceWriter {
 	@Override
 	public boolean addToLine(final int currentIndent, final String s) {
 		if (s == null) {
-			log.warning("No content given!");
+			log.info("No content given!");
 			return false;
 		}
 		final StringBuffer tmpBuffer = new StringBuffer();
@@ -126,7 +127,7 @@ public class SourceWriterImpl implements SourceWriter {
 			// ok
 			currentLine.append(insertStr);
 		} else {
-			log.warning("Line becomes too long: " + currentLine + insertStr);
+			log.warn("Line becomes too long: {}{}", currentLine, insertStr);
 			rc = false;
 		}
 		return rc;
@@ -142,11 +143,11 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	private void addIndents(final StringBuffer s, final int count) {
 		if (count < 0) {
-			log.warning("Count is too low: " + count);
+			log.warn("Count is too low: {}", count);
 			return;
 		}
 		if (s == null) {
-			log.warning("No buffer given!");
+			log.warn("No buffer given!");
 			return;
 		}
 		synchronized (s) {
@@ -178,7 +179,7 @@ public class SourceWriterImpl implements SourceWriter {
 	@Override
 	public void setCommonAttributes(final CommonAttributes c) {
 		if (c == null) {
-			log.warning("No common attributes given!");
+			log.warn("No common attributes given!");
 			return;
 		}
 		ca = c;
@@ -192,7 +193,7 @@ public class SourceWriterImpl implements SourceWriter {
 	public boolean commitLine(final boolean ignoreLineLength)
 			throws TranslationException {
 		if (!ignoreLineLength && currentLine.length() > ca.getMaxLinewidth()) {
-			log.warning("line too long to commit: " + currentLine);
+			log.warn("line too long to commit: {}", currentLine);
 			if (ca.getStopOnLongline()) {
 				throw new TranslationException("Line too long to commit: "
 						+ currentLine);
@@ -200,11 +201,11 @@ public class SourceWriterImpl implements SourceWriter {
 			return false;
 		}
 		if (currentLine.length() <= 0) {
-			log.finer("nothing to commit: line is empty already");
+			log.debug("nothing to commit: line is empty already");
 			return true;
 		}
 		sb.append(currentLine.toString());
-		log.finest("commiting this content: " + currentLine.toString());
+		log.debug("commiting this content: {}", currentLine.toString());
 		sb.append(newline);
 		clearBuffer(currentLine);
 		return true;
@@ -218,11 +219,11 @@ public class SourceWriterImpl implements SourceWriter {
 	 */
 	private void clearBuffer(final StringBuffer s) {
 		if (s == null) {
-			log.warning("No buffer given!");
+			log.warn("No buffer given!");
 			return;
 		}
 		if (s.length() > 0) {
-			log.finest("This content will be cleared now: " + s.toString());
+			log.debug("This content will be cleared now: {}", s.toString());
 		}
 		s.delete(0, s.length());
 	}

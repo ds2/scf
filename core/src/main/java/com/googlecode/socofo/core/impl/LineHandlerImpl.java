@@ -225,7 +225,7 @@ public class LineHandlerImpl implements LineHandler {
 	 */
 	@Override
 	public String cleanComment(String lines) {
-		log.warn("entering: {}", lines);
+		log.debug("entering: {}", lines);
 		StringBuffer rc = new StringBuffer();
 		if (lines == null) {
 			return "";
