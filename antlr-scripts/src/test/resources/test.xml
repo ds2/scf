@@ -18,7 +18,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<!DOCTYPE t PUBLIC "pubIdHere" "t.dtd">
+<!DOCTYPE t PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+-->
 <t
 	attr="value"
 	xmlns:a="http://www.test/bla"

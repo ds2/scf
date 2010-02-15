@@ -20,13 +20,13 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
-import java.util.logging.Logger;
-
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.googlecode.socofo.core.api.LineHandler;
@@ -57,8 +57,7 @@ public class XmlTransformer implements SourceTransformer {
 	/**
 	 * A logger
 	 */
-	private static final transient Logger log = Logger
-			.getLogger(XmlTransformer.class.getName());
+	private static final transient Logger log = LoggerFactory.getLogger(XmlTransformer.class);
 	/**
 	 * the xml grammar that has been loaded.
 	 */
@@ -108,7 +107,7 @@ public class XmlTransformer implements SourceTransformer {
 	@Override
 	public void parseContent(final String s) {
 		if (s == null || s.length() <= 0) {
-			log.warning("No content given!");
+			log.warn("No content given!");
 			return;
 		}
 		final ANTLRStringStream ss = new ANTLRStringStream(s);
@@ -126,11 +125,11 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	@Override
 	public void performTranslation() throws TranslationException {
-		log.entering(XmlTransformer.class.getName(), "performTranslation");
+		log.debug("entering");
 		if (sw == null) {
 			throw new TranslationException("No source writer has been injected!");
 		}
-		log.finer("preparing source writer");
+		log.debug("preparing source writer");
 		sw.prepare();
 		if (rules == null) {
 			throw new TranslationException("No rules have been loaded!");
@@ -138,17 +137,17 @@ public class XmlTransformer implements SourceTransformer {
 		if (rules.getCommonAttributes() == null) {
 			throw new TranslationException("No CA rules have been loaded!");
 		}
-		log.finer("Setting rules and attributes");
+		log.debug("Setting rules and attributes");
 		sw.setCommonAttributes(rules.getCommonAttributes());
 		lh.setTabSize(rules.getCommonAttributes().getTabSize());
 		Token token;
 		int currentIndent = 0;
-		log.finer("Starting token run");
+		log.debug("Starting token run");
 		XmlObject currentObject = null;
 		XmlObject lastObject = null;
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
-			log.finest("Token (" + token.getType() + ") for this run: "
-					+ token.getText());
+			log.debug("Token ({}) for this run: {}"
+					 , token.getType(),token.getText());
 			switch (token.getType()) {
 			case XmlGrammar.PI_START:
 				currentObject = new ProcessingInstruction();
@@ -240,13 +239,12 @@ public class XmlTransformer implements SourceTransformer {
 				currentObject = null;
 				break;
 			default:
-				log.warning("unknown token: type=" + token.getType()
-						+ " with content " + token.getText());
+				log.warn("unknown token: type={} with content {}" ,token.getType(),token.getText());
 			}
 		}
-		log.finer("finishing the result");
+		log.debug("finishing the result");
 		sw.finish();
-		log.exiting(XmlTransformer.class.getName(), "performTranslation");
+		log.debug("exit");
 	}
 
 	/**

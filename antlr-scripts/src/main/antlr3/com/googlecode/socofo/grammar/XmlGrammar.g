@@ -29,20 +29,11 @@ lexer grammar XmlGrammar;
 PI_START : '<?' { tagMode=true;};
 PI_STOP: {tagMode}?=> '?>' {tagMode=false;};
 
-DOCTYPE_START:
-{!tagMode }?=>
-'<!DOCTYPE'
-{doctypeMode=true;}
-;
-DOCTYPE_END:
-{doctypeMode}?=>
-'>'
-{doctypeMode=false;}
-;
-
 CDATA_SECTION: {!tagMode}?=> '<![CDATA[' (~']')* ']]>' ;
 
 COMMENT_SECTION:'<!--' (~'-')* '-->';
+
+DOCTYPE_SECTION: {!tagMode}?=> '<!DOCTYPE' (~'>')* '>' ;
 
 TAG_START_OPEN : '<' { tagMode = true; } ;
 TAG_END_OPEN : '</' { tagMode = true; } ;
@@ -58,10 +49,6 @@ ATTR_VALUE : { tagMode }?=>
     ;
 
 /** ATTRIBUTE : GENERIC_ID (WS)* ATTR_EQ (WS)* ATTR_VALUE; */
-
-DOCDATA:
-{doctypeMode}?=> (~'>')+
-;
 
 PCDATA : { !tagMode && !doctypeMode }?=> (~'<')+ ;
 
