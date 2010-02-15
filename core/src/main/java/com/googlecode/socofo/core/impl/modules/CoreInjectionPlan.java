@@ -32,10 +32,12 @@ import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.api.SourcefileScanner;
 import com.googlecode.socofo.core.api.StreamRoot;
+import com.googlecode.socofo.core.api.TransformerDelegate;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.impl.LineHandlerImpl;
 import com.googlecode.socofo.core.impl.SchedulerImpl;
 import com.googlecode.socofo.core.impl.SourceWriterImpl;
+import com.googlecode.socofo.core.impl.TransformerDelegateImpl;
 import com.googlecode.socofo.core.impl.TranslationJobImpl;
 import com.googlecode.socofo.core.impl.TypeDetectorImpl;
 import com.googlecode.socofo.core.impl.io.FileDestinationImpl;
@@ -73,6 +75,7 @@ public class CoreInjectionPlan implements Module {
 		binder.bind(TranslationJob.class).to(TranslationJobImpl.class);
 		binder.bind(Scheduler.class).to(SchedulerImpl.class);
 		binder.bind(SourcefileScanner.class).to(SourcefileScannerImpl.class);
+		binder.bind(TransformerDelegate.class).to(TransformerDelegateImpl.class);
 	}
 
 }

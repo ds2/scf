@@ -24,11 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.googlecode.socofo.core.api.SourceDestination;
 import com.googlecode.socofo.core.api.SourceRoot;
 import com.googlecode.socofo.core.api.SourceTransformer;
-import com.googlecode.socofo.core.api.SourceTypes;
+import com.googlecode.socofo.core.api.TransformerDelegate;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.RuleSet;
@@ -52,16 +51,16 @@ public class TranslationJobImpl implements TranslationJob {
 	 * The source to transform.
 	 */
 	private SourceRoot source = null;
-	/**
-	 * The xml transformer to transform the source code.
-	 */
-	@Named("xml")
-	@Inject
-	private SourceTransformer xmlTransformer = null;
+
 	/**
 	 * A list of translation errors.
 	 */
 	private List<TranslationException> errors = null;
+	/**
+	 * The transformer delegate.
+	 */
+	@Inject
+	private TransformerDelegate transformDelegate = null;
 
 	/**
 	 * Inits the job.
@@ -83,7 +82,7 @@ public class TranslationJobImpl implements TranslationJob {
 	 */
 	@Override
 	public void setRule(final RuleSet r) {
-		if(r==null) {
+		if (r == null) {
 			throw new IllegalArgumentException("Rules not given!");
 		}
 		rules = r;
@@ -103,15 +102,14 @@ public class TranslationJobImpl implements TranslationJob {
 	@Override
 	public void run() {
 		String result = "";
-		SourceTransformer tr = null;
-		if (source.getType() == SourceTypes.XML) {
-			tr = xmlTransformer;
-		}
+		SourceTransformer tr = transformDelegate.getTransformerOfType(source
+				.getType());
 		try {
-			if(tr==null) {
-				throw new TranslationException("No transformer found for source "+source+"!");
+			if (tr == null) {
+				throw new TranslationException(
+						"No transformer found for source " + source + "!");
 			}
-			if(rules==null) {
+			if (rules == null) {
 				throw new TranslationException("No rules found!");
 			}
 			tr.setRules(rules);
@@ -121,7 +119,7 @@ public class TranslationJobImpl implements TranslationJob {
 			dest.writeContent(result, "utf-8");
 		} catch (final TranslationException e) {
 			errors.add(e);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			errors.add(new TranslationException(e.getLocalizedMessage(), e));
 		}
 	}
