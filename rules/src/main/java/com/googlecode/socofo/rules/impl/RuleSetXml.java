@@ -62,5 +62,14 @@ public class RuleSetXml implements RuleSetUpdater {
 	public XmlFormatRulesUpdater getXmlFormatRulesUpdater() {
 		return (XmlFormatRulesUpdater) xmlRules;
 	}
+	@Override
+	public String toString() {
+		StringBuffer sb=new StringBuffer();
+		sb.append(RuleSetXml.class.getName());
+		sb.append("(");
+		sb.append("xmlRules=").append(xmlRules);
+		sb.append(")");
+		return sb.toString();
+	}
 
 }

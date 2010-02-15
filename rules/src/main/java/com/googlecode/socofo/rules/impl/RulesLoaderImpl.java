@@ -25,11 +25,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -52,8 +54,8 @@ public class RulesLoaderImpl implements RulesLoader {
 	/**
 	 * A logger
 	 */
-	private static final transient Logger log = Logger
-			.getLogger(RulesLoaderImpl.class.getName());
+	private static final transient Logger log = LoggerFactory
+			.getLogger(RulesLoaderImpl.class);
 	/**
 	 * the io helper
 	 */
@@ -82,7 +84,7 @@ public class RulesLoaderImpl implements RulesLoader {
 	@Override
 	public XmlFormatRules loadFormatRules(InputStream is) {
 		if (is == null) {
-			log.severe("No inputstream given -> returning null");
+			log.error("No inputstream given -> returning null");
 			return null;
 		}
 		BufferedInputStream bis = new BufferedInputStream(is);
@@ -92,7 +94,7 @@ public class RulesLoaderImpl implements RulesLoader {
 			Object o = um.unmarshal(is);
 			rc = XmlFormatRules.class.cast(o);
 		} catch (JAXBException e) {
-			log.throwing(RulesLoaderImpl.class.getName(), "loadFormatRules", e);
+			log.info("XML parser error", e);
 		} finally {
 			iohelper.closeInputstream(bis);
 			iohelper.closeInputstream(is);
@@ -103,7 +105,7 @@ public class RulesLoaderImpl implements RulesLoader {
 	@Override
 	public RuleSet loadRules(InputStream is) {
 		if (is == null) {
-			log.severe("No inputstream given -> returning null");
+			log.error("No inputstream given -> returning null");
 			return null;
 		}
 		BufferedInputStream bis = new BufferedInputStream(is);
@@ -113,12 +115,12 @@ public class RulesLoaderImpl implements RulesLoader {
 			Object o = um.unmarshal(is);
 			if (!(o instanceof RuleSetXml)) {
 				log
-						.severe("The given stream does not contain a ruleset definition!");
+						.error("The given stream does not contain a ruleset definition!");
 			} else {
 				rc = RuleSetXml.class.cast(o);
 			}
 		} catch (JAXBException e) {
-			log.throwing(RulesLoaderImpl.class.getName(), "loadRules", e);
+			log.info("XML parser error", e);
 		} finally {
 			iohelper.closeInputstream(bis);
 			iohelper.closeInputstream(is);
@@ -134,11 +136,11 @@ public class RulesLoaderImpl implements RulesLoader {
 			urlConn.setReadTimeout(readTimeout);
 			urlConn.connect();
 			InputStream is = urlConn.getInputStream();
-			return loadRules(is);
+			RuleSet rc = loadRules(is);
+			iohelper.closeInputstream(is);
+			return rc;
 		} catch (IOException e) {
-			log
-					.throwing(RulesLoaderImpl.class.getName(),
-							"loadRulesFromUrl", e);
+			log.error("loadRulesFromUrl", e);
 		}
 		return null;
 	}

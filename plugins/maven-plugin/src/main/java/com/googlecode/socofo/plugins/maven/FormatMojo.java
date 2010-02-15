@@ -141,13 +141,17 @@ public class FormatMojo extends AbstractMojo {
 		getLog().info("Execution was " + runtimeRc);
 	}
 
+	/**
+	 * Sets the scan types.
+	 * @param s a comma,separated list of scan types.
+	 */
 	public void setScanTypes(String s) {
 		if (s == null || s.length() <= 0) {
 			return;
 		}
-		String[] types = s.split(",");
-		for (String type : types) {
-			this.types.add(type);
+		String[] typesArray = s.split(",");
+		for (String type : typesArray) {
+			types.add(type);
 		}
 	}
 }

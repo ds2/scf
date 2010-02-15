@@ -92,12 +92,14 @@ public class XmlTransformer implements SourceTransformer {
 	 */
 	@Override
 	public void setRules(final RuleSet r) {
-		log.entering(XmlTransformer.class.getName(), "loadRules", r);
-		if (r != null) {
-			rules = r.getXmlFormatRules();
-			ruleSet = r;
+		if (r == null) {
+			throw new IllegalArgumentException("Ruleset not set!");
 		}
-		log.exiting(XmlTransformer.class.getName(), "loadRules", rules);
+		if(r.getXmlFormatRules()==null) {
+			throw new IllegalArgumentException("The loaded rules do not contain XML rules!");
+		}
+		rules = r.getXmlFormatRules();
+		ruleSet = r;
 	}
 
 	/**
@@ -126,14 +128,15 @@ public class XmlTransformer implements SourceTransformer {
 	public void performTranslation() throws TranslationException {
 		log.entering(XmlTransformer.class.getName(), "performTranslation");
 		if (sw == null) {
-			log.severe("No source writer has been injected!");
-			return;
+			throw new TranslationException("No source writer has been injected!");
 		}
 		log.finer("preparing source writer");
 		sw.prepare();
-		if (rules == null || rules.getCommonAttributes() == null) {
-			log.severe("No rules have been loaded!");
-			return;
+		if (rules == null) {
+			throw new TranslationException("No rules have been loaded!");
+		}
+		if (rules.getCommonAttributes() == null) {
+			throw new TranslationException("No CA rules have been loaded!");
 		}
 		log.finer("Setting rules and attributes");
 		sw.setCommonAttributes(rules.getCommonAttributes());

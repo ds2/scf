@@ -24,7 +24,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -55,8 +57,8 @@ public class SchedulerImpl implements Scheduler {
 	/**
 	 * a logger.
 	 */
-	private static final Logger log = Logger.getLogger(SchedulerImpl.class
-			.getName());
+	private static final Logger log = LoggerFactory
+			.getLogger(SchedulerImpl.class);
 	/**
 	 * A list of translation jobs to do.
 	 */
@@ -105,7 +107,7 @@ public class SchedulerImpl implements Scheduler {
 	@Override
 	public void addJobs(final List<TranslationJob> j) {
 		if (j == null) {
-			log.warning("No jobs given!");
+			log.warn("No jobs given!");
 			return;
 		}
 		this.jobs.addAll(j);
@@ -125,11 +127,10 @@ public class SchedulerImpl implements Scheduler {
 	@Override
 	public List<TranslationJob> createLocalJobs(final File baseDir,
 			final File td, final List<SourceTypes> types) {
-		log.entering(SchedulerImpl.class.getName(), "createLocalJobs",
-				new Object[] { baseDir, td, types });
+		log.debug("entering: {} {} {}", new Object[] { baseDir, td, types });
 		final List<TranslationJob> rc = new ArrayList<TranslationJob>();
 		if (baseDir == null) {
-			log.warning("No base directory given!");
+			log.warn("No base directory given!");
 			return rc;
 		}
 		File targetDir = td;
@@ -138,17 +139,17 @@ public class SchedulerImpl implements Scheduler {
 			targetDir = baseDir;
 		}
 		if (types == null || types.size() <= 0) {
-			log.warning("No types given!");
+			log.warn("No types given!");
 			return rc;
 		}
 		if (ruleSet == null) {
-			log.warning("No rules given!");
+			log.warn("No rules given!");
 			return rc;
 		}
 		final List<File> sourceFiles = scanner.scan(baseDir, types);
-		log.finer("Got source files, counting " + sourceFiles.size());
+		log.debug("Got source files, counting {}", sourceFiles.size());
 		for (File sourceFile : sourceFiles) {
-			log.finest("Got this source file: " + sourceFile.getAbsolutePath());
+			log.debug("Got this source file: {}", sourceFile.getAbsolutePath());
 			final TranslationJob job = getInjector().getInstance(
 					TranslationJob.class);
 			final FileRoot fr = ij.getInstance(FileRoot.class);
@@ -162,14 +163,11 @@ public class SchedulerImpl implements Scheduler {
 				job.setRule(ruleSet);
 				rc.add(job);
 			} catch (final LoadingException e) {
-				log.throwing(SchedulerImpl.class.getName(), "createLocalJobs",
-						e);
+				log.debug("Loader error", e);
 			}
 
 		}
-		log
-				.exiting(SchedulerImpl.class.getName(), "createLocalJobs", rc
-						.size());
+		log.debug("exiting: {}", rc.size());
 		return rc;
 	}
 
@@ -195,8 +193,7 @@ public class SchedulerImpl implements Scheduler {
 			final List<TranslationException> translationErrors = job
 					.getErrors();
 			for (TranslationException e : translationErrors) {
-				log.throwing(SchedulerImpl.class.getName(), "getErrorMessages",
-						e);
+				log.debug("Translation error", e);
 				errorMsgs.add(e.getLocalizedMessage());
 			}
 		}
@@ -208,16 +205,16 @@ public class SchedulerImpl implements Scheduler {
 	 */
 	@Override
 	public void setRules(final URL formatterXml) {
-		log.entering(SchedulerImpl.class.getName(), "setRules", formatterXml);
+		log.debug("entering: {}", formatterXml);
 		if (formatterXml == null) {
-			log.warning("No url given!");
+			log.warn("No url given!");
 			return;
 		}
 		ruleSet = rulesLoader.loadRulesFromUrl(formatterXml);
 		if (ruleSet != null) {
 			log.info("Rules loaded from " + formatterXml + ", successful.");
 		}
-		log.exiting(SchedulerImpl.class.getName(), "setRules", ruleSet);
+		log.debug("exiting {}", ruleSet);
 	}
 
 	/**
@@ -225,14 +222,14 @@ public class SchedulerImpl implements Scheduler {
 	 */
 	@Override
 	public void startScheduler() {
-		log.entering(SchedulerImpl.class.getName(), "startScheduler");
+		log.debug("entering");
 		for (TranslationJob job : jobs) {
-			log.finest("Starting job " + job);
+			log.debug("Starting job {}", job);
 			final Thread t = new Thread(threadGrp, job);
 			t.start();
 		}
-		log.finest("Active threads now: " + threadGrp.activeCount());
-		log.exiting(SchedulerImpl.class.getName(), "startScheduler");
+		log.debug("Active threads now: {}", threadGrp.activeCount());
+		log.debug("exiting");
 	}
 
 	/**

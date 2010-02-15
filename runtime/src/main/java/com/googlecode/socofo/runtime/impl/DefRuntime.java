@@ -27,7 +27,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -48,8 +50,7 @@ public class DefRuntime implements MainRuntime {
 	/**
 	 * A logger.
 	 */
-	private static final Logger log = Logger.getLogger(DefRuntime.class
-			.getName());
+	private static final Logger log = LoggerFactory.getLogger(DefRuntime.class);
 
 	/**
 	 * the console to write log information to.
@@ -144,15 +145,15 @@ public class DefRuntime implements MainRuntime {
 			return RC_SHOWHELP;
 		}
 		if (scheduler == null) {
-			log.severe("No scheduler set!");
+			log.error("No scheduler set!");
 			return RC_NOSCHEDULER;
 		}
 		if (rulesUrl == null) {
-			log.severe("No rulesUrl given!");
+			log.error("No rulesUrl given!");
 			return RC_NORULES;
 		}
 		if (types.size() <= 0) {
-			log.severe("No types given to scan for!");
+			log.error("No types given to scan for!");
 			return RC_NOTYPES;
 		}
 		final Thread currentThread = Thread.currentThread();
@@ -167,17 +168,20 @@ public class DefRuntime implements MainRuntime {
 		log.info("Using target directory " + targetDir);
 		jobs = scheduler.createLocalJobs(baseDir, targetDir, types);
 		if (jobs.size() <= 0) {
-			log.warning("No source files found!");
+			log.warn("No source files found!");
 			return RC_NOSOURCES;
 		}
 		scheduler.addJobs(jobs);
-		log.finer("Starting scheduler");
+		log.debug("Starting scheduler");
 		scheduler.startScheduler();
 		while (scheduler.getActiveJobsCount() > 0) {
 			try {
 				Thread.sleep(250);
 			} catch (final InterruptedException e) {
-				log.throwing(DefRuntime.class.getName(), "execute", e);
+				log
+						.debug(
+								"Interrupted while sleeping, but this is not really critical",
+								e);
 			}
 		}
 		final List<String> errorMessages = scheduler.getErrorMessages();
@@ -189,7 +193,7 @@ public class DefRuntime implements MainRuntime {
 			}
 		}
 		console.println("finished");
-		log.exiting(DefRuntime.class.getName(), "execute", rc);
+		log.debug("exiting: {}", rc);
 		return rc;
 	}
 
@@ -229,10 +233,10 @@ public class DefRuntime implements MainRuntime {
 	 */
 	@Override
 	public void parseParams(final String... args) {
-		log.entering(DefRuntime.class.getName(), "parseParams", args);
+		log.debug("entering: {}", args);
 		if (args != null && args.length > 0) {
 			for (String arg : args) {
-				log.finest("current arg is " + arg);
+				log.debug("current arg is {}", arg);
 				if (arg == null || arg.length() <= 0) {
 					continue;
 				}
@@ -241,7 +245,7 @@ public class DefRuntime implements MainRuntime {
 		} else {
 			showHelp = true;
 		}
-		log.exiting(DefRuntime.class.getName(), "parseParams");
+		log.debug("exiting");
 	}
 
 	/**
@@ -256,13 +260,13 @@ public class DefRuntime implements MainRuntime {
 			final String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
 			baseDir = new File(argSeq);
 			if (!baseDir.exists()) {
-				log.warning("Directory " + baseDir + " does not exist!");
+				log.warn("Directory {} does not exist!", baseDir);
 			}
 		} else if (arg.startsWith(PARAM_RULESURL) && rulesUrl == null) {
 			try {
 				rulesUrl = new URL(arg.substring(PARAM_RULESURL.length() + 1));
 			} catch (final MalformedURLException e) {
-				log.throwing(DefRuntime.class.getName(), "parseParams", e);
+				log.debug(e.getLocalizedMessage(), e);
 			}
 		} else if (arg.startsWith(PARAM_TARGETDIR) && targetDir == null) {
 			final String argSeq = arg.substring(PARAM_TARGETDIR.length() + 1);
@@ -357,8 +361,10 @@ public class DefRuntime implements MainRuntime {
 			t = t.trim().toLowerCase();
 			SourceTypes detectedType = SourceTypes.findByName(t);
 			if (detectedType == null) {
-				log.warning("Could not find a type with the name " + t
-						+ "! Continue types scan.");
+				log
+						.warn(
+								"Could not find a type with the name {}! Continue types scan.",
+								t);
 				continue;
 			}
 			this.types.add(detectedType);

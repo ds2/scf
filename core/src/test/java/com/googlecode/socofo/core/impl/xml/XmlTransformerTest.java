@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.inject.Exposed;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
@@ -114,7 +115,6 @@ public class XmlTransformerTest {
 	 */
 	@Test
 	public final void testLoadRules() {
-		to.setRules(null);
 		to.setRules(new RuleSet() {
 
 			@Override
@@ -122,6 +122,14 @@ public class XmlTransformerTest {
 				return formatRules;
 			}
 		});
+	}
+
+	/**
+	 * Test method for throwing a IAE when using null.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public final void testLoadRulesNull() {
+		to.setRules(null);
 	}
 
 	/**

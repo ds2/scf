@@ -83,6 +83,9 @@ public class TranslationJobImpl implements TranslationJob {
 	 */
 	@Override
 	public void setRule(final RuleSet r) {
+		if(r==null) {
+			throw new IllegalArgumentException("Rules not given!");
+		}
 		rules = r;
 	}
 
@@ -105,13 +108,21 @@ public class TranslationJobImpl implements TranslationJob {
 			tr = xmlTransformer;
 		}
 		try {
-			tr.parseContent(source.getContent());
+			if(tr==null) {
+				throw new TranslationException("No transformer found for source "+source+"!");
+			}
+			if(rules==null) {
+				throw new TranslationException("No rules found!");
+			}
 			tr.setRules(rules);
+			tr.parseContent(source.getContent());
 			tr.performTranslation();
 			result = tr.getResult();
 			dest.writeContent(result, "utf-8");
 		} catch (final TranslationException e) {
 			errors.add(e);
+		} catch(Exception e) {
+			errors.add(new TranslationException(e.getLocalizedMessage(), e));
 		}
 	}
 
