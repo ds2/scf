@@ -171,6 +171,32 @@ public class XmlTransformerTest {
 		log.info("Result is\n" + result);
 		dest.writeContent(result, "utf-8");
 	}
+	/**
+	 * Test run for sample2.xml.
+	 */
+	@Test
+	public final void testPerformTranslation2() {
+		assertNotNull(sr);
+		try {
+			sr.loadStream(getClass().getResourceAsStream("/sample2.xml"),
+					"utf-8");
+		} catch (LoadingException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String xmlSample = sr.getContent();
+		assertNotNull(xmlSample);
+		to.parseContent(xmlSample);
+		try {
+			to.performTranslation();
+		} catch (TranslationException e) {
+			fail(e.getLocalizedMessage());
+		}
+		String result = to.getResult();
+		assertNotNull(result);
+		assertTrue(result.length() > 0);
+		log.info("Result is\n" + result);
+		dest.writeContent(result, "utf-8");
+	}
 
 	/**
 	 * Simple translation test
