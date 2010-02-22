@@ -229,6 +229,7 @@
     <module>plugins</module>
     <module>runtime</module>
     <module>config</module>
+    <module>website</module>
   </modules>
   <licenses>
     <license>
@@ -257,5 +258,9 @@
       <id>ds2.snapshots</id>
       <url>dav:http://localhost:13080/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
+    <site>
+      <id>ds2.sites</id>
+      <url>dav:http://localhost/maven/site/socofo</url>
+    </site>
   </distributionManagement>
 </project>
