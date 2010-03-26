@@ -13,5 +13,12 @@
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.socofo</groupId>
+			<artifactId>socofo-config</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
