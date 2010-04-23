@@ -20,6 +20,5 @@
   	<module>netbeans-plugin</module>
   	<module>eclipse-plugin</module>
   	<module>maven-plugin</module>
-  	<module>appengine-website</module>
   </modules>
 </project>

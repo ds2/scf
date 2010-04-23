@@ -223,7 +223,6 @@
     <module>core</module>
     <module>plugins</module>
     <module>runtime</module>
-    <module>config</module>
     <module>website</module>
   </modules>
   <licenses>

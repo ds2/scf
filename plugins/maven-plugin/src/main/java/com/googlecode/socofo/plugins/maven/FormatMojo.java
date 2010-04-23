@@ -29,13 +29,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -53,6 +51,13 @@ import com.googlecode.socofo.runtime.RuntimeInjectionPlan;
  */
 public class FormatMojo extends AbstractMojo {
 	/**
+	 * The base directory to scan for files.
+	 * 
+	 * @parameter expression="${baseDir}"
+	 *            default-value="${project.build.sourceDirectory}/.."
+	 */
+	private File baseDir;
+	/**
 	 * The current project to scan.
 	 * 
 	 * @parameter expression="${project}"
@@ -60,13 +65,6 @@ public class FormatMojo extends AbstractMojo {
 	 * @readonly
 	 */
 	private MavenProject currentPrj = null;
-	/**
-	 * URL to the formatter xml.
-	 * 
-	 * @parameter expression="${formatterUrl}"
-	 * @required
-	 */
-	private String formatterUrl;
 	/**
 	 * The source file filter. Compared to {@link #types}, this includes
 	 * patterns to exclude any file that does not match this pattern. So, while
@@ -77,22 +75,22 @@ public class FormatMojo extends AbstractMojo {
 	 */
 	private List<String> filters;
 	/**
-	 * The list of types to scan for.
+	 * URL to the formatter xml.
 	 * 
-	 * @parameter expression="${types}" property="scanTypes"
+	 * @parameter expression="${formatterUrl}"
 	 * @required
 	 */
-	private List<String> types;
+	private String formatterUrl;
 	/**
-	 * The runtime that performs the actions.
+	 * The io helper service.
 	 */
-	private MainRuntime socofo = null;
+	private IOHelper io;
 	/**
-	 * The base directory to scan for files.
+	 * The logging configuration (usually for jul).
 	 * 
-	 * @parameter expression="${baseDir}" default-value="${project.build.sourceDirectory}/.."
+	 * @parameter expression="${logConfig}"
 	 */
-	private File baseDir;
+	private File logConfig;
 	/**
 	 * The directory to write the results to.
 	 * 
@@ -100,18 +98,24 @@ public class FormatMojo extends AbstractMojo {
 	 */
 	private File resultDir;
 	/**
-	 * @parameter expression="${logConfig}"
+	 * The runtime that performs the actions.
 	 */
-	private File logConfig;
-	private IOHelper io;
+	private MainRuntime socofo = null;
+	/**
+	 * The list of types to scan for.
+	 * 
+	 * @parameter expression="${types}" property="scanTypes"
+	 * @required
+	 */
+	private List<String> types;
 
 	/**
-	 * 
+	 * Inits the mojo.
 	 */
 	public FormatMojo() {
-		Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
+		final Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
 		socofo = ij.getInstance(MainRuntime.class);
-		io=ij.getInstance(IOHelper.class);
+		io = ij.getInstance(IOHelper.class);
 		types = new ArrayList<String>();
 	}
 
@@ -124,18 +128,19 @@ public class FormatMojo extends AbstractMojo {
 				"This goal will format all source code in "
 						+ currentPrj.getArtifactId());
 		getLog().debug("Checking Logger config");
-		if(logConfig!=null) {
-			FileInputStream fis=null;
+		if (logConfig != null) {
+			FileInputStream fis = null;
 			try {
 				fis = new FileInputStream(logConfig);
 				LogManager.getLogManager().readConfiguration(fis);
 				getLog().info("Logger config changed");
-			} catch (FileNotFoundException e) {
-				throw new MojoExecutionException("File "+logConfig+" not found!",e);
-			} catch (SecurityException e) {
-				throw new MojoExecutionException("Security error",e);
-			} catch (IOException e) {
-				throw new MojoExecutionException("IO error",e);
+			} catch (final FileNotFoundException e) {
+				throw new MojoExecutionException("File " + logConfig
+						+ " not found!", e);
+			} catch (final SecurityException e) {
+				throw new MojoExecutionException("Security error", e);
+			} catch (final IOException e) {
+				throw new MojoExecutionException("IO error", e);
 			} finally {
 				io.closeInputstream(fis);
 			}
@@ -156,30 +161,32 @@ public class FormatMojo extends AbstractMojo {
 		getLog().debug("Searching target directory..");
 		getLog().debug("target dir is " + resultDir.getAbsolutePath());
 		socofo.setTargetDirectory(resultDir);
-		String rulesUrlStr = formatterUrl;
+		final String rulesUrlStr = formatterUrl;
 		URL rulesUrl;
 		try {
 			rulesUrl = new URL(rulesUrlStr);
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			throw new MojoFailureException("Bad rules url: " + rulesUrlStr);
 		}
 		socofo.setRules(rulesUrl);
 		socofo.setTypes(types);
 		socofo.applySourceFilters(filters);
 		getLog().info("Starting transformation");
-		int runtimeRc = socofo.execute();
+		final int runtimeRc = socofo.execute();
 		getLog().info("Execution was " + runtimeRc);
 	}
 
 	/**
 	 * Sets the scan types.
-	 * @param s a comma,separated list of scan types.
+	 * 
+	 * @param s
+	 *            a comma,separated list of scan types.
 	 */
-	public void setScanTypes(String s) {
+	public void setScanTypes(final String s) {
 		if (s == null || s.length() <= 0) {
 			return;
 		}
-		String[] typesArray = s.split(",");
+		final String[] typesArray = s.split(",");
 		for (String type : typesArray) {
 			types.add(type);
 		}

@@ -20,8 +20,9 @@ import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 /**
  * A mojo to display the rules.
  * 
- * @author dstrauss
+ * @author Dirk Strauss
  * @goal displayRules
+ * @version 1.0
  */
 public class DisplayRulesMojo extends AbstractMojo {
 	/**
@@ -37,17 +38,18 @@ public class DisplayRulesMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		Injector ij = Guice.createInjector(new RulesInjectionPlan(),
+		final Injector ij = Guice.createInjector(new RulesInjectionPlan(),
 				new CommonsInjectionPlan());
-		RulesLoader rulesLoader = ij.getInstance(RulesLoader.class);
+		final RulesLoader rulesLoader = ij.getInstance(RulesLoader.class);
 		try {
-			URL u = new URL(formatterUrl);
-			RuleSet ruleSet = rulesLoader.loadRulesFromUrl(u);
-			if(ruleSet==null) {
-				throw new MojoExecutionException("No ruleset found using URL "+u+"!");
+			final URL u = new URL(formatterUrl);
+			final RuleSet ruleSet = rulesLoader.loadRulesFromUrl(u);
+			if (ruleSet == null) {
+				throw new MojoExecutionException("No ruleset found using URL "
+						+ u + "!");
 			}
 			getLog().info("Ruleset from " + u + " is:\n" + ruleSet);
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			throw new MojoExecutionException("Error when loading the url", e);
 		}
 	}
