@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.googlecode.socofo</groupId>
-		<artifactId>socofo</artifactId>
+		<artifactId>socofo-plugins</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>socofo-maven-plugin</artifactId>
