@@ -97,6 +97,8 @@
             <exclude>README.txt</exclude>
             <exclude>**/license_header.txt</exclude>
             <exclude>**/package-info.java</exclude>
+            <exclude>**/*.apt</exclude>
+            <exclude>**/site.xml</exclude>
           </excludes>
           <encoding>utf-8</encoding>
           <mapping>
