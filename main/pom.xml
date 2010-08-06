@@ -130,6 +130,11 @@
           <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties</argLine>
         </configuration>
       </plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-site-plugin</artifactId>
+      	<version>2.1.1</version>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
