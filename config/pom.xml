@@ -6,6 +6,7 @@
   <name>SoCoFo Configuration</name>
   <version>0.0.2-SNAPSHOT</version>
   <description>The configuration files to build scf.</description>
+  <url>http://code.google.com/p/socofo/</url>
   <issueManagement>
     <system>google</system>
     <url>http://code.google.com/p/socofo/issues/list</url>

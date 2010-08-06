@@ -59,6 +59,11 @@
             <artifactId>checkstyle</artifactId>
             <version>5.0</version>
           </dependency>
+          <dependency>
+            <groupId>com.googlecode.socofo</groupId>
+            <artifactId>socofo-config</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+          </dependency>
         </dependencies>
       </plugin>
       <plugin>
@@ -127,10 +132,6 @@
       </plugin>
     </plugins>
   </build>
-  <repositories>
-  </repositories>
-  <pluginRepositories>
-  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -202,17 +203,17 @@
         <scope>compile</scope>
       </dependency>
       <dependency>
-      	<groupId>org.slf4j</groupId>
-      	<artifactId>slf4j-api</artifactId>
-      	<version>1.6.1</version>
-      	<scope>compile</scope>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.6.1</version>
+        <scope>compile</scope>
       </dependency>
       <dependency>
-      	<groupId>org.slf4j</groupId>
-      	<artifactId>slf4j-jdk14</artifactId>
-      	<version>1.6.1</version>
-      	<type>jar</type>
-      	<scope>compile</scope>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.6.1</version>
+        <type>jar</type>
+        <scope>compile</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

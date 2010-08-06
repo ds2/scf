@@ -7,10 +7,12 @@
   <packaging>pom</packaging>
   <name>SoCoFo Complete</name>
   <description>This project contains the config, the main code formatter, and the website.</description>
+  <url>http://code.google.com/p/socofo/</url>
   <issueManagement>
     <system>redmine</system>
     <url>http://dev.kaeto23.de/redmine/socofo</url>
   </issueManagement>
+  <inceptionYear>2009</inceptionYear>
   <organization>
     <name>DS/2</name>
     <url>http://ds-2.de/</url>
