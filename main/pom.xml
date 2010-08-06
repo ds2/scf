@@ -57,7 +57,7 @@
           <dependency>
             <groupId>checkstyle</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>5.0</version>
+            <version>5.1</version>
           </dependency>
           <dependency>
             <groupId>com.googlecode.socofo</groupId>
