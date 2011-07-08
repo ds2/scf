@@ -1,10 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.googlecode.socofo</groupId>
+  <parent>
+    <groupId>com.googlecode.socofo</groupId>
+    <artifactId>socofo-complete</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
   <artifactId>socofo-config</artifactId>
   <name>SoCoFo Configuration</name>
-  <version>0.0.2-SNAPSHOT</version>
   <description>The configuration files to build scf.</description>
   <url>http://code.google.com/p/socofo/</url>
   <issueManagement>
@@ -25,25 +28,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.5</version>
         <configuration>
           <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>
   </build>
-  <distributionManagement>
-    <repository>
-      <id>ds2.releases</id>
-      <url>dav:http://dev.kaeto23.de/nexus/content/repositories/releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>ds2.snapshots</id>
-      <url>dav:http://dev.kaeto23.de/nexus/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <site>
-      <id>ds2.sites</id>
-      <url>dav:https://dev.kaeto23.de/mavenrepo/site/socofo/config</url>
-    </site>
-  </distributionManagement>
 </project>

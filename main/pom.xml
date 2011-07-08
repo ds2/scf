@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.socofo</groupId>
@@ -35,30 +37,12 @@
     <name>DS/2</name>
     <url>http://ds-2.de/</url>
   </organization>
-  <prerequisites>
-    <maven>2.2.1</maven>
-  </prerequisites>
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.5</version>
         <dependencies>
-          <dependency>
-            <groupId>checkstyle</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>5.1</version>
-          </dependency>
           <dependency>
             <groupId>com.googlecode.socofo</groupId>
             <artifactId>socofo-config</artifactId>
@@ -69,7 +53,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.0</version>
         <configuration>
           <releaseProfiles>googleRelease</releaseProfiles>
         </configuration>
@@ -77,7 +60,6 @@
       <plugin>
         <groupId>com.mycila.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
-        <version>1.8.0</version>
         <dependencies>
           <dependency>
             <groupId>com.googlecode.socofo</groupId>
@@ -126,15 +108,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.5</version>
         <configuration>
           <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties</argLine>
         </configuration>
-      </plugin>
-      <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-site-plugin</artifactId>
-      	<version>2.1.1</version>
       </plugin>
     </plugins>
   </build>
@@ -142,9 +118,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.6</version>
-      <type>jar</type>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -152,78 +125,8 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>surefire-report-maven-plugin</artifactId>
-        <version>2.0-beta-1</version>
-      </plugin>
-      <!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> <version>2.6</version> 
-        </plugin> -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <version>2.3</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <configLocation>configs/scf-checks.xml</configLocation>
-          <headerLocation>configs/license_header.txt</headerLocation>
-          <linkXRef>true</linkXRef>
-          <sourceEncoding>UTF-8</sourceEncoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>taglist-maven-plugin</artifactId>
-        <version>2.4</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.4</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.3.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jdepend-maven-plugin</artifactId>
-        <version>2.0-beta-2</version>
-      </plugin>
-      <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-surefire-report-plugin</artifactId>
-      	<version>2.5</version>
-      </plugin>
-      <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-project-info-reports-plugin</artifactId>
-      	<version>2.1.1</version>
-      </plugin>
-    </plugins>
-  </reporting>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>com.google.inject</groupId>
-        <artifactId>guice</artifactId>
-        <version>2.0</version>
-        <type>jar</type>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>1.6.1</version>
-        <scope>compile</scope>
-      </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-jdk14</artifactId>
@@ -260,18 +163,10 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <distributionManagement>
-    <repository>
-      <id>ds2.releases</id>
-      <url>dav:http://dev.kaeto23.de/nexus/content/repositories/releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>ds2.snapshots</id>
-      <url>dav:http://dev.kaeto23.de/nexus/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <site>
-      <id>ds2.sites</id>
-      <url>dav:https://dev.kaeto23.de/mavenrepo/site/socofo/main</url>
-    </site>
-  </distributionManagement>
+  <parent>
+    <groupId>com.googlecode.socofo</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>socofo-complete</artifactId>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 </project>

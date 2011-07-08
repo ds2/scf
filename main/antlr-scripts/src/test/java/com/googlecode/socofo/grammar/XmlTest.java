@@ -39,36 +39,39 @@ import org.junit.Test;
  * 
  */
 public class XmlTest extends TestCase {
-	/**
-	 * a logger
-	 */
-	private static final transient Logger LOG = Logger.getLogger(XmlTest.class
-			.getName());
-
-	/**
-	 * Runs the test
-	 */
-	@Test
-	public final void testXml() {
-		try {
-			LOG.finer("Loading XML sample");
-			final InputStream is = getClass().getResourceAsStream("/test.xml");
-			assertTrue(is != null);
-			final CharStream input = new ANTLRInputStream(is, "utf-8");
-			LOG.finer("Lexering the sample");
-			final XmlGrammar lexer = new XmlGrammar(input);
-			Token token;
-			LOG.finer("Entering token loop");
-			while ((token = lexer.nextToken()) != Token.EOF_TOKEN) {
-				LOG.info("Token (" + token.getType() + "): " + token.getText());
-			}
-			LOG.finer("finished");
-			is.close();
-			assertTrue(true);
-		} catch (final IOException e) {
-			e.printStackTrace();
-			fail(e.getLocalizedMessage());
-		}
-	}
-
+    /**
+     * a logger
+     */
+    private static final transient Logger LOG = Logger.getLogger(XmlTest.class
+        .getName());
+    
+    /**
+     * Runs the test
+     */
+    @Test
+    public final void testXml() {
+        try {
+            LOG.finer("Loading XML sample");
+            final InputStream is = getClass().getResourceAsStream("/test.xml");
+            assertTrue(is != null);
+            final CharStream input = new ANTLRInputStream(is, "utf-8");
+            LOG.finer("Lexering the sample");
+            final XmlGrammar lexer = new XmlGrammar(input);
+            Token token;
+            LOG.finer("Entering token loop");
+            while ((token = lexer.nextToken()) != Token.EOF_TOKEN) {
+                LOG.info("Token (" + token.getType() + "): " + token.getText());
+                if (token.getType() == Token.EOF) {
+                    break;
+                }
+            }
+            LOG.finer("finished");
+            is.close();
+            assertTrue(true);
+        } catch (final IOException e) {
+            e.printStackTrace();
+            fail(e.getLocalizedMessage());
+        }
+    }
+    
 }
