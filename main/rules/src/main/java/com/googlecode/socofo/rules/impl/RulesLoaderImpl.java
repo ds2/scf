@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -33,11 +35,9 @@ import javax.xml.bind.Unmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.rules.api.RuleSet;
+import com.googlecode.socofo.rules.api.RulesConfig;
 import com.googlecode.socofo.rules.api.RulesLoader;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
 
@@ -47,102 +47,99 @@ import com.googlecode.socofo.rules.api.XmlFormatRules;
  */
 @Singleton
 public class RulesLoaderImpl implements RulesLoader {
-	/**
-	 * The JAXB context
-	 */
-	private JAXBContext jb = null;
-	/**
-	 * A logger
-	 */
-	private static final transient Logger log = LoggerFactory
-			.getLogger(RulesLoaderImpl.class);
-	/**
-	 * the io helper
-	 */
-	@Inject
-	private IOHelper iohelper = null;
-	@Named("connectTimeout")
-	private int connectTimeout = 20000;
-	@Named("readTimeout")
-	private int readTimeout = 20000;
-
-	/**
+    /**
+     * The JAXB context
+     */
+    private JAXBContext jb = null;
+    /**
+     * A logger
+     */
+    private static final transient Logger log = LoggerFactory
+        .getLogger(RulesLoaderImpl.class);
+    /**
+     * the io helper
+     */
+    @Inject
+    private IOHelper iohelper = null;
+    @Inject
+    private RulesConfig config;
+    
+    /**
 	 * 
 	 */
-	public RulesLoaderImpl() {
-		try {
-			jb = JAXBContext.newInstance(RuleSetXml.class);
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public XmlFormatRules loadFormatRules(InputStream is) {
-		if (is == null) {
-			log.error("No inputstream given -> returning null");
-			return null;
-		}
-		BufferedInputStream bis = new BufferedInputStream(is);
-		XmlFormatRules rc = null;
-		try {
-			Unmarshaller um = jb.createUnmarshaller();
-			Object o = um.unmarshal(is);
-			rc = XmlFormatRules.class.cast(o);
-		} catch (JAXBException e) {
-			log.info("XML parser error", e);
-		} finally {
-			iohelper.closeInputstream(bis);
-			iohelper.closeInputstream(is);
-		}
-		return rc;
-	}
-
-	@Override
-	public RuleSet loadRules(InputStream is) {
-		if (is == null) {
-			log.error("No inputstream given -> returning null");
-			return null;
-		}
-		BufferedInputStream bis = new BufferedInputStream(is);
-		RuleSet rc = null;
-		try {
-			Unmarshaller um = jb.createUnmarshaller();
-			Object o = um.unmarshal(is);
-			if (!(o instanceof RuleSetXml)) {
-				log
-						.error("The given stream does not contain a ruleset definition!");
-			} else {
-				rc = RuleSetXml.class.cast(o);
-			}
-		} catch (JAXBException e) {
-			log.info("XML parser error", e);
-		} finally {
-			iohelper.closeInputstream(bis);
-			iohelper.closeInputstream(is);
-		}
-		return rc;
-	}
-
-	@Override
-	public RuleSet loadRulesFromUrl(URL formatterXml) {
-		try {
-			URLConnection urlConn = formatterXml.openConnection();
-			urlConn.setConnectTimeout(connectTimeout);
-			urlConn.setReadTimeout(readTimeout);
-			urlConn.connect();
-			InputStream is = urlConn.getInputStream();
-			RuleSet rc = loadRules(is);
-			iohelper.closeInputstream(is);
-			return rc;
-		} catch (IOException e) {
-			log.error("loadRulesFromUrl", e);
-		}
-		return null;
-	}
-
+    public RulesLoaderImpl() {
+        try {
+            jb = JAXBContext.newInstance(RuleSetXml.class);
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public XmlFormatRules loadFormatRules(InputStream is) {
+        if (is == null) {
+            log.error("No inputstream given -> returning null");
+            return null;
+        }
+        BufferedInputStream bis = new BufferedInputStream(is);
+        XmlFormatRules rc = null;
+        try {
+            Unmarshaller um = jb.createUnmarshaller();
+            Object o = um.unmarshal(is);
+            rc = XmlFormatRules.class.cast(o);
+        } catch (JAXBException e) {
+            log.info("XML parser error", e);
+        } finally {
+            iohelper.closeInputstream(bis);
+            iohelper.closeInputstream(is);
+        }
+        return rc;
+    }
+    
+    @Override
+    public RuleSet loadRules(InputStream is) {
+        if (is == null) {
+            log.error("No inputstream given -> returning null");
+            return null;
+        }
+        BufferedInputStream bis = new BufferedInputStream(is);
+        RuleSet rc = null;
+        try {
+            Unmarshaller um = jb.createUnmarshaller();
+            Object o = um.unmarshal(is);
+            if (!(o instanceof RuleSetXml)) {
+                log.error("The given stream does not contain a ruleset definition!");
+            } else {
+                rc = RuleSetXml.class.cast(o);
+            }
+        } catch (JAXBException e) {
+            log.info("XML parser error", e);
+        } finally {
+            iohelper.closeInputstream(bis);
+            iohelper.closeInputstream(is);
+        }
+        return rc;
+    }
+    
+    @Override
+    public RuleSet loadRulesFromUrl(URL formatterXml) {
+        try {
+            URLConnection urlConn = formatterXml.openConnection();
+            urlConn.setConnectTimeout(config.getConnectTimeout());
+            urlConn.setReadTimeout(config.getReadTimeout());
+            urlConn.connect();
+            InputStream is = urlConn.getInputStream();
+            RuleSet rc = loadRules(is);
+            iohelper.closeInputstream(is);
+            return rc;
+        } catch (IOException e) {
+            log.error("loadRulesFromUrl", e);
+        }
+        return null;
+    }
+    
 }

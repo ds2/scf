@@ -26,10 +26,12 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+
+import javax.inject.Singleton;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Singleton;
 import com.googlecode.socofo.common.api.IOHelper;
 
 /**
@@ -40,106 +42,106 @@ import com.googlecode.socofo.common.api.IOHelper;
  */
 @Singleton
 public class IOHelperImpl implements IOHelper {
-	/**
-	 * A logger.
-	 * 
-	 */
-	private static final transient Logger LOG = LoggerFactory
-			.getLogger(IOHelperImpl.class);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void closeInputstream(final InputStream is) {
-		if (is == null) {
-			LOG.warn("No inputstream given!");
-			return;
-		}
-		try {
-			is.close();
-		} catch (final IOException e) {
-			LOG.debug("Error on closing stream", e);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void closeReader(final Reader r) {
-		if (r != null) {
-			try {
-				r.close();
-			} catch (final IOException e) {
-				LOG.debug("closeReader error", e);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void closeOutputstream(final OutputStream baos) {
-		if (baos == null) {
-			LOG.warn("No output stream given!");
-			return;
-		}
-		try {
-			baos.close();
-		} catch (final IOException e) {
-			LOG.debug("outputstream error", e);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String createString(final byte[] byteArray, final String encoding) {
-		String rc = null;
-		if (byteArray == null || byteArray.length <= 0) {
-			LOG.warn("No content given to translate!");
-			return rc;
-		}
-		try {
-			rc = new String(byteArray, encoding);
-		} catch (final UnsupportedEncodingException e) {
-			LOG.debug("Encoding not supported", e);
-		}
-		return rc;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int read(final InputStream bis, final byte[] buffer) {
-		int rc;
-		try {
-			rc = bis.read(buffer);
-		} catch (final IOException e) {
-			LOG.debug("read error", e);
-			rc = -1;
-		}
-		return rc;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void closeWriter(final Writer w) {
-		if (w == null) {
-			LOG.warn("No writer given!");
-			return;
-		}
-		try {
-			w.close();
-		} catch (final IOException e) {
-			LOG.debug("closeWriter error", e);
-		}
-	}
-
+    /**
+     * A logger.
+     * 
+     */
+    private static final transient Logger LOG = LoggerFactory
+        .getLogger(IOHelperImpl.class);
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void closeInputstream(final InputStream is) {
+        if (is == null) {
+            LOG.warn("No inputstream given!");
+            return;
+        }
+        try {
+            is.close();
+        } catch (final IOException e) {
+            LOG.debug("Error on closing stream", e);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void closeReader(final Reader r) {
+        if (r != null) {
+            try {
+                r.close();
+            } catch (final IOException e) {
+                LOG.debug("closeReader error", e);
+            }
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void closeOutputstream(final OutputStream baos) {
+        if (baos == null) {
+            LOG.warn("No output stream given!");
+            return;
+        }
+        try {
+            baos.close();
+        } catch (final IOException e) {
+            LOG.debug("outputstream error", e);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String createString(final byte[] byteArray, final String encoding) {
+        String rc = null;
+        if (byteArray == null || byteArray.length <= 0) {
+            LOG.warn("No content given to translate!");
+            return rc;
+        }
+        try {
+            rc = new String(byteArray, encoding);
+        } catch (final UnsupportedEncodingException e) {
+            LOG.debug("Encoding not supported", e);
+        }
+        return rc;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int read(final InputStream bis, final byte[] buffer) {
+        int rc;
+        try {
+            rc = bis.read(buffer);
+        } catch (final IOException e) {
+            LOG.debug("read error", e);
+            rc = -1;
+        }
+        return rc;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void closeWriter(final Writer w) {
+        if (w == null) {
+            LOG.warn("No writer given!");
+            return;
+        }
+        try {
+            w.close();
+        } catch (final IOException e) {
+            LOG.debug("closeWriter error", e);
+        }
+    }
+    
 }

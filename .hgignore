@@ -30,3 +30,5 @@ nb-configuration.xml$
 
 syntax: regexp
 \.DS_Store$
+syntax: regexp
+test-output$

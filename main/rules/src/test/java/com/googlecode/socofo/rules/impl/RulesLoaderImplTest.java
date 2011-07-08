@@ -20,58 +20,42 @@
  */
 package com.googlecode.socofo.rules.impl;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.io.InputStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import javax.inject.Inject;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
+import org.testng.Assert;
+import org.testng.annotations.Guice;
+import org.testng.annotations.Test;
+
 import com.googlecode.socofo.rules.api.RulesLoader;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
-import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
-
 
 /**
  * @author kaeto23
  * 
  */
+@Guice(modules = { InjectionPlan.class })
 public class RulesLoaderImplTest {
-	/**
-	 * the test object
-	 */
-	private RulesLoader to = null;
-
-	/**
-	 * Sets up a test run
-	 * 
-	 * @throws java.lang.Exception
-	 *             if an error occurred
-	 */
-	@Before
-	public void setUp() throws Exception {
-		Injector oj = Guice.createInjector(new CommonsInjectionPlan(),
-				new RulesInjectionPlan());
-		to = oj.getInstance(RulesLoader.class);
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.rules.impl.RulesLoaderImpl#loadFormatRules(java.io.InputStream)}
-	 * .
-	 */
-	@Test
-	public final void testLoadFormatRules() {
-		assertNotNull(to);
-		assertNull(to.loadFormatRules(null));
-		InputStream is = getClass().getResourceAsStream("/xmllayout.xml");
-		assertNotNull(is);
-		XmlFormatRules rules = to.loadFormatRules(is);
-		assertNotNull(rules);
-	}
-
+    /**
+     * the test object
+     */
+    @Inject
+    private RulesLoader to = null;
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.rules.impl.RulesLoaderImpl#loadFormatRules(java.io.InputStream)}
+     * .
+     */
+    @Test
+    public final void testLoadFormatRules() {
+        Assert.assertNotNull(to);
+        Assert.assertNull(to.loadFormatRules(null));
+        InputStream is = getClass().getResourceAsStream("/xmllayout.xml");
+        Assert.assertNotNull(is);
+        XmlFormatRules rules = to.loadFormatRules(is);
+        Assert.assertNotNull(rules);
+    }
+    
 }

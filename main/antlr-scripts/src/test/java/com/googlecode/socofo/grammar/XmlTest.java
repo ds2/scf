@@ -22,14 +22,14 @@ package com.googlecode.socofo.grammar;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
-
-import junit.framework.TestCase;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.Token;
-import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * Test client for testing the token detection.
@@ -38,12 +38,12 @@ import org.junit.Test;
  * @version 1.0
  * 
  */
-public class XmlTest extends TestCase {
+public class XmlTest {
     /**
      * a logger
      */
-    private static final transient Logger LOG = Logger.getLogger(XmlTest.class
-        .getName());
+    private static final transient Logger LOG = LoggerFactory
+        .getLogger(XmlTest.class);
     
     /**
      * Runs the test
@@ -51,26 +51,26 @@ public class XmlTest extends TestCase {
     @Test
     public final void testXml() {
         try {
-            LOG.finer("Loading XML sample");
+            LOG.info("Loading XML sample");
             final InputStream is = getClass().getResourceAsStream("/test.xml");
-            assertTrue(is != null);
+            Assert.assertTrue(is != null);
             final CharStream input = new ANTLRInputStream(is, "utf-8");
-            LOG.finer("Lexering the sample");
+            LOG.info("Lexering the sample");
             final XmlGrammar lexer = new XmlGrammar(input);
             Token token;
-            LOG.finer("Entering token loop");
+            LOG.info("Entering token loop");
             while ((token = lexer.nextToken()) != Token.EOF_TOKEN) {
                 LOG.info("Token (" + token.getType() + "): " + token.getText());
                 if (token.getType() == Token.EOF) {
                     break;
                 }
             }
-            LOG.finer("finished");
+            LOG.info("finished");
             is.close();
-            assertTrue(true);
+            Assert.assertTrue(true);
         } catch (final IOException e) {
             e.printStackTrace();
-            fail(e.getLocalizedMessage());
+            Assert.fail(e.getLocalizedMessage());
         }
     }
     
