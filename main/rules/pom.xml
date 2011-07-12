@@ -43,6 +43,11 @@
               <file>scf-api-schema.xsd</file>
             </schema>
           </schemas>
+          <includes>
+            <include>**/api/v1/*.java</include>
+            <include>**/impl/v1/*.java</include>
+          </includes>
+          <verbose>true</verbose>
         </configuration>
         <executions>
           <execution>
@@ -53,25 +58,6 @@
             </goals>
           </execution>
         </executions>
-        <!-- 
-        <dependencies>
-          <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.2</version>
-          </dependency>
-          <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-xjc</artifactId>
-            <version>2.2</version>
-          </dependency>
-          <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.2</version>
-          </dependency>
-        </dependencies>
-        -->
       </plugin>
     </plugins>
     <pluginManagement>
