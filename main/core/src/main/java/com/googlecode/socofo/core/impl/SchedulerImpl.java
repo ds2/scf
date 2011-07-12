@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.googlecode.socofo.core.api.AbstractProvider;
 import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.FileRoot;
 import com.googlecode.socofo.core.api.Scheduler;
@@ -87,17 +87,17 @@ public class SchedulerImpl implements Scheduler {
      * A provider for translation jobs.
      */
     @Inject
-    private AbstractProvider<TranslationJob> translationJob;
+    private Provider<TranslationJob> translationJob;
     /**
      * A provider for file roots.
      */
     @Inject
-    private AbstractProvider<FileRoot> fileProv;
+    private Provider<FileRoot> fileProv;
     /**
      * A provider for file destinations.
      */
     @Inject
-    private AbstractProvider<FileDestination> destProv;
+    private Provider<FileDestination> destProv;
     
     /**
      * Inits the scheduler.
@@ -157,12 +157,12 @@ public class SchedulerImpl implements Scheduler {
         log.debug("Got source files, counting {}", sourceFiles.size());
         for (File sourceFile : sourceFiles) {
             log.debug("Got this source file: {}", sourceFile.getAbsolutePath());
-            final TranslationJob job = translationJob.getNewInstance();
-            final FileRoot fr = fileProv.getNewInstance();
+            final TranslationJob job = translationJob.get();
+            final FileRoot fr = fileProv.get();
             try {
                 fr.setFile(sourceFile);
                 job.setSource(fr);
-                final FileDestination fd = destProv.getNewInstance();
+                final FileDestination fd = destProv.get();
                 fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));
                 job.setDestination(fd);
                 job.setRule(ruleSet);

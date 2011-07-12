@@ -25,9 +25,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.testng.annotations.Guice;
 
+import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
@@ -35,135 +39,137 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributes;
  * @author kaeto23
  * 
  */
+@Guice(modules = { TestInjectionPlan.class })
 public class SourceWriterImplTest {
-	/**
-	 * The test object
-	 */
-	private SourceWriterImpl to = null;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		to = new SourceWriterImpl();
-		to.setTestLineHandler(new LineHandlerImpl());
-		to.setCommonAttributes(getAttributes());
-		to.prepare();
-	}
-
-	/**
-	 * Returns some attributes to use
-	 * 
-	 * @return the common attributes
-	 */
-	private CommonAttributes getAttributes() {
-		return new CommonAttributes() {
-
-			@Override
-			public int getMaxLinewidth() {
-				return 10;
-			}
-
-			@Override
-			public String getIndentSequence() {
-				return "  ";
-			}
-
-			@Override
-			public int getTabSize() {
-				return 4;
-			}
-
-			@Override
-			public Boolean getStopOnLongline() {
-				return false;
-			}
-		};
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addLine(int, java.lang.String)}
-	 * 
-	 */
-	@Test
-	public final void testAddLine() {
-		try {
-			to.addLine(-1, null);
-			assertEquals("", to.getResult());
-			to.addLine(0, "hello");
-			to.finish();
-			assertEquals("hello\n", to.getResult());
-		} catch (TranslationException e) {
-			fail(e.getLocalizedMessage());
-		}
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(java.lang.String)}
-	 * .
-	 */
-	@Test
-	public final void testAddToLineString() {
-		assertFalse(to.addToLine(null));
-		try {
-			to.finish();
-			assertEquals("", to.getResult());
-			assertTrue(to.addToLine("hi"));
-			assertEquals("hi", to.getCurrentLine());
-			to.prepare();
-			assertTrue(to.addToLine("hello, "));
-			assertTrue(to.addToLine("world"));
-			to.commitLine(true);
-			assertEquals("hello, world\n", to.getResult());
-		} catch (TranslationException e) {
-			fail(e.getLocalizedMessage());
-		}
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(int, java.lang.String)}
-	 * .
-	 */
-	@Test
-	public final void testAddToLineIntString() {
-		to.addToLine(-1, null);
-		try {
-			to.finish();
-		} catch (TranslationException e) {
-			fail(e.getLocalizedMessage());
-		}
-		assertEquals("", to.getResult());
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#setCommonAttributes(com.googlecode.socofo.rules.api.v1.CommonAttributes)}
-	 * .
-	 */
-	@Test
-	public final void testSetCommonAttributes() {
-		to.setCommonAttributes(null);
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#commitLine(boolean)}
-	 * .
-	 */
-	@Test
-	public final void testCommitLine() {
-		try {
-			to.commitLine(false);
-			assertEquals("", to.getResult());
-			to.addLine(0, "hello this is a longer line");
-			assertFalse(to.commitLine(false));
-		} catch (TranslationException e) {
-			fail(e.getLocalizedMessage());
-		}
-	}
-
+    /**
+     * The test object
+     */
+    @Inject
+    private SourceWriter to;
+    
+    /**
+     * @throws java.lang.Exception
+     *             any error
+     */
+    @Before
+    public void setUp() throws Exception {
+        to = new SourceWriterImpl();
+        to.setCommonAttributes(getAttributes());
+        to.prepare();
+    }
+    
+    /**
+     * Returns some attributes to use
+     * 
+     * @return the common attributes
+     */
+    private CommonAttributes getAttributes() {
+        return new CommonAttributes() {
+            
+            @Override
+            public int getMaxLinewidth() {
+                return 10;
+            }
+            
+            @Override
+            public String getIndentSequence() {
+                return "  ";
+            }
+            
+            @Override
+            public int getTabSize() {
+                return 4;
+            }
+            
+            @Override
+            public Boolean getStopOnLongline() {
+                return false;
+            }
+        };
+    }
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addLine(int, java.lang.String)}
+     * 
+     */
+    @Test
+    public final void testAddLine() {
+        try {
+            to.addLine(-1, null);
+            assertEquals("", to.getResult());
+            to.addLine(0, "hello");
+            to.finish();
+            assertEquals("hello\n", to.getResult());
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+    }
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(java.lang.String)}
+     * .
+     */
+    @Test
+    public final void testAddToLineString() {
+        assertFalse(to.addToLine(null));
+        try {
+            to.finish();
+            assertEquals("", to.getResult());
+            assertTrue(to.addToLine("hi"));
+            assertEquals("hi", to.getCurrentLine());
+            to.prepare();
+            assertTrue(to.addToLine("hello, "));
+            assertTrue(to.addToLine("world"));
+            to.commitLine(true);
+            assertEquals("hello, world\n", to.getResult());
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+    }
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(int, java.lang.String)}
+     * .
+     */
+    @Test
+    public final void testAddToLineIntString() {
+        to.addToLine(-1, null);
+        try {
+            to.finish();
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+        assertEquals("", to.getResult());
+    }
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#setCommonAttributes(com.googlecode.socofo.rules.api.v1.CommonAttributes)}
+     * .
+     */
+    @Test
+    public final void testSetCommonAttributes() {
+        to.setCommonAttributes(null);
+    }
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#commitLine(boolean)}
+     * .
+     */
+    @Test
+    public final void testCommitLine() {
+        try {
+            to.commitLine(false);
+            assertEquals("", to.getResult());
+            to.addLine(0, "hello this is a longer line");
+            assertFalse(to.commitLine(false));
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+    }
+    
 }

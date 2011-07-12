@@ -28,76 +28,63 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.testng.annotations.Guice;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
+import com.googlecode.socofo.core.api.Scheduler;
 import com.googlecode.socofo.core.api.SourceTypes;
-import com.googlecode.socofo.core.api.SourcefileScanner;
 import com.googlecode.socofo.core.api.TranslationJob;
-import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
-import com.googlecode.socofo.rules.api.v1.RulesLoader;
-import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 
 /**
  * @author kaeto23
  * 
  */
+@Guice(modules = { TestInjectionPlan.class })
 public class SchedulerImplTest {
-	private SchedulerImpl to = null;
-	private URL rulesUrl = null;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		to = new SchedulerImpl();
-		Injector ij = Guice.createInjector(new CoreInjectionPlan(),
-				new CommonsInjectionPlan(), new RulesInjectionPlan());
-		// to.setTestDetector(ij.getInstance(SourceTypeDetector.class));
-		to.setTestRulesLoader(ij.getInstance(RulesLoader.class));
-		to.setTestSourcefileScanner(ij.getInstance(SourcefileScanner.class));
-		File rulesFile = new File("src/test/resources/rules.xml");
-		rulesUrl = rulesFile.toURI().toURL();
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SchedulerImpl#addJobs(java.util.List)}
-	 * .
-	 */
-	@Test
-	public final void testAddJobs() {
-		to.addJobs(null);
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SchedulerImpl#createLocalJobs(java.io.File, java.io.File, com.googlecode.socofo.core.api.SourceTypes[])}
-	 * .
-	 */
-	@Test
-	public final void testCreateLocalJobs() {
-		File baseDir = new File("src");
-		File targetDir = new File("target/transformed");
-		to.setRules(rulesUrl);
-		List<TranslationJob> jobs = to.createLocalJobs(baseDir, targetDir,
-				Arrays.asList(SourceTypes.XML));
-		assertNotNull(jobs);
-		assertTrue(jobs.size() > 0);
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SchedulerImpl#setRules(java.net.URL)}
-	 * .
-	 */
-	@Test
-	public final void testSetRules() {
-		to.setRules(null);
-	}
-
+    @Inject
+    private Scheduler to = null;
+    private URL rulesUrl = null;
+    
+    @Before
+    public void setUp() throws Exception {
+        to = new SchedulerImpl();
+        File rulesFile = new File("src/test/resources/rules.xml");
+        rulesUrl = rulesFile.toURI().toURL();
+    }
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.core.impl.SchedulerImpl#addJobs(java.util.List)}
+     * .
+     */
+    @Test
+    public final void testAddJobs() {
+        to.addJobs(null);
+    }
+    
+    @Test
+    public final void testCreateLocalJobs() {
+        File baseDir = new File("src");
+        File targetDir = new File("target/transformed");
+        to.setRules(rulesUrl);
+        List<TranslationJob> jobs =
+            to.createLocalJobs(baseDir, targetDir,
+                Arrays.asList(SourceTypes.XML));
+        assertNotNull(jobs);
+        assertTrue(jobs.size() > 0);
+    }
+    
+    /**
+     * Test method for
+     * {@link com.googlecode.socofo.core.impl.SchedulerImpl#setRules(java.net.URL)}
+     * .
+     */
+    @Test
+    public final void testSetRules() {
+        to.setRules(null);
+    }
+    
 }
