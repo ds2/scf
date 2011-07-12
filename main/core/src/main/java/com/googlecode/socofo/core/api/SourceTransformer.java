@@ -21,7 +21,7 @@
 package com.googlecode.socofo.core.api;
 
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.RuleSet;
+import com.googlecode.socofo.rules.api.v1.RuleSet;
 
 /**
  * The base run sequence for performing a source code translation for a specific

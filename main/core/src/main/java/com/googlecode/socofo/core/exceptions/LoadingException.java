@@ -25,12 +25,20 @@ package com.googlecode.socofo.core.exceptions;
  * 
  */
 public class LoadingException extends Exception {
-
-	/**
-	 * 
-	 */
-	public LoadingException(String s) {
-		super(s);
-	}
-
+    
+    /**
+     * The svuid.
+     */
+    private static final long serialVersionUID = -2879303864926803190L;
+    
+    /**
+     * Inits the exception with the given error message.
+     * 
+     * @param s
+     *            the error message
+     */
+    public LoadingException(String s) {
+        super(s);
+    }
+    
 }

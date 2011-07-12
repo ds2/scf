@@ -30,7 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.googlecode.socofo.core.api.LineHandler;
-import com.googlecode.socofo.rules.api.BreakFormat;
+import com.googlecode.socofo.rules.api.v1.BreakFormat;
 
 /**
  * @author kaeto23

@@ -18,33 +18,28 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
 import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlType;
 
 /**
- * The rules for breaking content sequences into several lines.
+ * The final bracket policy.
  * 
  * @author Dirk Strauss
  * @version 1.0
- * 
  */
-@XmlType(name = "BreakFormat", namespace = "http://www.ds2/ns/socofo")
 @XmlEnum
-public enum BreakFormat {
+public enum FinalBracketPolicy {
 	/**
-	 * basically a BeautyBreak, but when facing too long words, a break is
-	 * forced, breaking the word into two words
+	 * Never do a break at a final bracket.
 	 */
-	BeautyForcedBreak,
+	Never,
 	/**
-	 * breaks the line according to spaces. If a word exceeds the line, the word
-	 * is printed, and a new line added
+	 * Always do a break at a final bracket.
 	 */
-	BeautyBreak,
+	Always,
 	/**
-	 * No special breaks. The content is returned 1:1
+	 * Only do a final break when attributes were found
 	 */
-	NoBreak;
+	OnAttributes;
 }

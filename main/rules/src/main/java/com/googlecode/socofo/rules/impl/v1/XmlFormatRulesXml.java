@@ -18,7 +18,7 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.impl;
+package com.googlecode.socofo.rules.impl.v1;
 
 import java.util.List;
 
@@ -28,15 +28,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.googlecode.socofo.rules.api.CommonAttributes;
-import com.googlecode.socofo.rules.api.FinalBracketPolicy;
-import com.googlecode.socofo.rules.api.NamespaceRule;
-import com.googlecode.socofo.rules.api.NewlineRules;
-import com.googlecode.socofo.rules.api.NewlineRulesUpdater;
-import com.googlecode.socofo.rules.api.TextBlocks;
-import com.googlecode.socofo.rules.api.XmlCommentsRules;
-import com.googlecode.socofo.rules.api.XmlCommentsRulesUpdater;
-import com.googlecode.socofo.rules.api.XmlFormatRulesUpdater;
+import com.googlecode.socofo.rules.api.v1.CommonAttributes;
+import com.googlecode.socofo.rules.api.v1.FinalBracketPolicy;
+import com.googlecode.socofo.rules.api.v1.NamespaceRule;
+import com.googlecode.socofo.rules.api.v1.NewlineRules;
+import com.googlecode.socofo.rules.api.v1.NewlineRulesUpdater;
+import com.googlecode.socofo.rules.api.v1.TextBlocks;
+import com.googlecode.socofo.rules.api.v1.XmlCommentsRules;
+import com.googlecode.socofo.rules.api.v1.XmlCommentsRulesUpdater;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
 
 /**
  * @author kaeto23

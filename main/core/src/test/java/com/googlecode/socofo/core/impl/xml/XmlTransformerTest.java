@@ -42,10 +42,10 @@ import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.exceptions.LoadingException;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
-import com.googlecode.socofo.rules.api.RuleSet;
-import com.googlecode.socofo.rules.api.RulesLoader;
-import com.googlecode.socofo.rules.api.XmlFormatRules;
-import com.googlecode.socofo.rules.api.XmlFormatRulesUpdater;
+import com.googlecode.socofo.rules.api.v1.RuleSet;
+import com.googlecode.socofo.rules.api.v1.RulesLoader;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
 import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 
 /**
@@ -110,7 +110,7 @@ public class XmlTransformerTest {
 
 	/**
 	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#setRules(com.googlecode.socofo.rules.api.RuleSet)}
+	 * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#setRules(com.googlecode.socofo.rules.api.v1.RuleSet)}
 	 * .
 	 */
 	@Test

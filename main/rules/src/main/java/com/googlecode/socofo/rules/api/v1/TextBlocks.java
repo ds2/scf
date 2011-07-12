@@ -18,22 +18,28 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
 import java.io.Serializable;
 
 /**
- * The contract for a bunch of transformation rules.
+ * Rules for adding additional text blocks into the source code.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface RuleSet extends Serializable {
+public interface TextBlocks extends Serializable {
 	/**
-	 * Returns the rules for formatting xml source code.
+	 * Returns the header to insert at the beginning of a document.
 	 * 
-	 * @return the rules for xml source code
+	 * @return the header content
 	 */
-	XmlFormatRules getXmlFormatRules();
+	String getHeader();
 
+	/**
+	 * Returns the footer to insert at the end of a document.
+	 * 
+	 * @return the footer content
+	 */
+	String getFooter();
 }

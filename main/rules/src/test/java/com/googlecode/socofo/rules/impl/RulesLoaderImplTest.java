@@ -28,8 +28,8 @@ import org.testng.Assert;
 import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
-import com.googlecode.socofo.rules.api.RulesLoader;
-import com.googlecode.socofo.rules.api.XmlFormatRules;
+import com.googlecode.socofo.rules.api.v1.RulesLoader;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
 
 /**
  * @author kaeto23

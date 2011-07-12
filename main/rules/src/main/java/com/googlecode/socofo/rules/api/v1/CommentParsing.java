@@ -18,14 +18,26 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
+
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
 
 /**
- * Setter contract for setting some newline rules.
+ * Some comment preparsing values.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface NewlineRulesUpdater extends NewlineRules {
-	// nothing yet
+@XmlType(name = "CommentParsingType")
+@XmlEnum
+public enum CommentParsing {
+    /**
+     * The comment is untouched. No preparsing is done (Default)
+     */
+    NoParsing,
+    /**
+     * Replaces any NEWLINE chars with a single SPACE
+     */
+    ReplaceNewlinesWithSpace;
 }

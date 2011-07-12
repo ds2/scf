@@ -18,43 +18,44 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
-import java.io.InputStream;
-import java.net.URL;
+import java.io.Serializable;
 
 /**
- * Contract for a loader for rules. Implementations of this contract will load
- * xml configuration files and interprete them for socofo.
+ * Common attributes for any file to format.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface RulesLoader {
+public interface CommonAttributes extends Serializable {
 	/**
-	 * Loads the XML formatter rules from the given input stream
+	 * Returns the maximum line width.
 	 * 
-	 * @param is
-	 *            the input stream containing the configuration
-	 * @return null, or the configuration
+	 * @return the maximum line width
 	 */
-	XmlFormatRules loadFormatRules(InputStream is);
+	int getMaxLinewidth();
 
 	/**
-	 * Convenience method for loading the rules via a URL.
+	 * Returns the sequence of characters to act as indent.
 	 * 
-	 * @param formatterXml
-	 *            the url to the rules
-	 * @return the rule set, or null
+	 * @return the indent sequence
 	 */
-	RuleSet loadRulesFromUrl(URL formatterXml);
+	String getIndentSequence();
 
 	/**
-	 * Loads the rules from the given input stream.
+	 * Returns the count of spaces that represent a tab character.
 	 * 
-	 * @param is
-	 *            the input stream
-	 * @return null, or the rules
+	 * @return the count of spaces for a tab. Usually 4.
 	 */
-	RuleSet loadRules(InputStream is);
+	int getTabSize();
+
+	/**
+	 * Shall the transformation stop in case of a line becoming too long? This
+	 * is a debug parameter and should be set to FALSE in production.
+	 * 
+	 * @return TRUE if an exception should be thrown in case of a line becoming
+	 *         too long, otherwise FALSE
+	 */
+	Boolean getStopOnLongline();
 }

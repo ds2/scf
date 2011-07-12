@@ -22,7 +22,7 @@ package com.googlecode.socofo.core.api;
 
 import java.util.List;
 
-import com.googlecode.socofo.rules.api.BreakFormat;
+import com.googlecode.socofo.rules.api.v1.BreakFormat;
 
 /**
  * A formatter for breaking too long lines of code into several lines

@@ -21,7 +21,7 @@
 package com.googlecode.socofo.core.api;
 
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.CommonAttributes;
+import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
 /**
  * Source writer interface for writing source file content. Implementations of

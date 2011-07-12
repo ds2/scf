@@ -18,74 +18,76 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.impl;
+package com.googlecode.socofo.rules.impl.v1;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.googlecode.socofo.rules.api.NewlineRulesUpdater;
+import com.googlecode.socofo.rules.api.v1.CommonAttributesUpdater;
 
 /**
- * @author kaeto23
+ * The basic implementation of the xml common attributes rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
-@XmlType(name = "NewlineRulesType")
-public class NewlineRulesXml implements NewlineRulesUpdater {
+@XmlType(name = "CommonAttributesType")
+public class CommonAttributesXml implements CommonAttributesUpdater {
 	/**
 	 * the svuid
 	 */
-	private static final long serialVersionUID = 485959883495651756L;
-	@XmlElement
-	private Boolean beforeIfStatements = false;
-	@XmlElement
-	private Boolean beforeComment = false;
-	@XmlElement
-	private Boolean afterXmlEndTag = false;
-	@XmlElement
-	private Boolean afterEachXmlAttribute = false;
-	@XmlElement
-	private Boolean onLevelChange = false;
-	@XmlElement
-	private Boolean separateCommentTags = false;
+	private static final long serialVersionUID = 8599603676435230001L;
+	/**
+	 * the maximum line width.
+	 */
+	@XmlElement(required = true)
+	private int maxLineWidth = 0;
+	/**
+	 * the indent sequence.
+	 */
+	@XmlElement(required = true)
+	private String indentSequence = null;
+	/**
+	 * the tab size.
+	 */
+	@XmlElement(required = false, defaultValue = "4")
+	private int tabSize = 4;
+	/**
+	 * the flag to stop on too long lines.
+	 */
+	@XmlElement(defaultValue = "false")
+	private Boolean stopOnLongline = false;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean getAfterEachXmlAttribute() {
-		return afterEachXmlAttribute;
+	public String getIndentSequence() {
+		return indentSequence;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean getAfterXmlEndTag() {
-		return afterXmlEndTag;
+	public int getMaxLinewidth() {
+		return maxLineWidth;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean getBeforeComment() {
-		return beforeComment;
+	public int getTabSize() {
+		return tabSize;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean getBeforeIfStatements() {
-		return beforeIfStatements;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getOnLevelChange() {
-		return onLevelChange;
+	public Boolean getStopOnLongline() {
+		return stopOnLongline;
 	}
 
 }

@@ -27,7 +27,7 @@ import com.google.inject.Inject;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.CommonAttributes;
+import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
 /**
  * The basic impl of the SourceWriter.

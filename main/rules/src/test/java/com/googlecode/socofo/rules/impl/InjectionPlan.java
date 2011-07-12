@@ -7,7 +7,7 @@ import com.google.inject.AbstractModule;
 import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.common.impl.IOHelperImpl;
 import com.googlecode.socofo.rules.api.RulesConfig;
-import com.googlecode.socofo.rules.api.RulesLoader;
+import com.googlecode.socofo.rules.api.v1.RulesLoader;
 
 /**
  * @author Kaeto23

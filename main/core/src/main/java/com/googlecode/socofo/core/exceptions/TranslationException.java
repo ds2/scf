@@ -27,27 +27,33 @@ package com.googlecode.socofo.core.exceptions;
  * @version 1.0
  */
 public class TranslationException extends Exception {
-
-	/**
-	 * the svuid.
-	 */
-	private static final long serialVersionUID = 3370510780566872127L;
-
-	/**
-	 * @param message
-	 */
-	public TranslationException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public TranslationException(String message, Throwable cause) {
-		super(message, cause);
-		// TODO Auto-generated constructor stub
-	}
-
+    
+    /**
+     * the svuid.
+     */
+    private static final long serialVersionUID = 3370510780566872127L;
+    
+    /**
+     * Inits the exception with the given error message.
+     * 
+     * @param message
+     *            the error message
+     */
+    public TranslationException(String message) {
+        super(message);
+    }
+    
+    /**
+     * Inits the exception with the given error message and cause.
+     * 
+     * @param message
+     *            the error message
+     * @param cause
+     *            the error cause
+     */
+    public TranslationException(String message, Throwable cause) {
+        super(message, cause);
+        // TODO Auto-generated constructor stub
+    }
+    
 }

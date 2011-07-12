@@ -38,7 +38,7 @@ import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.SourcefileScanner;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.impl.modules.CoreInjectionPlan;
-import com.googlecode.socofo.rules.api.RulesLoader;
+import com.googlecode.socofo.rules.api.v1.RulesLoader;
 import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 
 /**

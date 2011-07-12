@@ -26,7 +26,7 @@ import java.util.Map;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.XmlFormatRules;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
 
 /**
  * contract for an XML object.

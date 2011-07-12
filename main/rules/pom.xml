@@ -29,34 +29,80 @@
   <description>the rules that configure the formatters</description>
   <build>
     <plugins>
-      <!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
-        <executions> <execution> <id>xsd2java</id> <goals> <goal>generate</goal> 
-        </goals> </execution> </executions> <configuration> <generatePackage>ds2.socofo.rules.gen</generatePackage> 
-        </configuration> </plugin> -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jaxws-maven-plugin</artifactId>
-        <version>1.12</version>
+        <groupId>com.sun.tools.jxc.maven2</groupId>
+        <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+        <configuration>
+          <schemas>
+            <schema>
+              <namespace>http://www.ds2/ns/socofo</namespace>
+              <file>scf-schema.xsd</file>
+            </schema>
+            <schema>
+              <namespace>http://www.ds2/ns/socofo/api</namespace>
+              <file>scf-api-schema.xsd</file>
+            </schema>
+          </schemas>
+        </configuration>
         <executions>
           <execution>
-            <id>gen</id>
+            <id>genXsd</id>
+            <phase>process-classes</phase>
             <goals>
-              <goal>wsgen</goal>
+              <goal>generate</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <sei>com.googlecode.socofo.rules.impl.WsDummy</sei>
-          <genWsdl>true</genWsdl>
-        </configuration>
+        <!-- 
         <dependencies>
           <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-tools</artifactId>
-            <version>2.2.0.2</version>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.2</version>
+          </dependency>
+          <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>2.2</version>
+          </dependency>
+          <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2</version>
           </dependency>
         </dependencies>
+        -->
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings 
+          only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>com.sun.tools.jxc.maven2</groupId>
+                    <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+                    <versionRange>[1.2,)</versionRange>
+                    <goals>
+                      <goal>generate</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

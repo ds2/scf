@@ -18,14 +18,14 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
 /**
- * The contract for setting some common attributes.
+ * Setter contract for setting some newline rules.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface CommonAttributesUpdater extends CommonAttributes {
+public interface NewlineRulesUpdater extends NewlineRules {
 	// nothing yet
 }

@@ -16,38 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * 
+ * The implementations for the rules
  */
-package com.googlecode.socofo.rules.impl;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
-import com.googlecode.socofo.rules.api.TextBlocks;
-
-/**
- * @author kaeto23
- * 
- */
-@XmlType(name = "TextBlocksType")
-public class TextBlocksXml implements TextBlocks {
-	/**
-	 * the svuid
-	 */
-	private static final long serialVersionUID = 2815059537069771320L;
-	@XmlElement
-	private String header;
-	@XmlElement
-	private String footer;
-
-	@Override
-	public String getFooter() {
-		return footer;
-	}
-
-	@Override
-	public String getHeader() {
-		return header;
-	}
-
-}
+@javax.xml.bind.annotation.XmlSchema(namespace="http://www.ds2/ns/socofo")
+package com.googlecode.socofo.rules.impl.v1;

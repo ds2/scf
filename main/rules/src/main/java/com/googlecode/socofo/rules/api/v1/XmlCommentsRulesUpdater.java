@@ -18,28 +18,36 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
-
-import javax.xml.bind.annotation.XmlEnum;
+package com.googlecode.socofo.rules.api.v1;
 
 /**
- * The final bracket policy.
+ * Contract for setting some xml comments rules.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-@XmlEnum
-public enum FinalBracketPolicy {
+public interface XmlCommentsRulesUpdater extends XmlCommentsRules {
 	/**
-	 * Never do a break at a final bracket.
+	 * Flag to single the comment begin sequence.
+	 * 
+	 * @param b
+	 *            the new value
 	 */
-	Never,
+	void setBreakAfterBegin(boolean b);
+
 	/**
-	 * Always do a break at a final bracket.
+	 * Flag to single the comment end sequence.
+	 * 
+	 * @param b
+	 *            the new value
 	 */
-	Always,
+	void setBreakBeforeEnd(boolean b);
+
 	/**
-	 * Only do a final break when attributes were found
+	 * Flag to indent comment texts.
+	 * 
+	 * @param b
+	 *            the new value
 	 */
-	OnAttributes;
+	void setIndentComment(boolean b);
 }

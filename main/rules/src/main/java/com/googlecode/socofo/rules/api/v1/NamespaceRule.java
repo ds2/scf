@@ -18,44 +18,42 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+import com.googlecode.socofo.rules.impl.v1.NamespaceRuleXml;
+
 /**
- * Common attributes for any file to format.
+ * A namespace rule.
  * 
  * @author Dirk Strauss
  * @version 1.0
+ * 
  */
-public interface CommonAttributes extends Serializable {
+@XmlSeeAlso(NamespaceRuleXml.class)
+public interface NamespaceRule extends Serializable {
 	/**
-	 * Returns the maximum line width.
+	 * Returns the prefix to use for this namespace.
 	 * 
-	 * @return the maximum line width
+	 * @return the prefix to use. May return null in case of NO prefix to be
+	 *         used.
 	 */
-	int getMaxLinewidth();
+	public String getPrefix();
 
 	/**
-	 * Returns the sequence of characters to act as indent.
+	 * Returns the namespace uri.
 	 * 
-	 * @return the indent sequence
+	 * @return the namespace uri
 	 */
-	String getIndentSequence();
+	public String getNamespace();
 
 	/**
-	 * Returns the count of spaces that represent a tab character.
+	 * Returns the url to the XSD for this namespace.
 	 * 
-	 * @return the count of spaces for a tab. Usually 4.
+	 * @return null, or the url for this namespace
 	 */
-	int getTabSize();
-
-	/**
-	 * Shall the transformation stop in case of a line becoming too long? This
-	 * is a debug parameter and should be set to FALSE in production.
-	 * 
-	 * @return TRUE if an exception should be thrown in case of a line becoming
-	 *         too long, otherwise FALSE
-	 */
-	Boolean getStopOnLongline();
+	public String getNamespaceUrl();
 }

@@ -18,19 +18,14 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
 /**
- * The contract for value-changing rulesets.
+ * The contract for setting some common attributes.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface RuleSetUpdater extends RuleSet {
-	/**
-	 * Returns the setters for changing the rules for xml sources.
-	 * 
-	 * @return the setters contract
-	 */
-	XmlFormatRulesUpdater getXmlFormatRulesUpdater();
+public interface CommonAttributesUpdater extends CommonAttributes {
+	// nothing yet
 }

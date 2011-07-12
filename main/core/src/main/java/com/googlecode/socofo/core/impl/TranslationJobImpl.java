@@ -30,7 +30,7 @@ import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.TransformerDelegate;
 import com.googlecode.socofo.core.api.TranslationJob;
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.RuleSet;
+import com.googlecode.socofo.rules.api.v1.RuleSet;
 
 /**
  * The basic implementation of a translation job.

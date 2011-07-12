@@ -36,10 +36,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.googlecode.socofo.common.api.IOHelper;
-import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.RulesConfig;
-import com.googlecode.socofo.rules.api.RulesLoader;
-import com.googlecode.socofo.rules.api.XmlFormatRules;
+import com.googlecode.socofo.rules.api.v1.RuleSet;
+import com.googlecode.socofo.rules.api.v1.RulesLoader;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
+import com.googlecode.socofo.rules.impl.v1.RuleSetXml;
 
 /**
  * @author kaeto23

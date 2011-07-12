@@ -24,7 +24,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import com.googlecode.socofo.rules.api.RuleSet;
+import com.googlecode.socofo.rules.api.v1.RuleSet;
 
 /**
  * The scheduler. Implementations of this class are scheduling and

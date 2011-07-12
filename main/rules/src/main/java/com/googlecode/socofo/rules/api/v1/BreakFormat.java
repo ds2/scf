@@ -18,28 +18,33 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
 
 /**
- * Rules for inserting SPACEs.
+ * The rules for breaking content sequences into several lines.
  * 
  * @author Dirk Strauss
  * @version 1.0
+ * 
  */
-public interface SpacesRules extends Serializable {
-	/**
-	 * Flag for inserting a SPACE before an assigment.
-	 * 
-	 * @return flag value
-	 */
-	Boolean getBeforeAssignment();
-
-	/**
-	 * Flag for inserting a SPACE after an assignment.
-	 * 
-	 * @return flag value
-	 */
-	Boolean getAfterAssignment();
+@XmlType(name = "BreakFormat")
+@XmlEnum
+public enum BreakFormat {
+    /**
+     * basically a BeautyBreak, but when facing too long words, a break is
+     * forced, breaking the word into two words
+     */
+    BeautyForcedBreak,
+    /**
+     * breaks the line according to spaces. If a word exceeds the line, the word
+     * is printed, and a new line added
+     */
+    BeautyBreak,
+    /**
+     * No special breaks. The content is returned 1:1
+     */
+    NoBreak;
 }

@@ -18,7 +18,7 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
 import java.io.Serializable;
 import java.util.List;

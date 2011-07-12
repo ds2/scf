@@ -18,42 +18,44 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
-import java.io.Serializable;
+import java.io.InputStream;
+import java.net.URL;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
-
-import com.googlecode.socofo.rules.impl.NamespaceRuleXml;
 
 /**
- * A namespace rule.
+ * Contract for a loader for rules. Implementations of this contract will load
+ * xml configuration files and interprete them for socofo.
  * 
  * @author Dirk Strauss
  * @version 1.0
- * 
  */
-@XmlSeeAlso(NamespaceRuleXml.class)
-public interface NamespaceRule extends Serializable {
+public interface RulesLoader {
 	/**
-	 * Returns the prefix to use for this namespace.
+	 * Loads the XML formatter rules from the given input stream
 	 * 
-	 * @return the prefix to use. May return null in case of NO prefix to be
-	 *         used.
+	 * @param is
+	 *            the input stream containing the configuration
+	 * @return null, or the configuration
 	 */
-	public String getPrefix();
+	XmlFormatRules loadFormatRules(InputStream is);
 
 	/**
-	 * Returns the namespace uri.
+	 * Convenience method for loading the rules via a URL.
 	 * 
-	 * @return the namespace uri
+	 * @param formatterXml
+	 *            the url to the rules
+	 * @return the rule set, or null
 	 */
-	public String getNamespace();
+	RuleSet loadRulesFromUrl(URL formatterXml);
 
 	/**
-	 * Returns the url to the XSD for this namespace.
+	 * Loads the rules from the given input stream.
 	 * 
-	 * @return null, or the url for this namespace
+	 * @param is
+	 *            the input stream
+	 * @return null, or the rules
 	 */
-	public String getNamespaceUrl();
+	RuleSet loadRules(InputStream is);
 }

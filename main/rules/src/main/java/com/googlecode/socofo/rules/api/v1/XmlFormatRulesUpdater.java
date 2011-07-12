@@ -18,28 +18,26 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.impl;
-
-import javax.jws.WebMethod;
-import javax.jws.WebService;
+package com.googlecode.socofo.rules.api.v1;
 
 /**
- * @author kaeto23
+ * The contract for getting the setters for various xml transformations.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
-@WebService(name = "SoCoFo", serviceName = "SoCoFo", targetNamespace = "http://www.ds2/ns/socofo")
-public class WsDummy {
+public interface XmlFormatRulesUpdater extends XmlFormatRules {
+	/**
+	 * Returns the updater for the NEWLINE rules.
+	 * 
+	 * @return the setter for the NEWLINE rules
+	 */
+	NewlineRulesUpdater getNewlineRulesUpdater();
 
 	/**
+	 * Returns the updater for the xml comments rules.
 	 * 
+	 * @return the updater
 	 */
-	public WsDummy() {
-		// TODO Auto-generated constructor stub
-	}
-
-	@WebMethod
-	public RuleSetXml dummyMethod() {
-		return null;
-	}
-
+	XmlCommentsRulesUpdater getCommentsRulesUpdater();
 }

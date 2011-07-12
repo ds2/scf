@@ -32,10 +32,10 @@ import org.slf4j.LoggerFactory;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.FinalBracketPolicy;
-import com.googlecode.socofo.rules.api.NewlineRules;
-import com.googlecode.socofo.rules.api.XmlFormatRules;
-import com.googlecode.socofo.rules.impl.NewlineRulesXml;
+import com.googlecode.socofo.rules.api.v1.FinalBracketPolicy;
+import com.googlecode.socofo.rules.api.v1.NewlineRules;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
+import com.googlecode.socofo.rules.impl.v1.NewlineRulesXml;
 
 /**
  * The base class for XML elements.

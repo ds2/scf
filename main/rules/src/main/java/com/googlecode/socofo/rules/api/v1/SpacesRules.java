@@ -18,28 +18,28 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
 
 import java.io.Serializable;
 
 /**
- * Rules for adding additional text blocks into the source code.
+ * Rules for inserting SPACEs.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface TextBlocks extends Serializable {
+public interface SpacesRules extends Serializable {
 	/**
-	 * Returns the header to insert at the beginning of a document.
+	 * Flag for inserting a SPACE before an assigment.
 	 * 
-	 * @return the header content
+	 * @return flag value
 	 */
-	String getHeader();
+	Boolean getBeforeAssignment();
 
 	/**
-	 * Returns the footer to insert at the end of a document.
+	 * Flag for inserting a SPACE after an assignment.
 	 * 
-	 * @return the footer content
+	 * @return flag value
 	 */
-	String getFooter();
+	Boolean getAfterAssignment();
 }

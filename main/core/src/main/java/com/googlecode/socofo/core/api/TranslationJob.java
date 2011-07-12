@@ -23,7 +23,7 @@ package com.googlecode.socofo.core.api;
 import java.util.List;
 
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.RuleSet;
+import com.googlecode.socofo.rules.api.v1.RuleSet;
 
 /**
  * A job for transforming a source code into a transformed source code.

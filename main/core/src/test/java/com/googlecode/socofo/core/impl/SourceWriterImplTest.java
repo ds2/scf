@@ -29,7 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.CommonAttributes;
+import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
 /**
  * @author kaeto23
@@ -141,7 +141,7 @@ public class SourceWriterImplTest {
 
 	/**
 	 * Test method for
-	 * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#setCommonAttributes(com.googlecode.socofo.rules.api.CommonAttributes)}
+	 * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#setCommonAttributes(com.googlecode.socofo.rules.api.v1.CommonAttributes)}
 	 * .
 	 */
 	@Test

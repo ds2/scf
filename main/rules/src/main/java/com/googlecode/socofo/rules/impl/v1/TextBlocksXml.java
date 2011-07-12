@@ -18,36 +18,36 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.impl.v1;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+import com.googlecode.socofo.rules.api.v1.TextBlocks;
 
 /**
- * Contract for setting some xml comments rules.
+ * @author kaeto23
  * 
- * @author Dirk Strauss
- * @version 1.0
  */
-public interface XmlCommentsRulesUpdater extends XmlCommentsRules {
+@XmlType(name = "TextBlocksType")
+public class TextBlocksXml implements TextBlocks {
 	/**
-	 * Flag to single the comment begin sequence.
-	 * 
-	 * @param b
-	 *            the new value
+	 * the svuid
 	 */
-	void setBreakAfterBegin(boolean b);
+	private static final long serialVersionUID = 2815059537069771320L;
+	@XmlElement
+	private String header;
+	@XmlElement
+	private String footer;
 
-	/**
-	 * Flag to single the comment end sequence.
-	 * 
-	 * @param b
-	 *            the new value
-	 */
-	void setBreakBeforeEnd(boolean b);
+	@Override
+	public String getFooter() {
+		return footer;
+	}
 
-	/**
-	 * Flag to indent comment texts.
-	 * 
-	 * @param b
-	 *            the new value
-	 */
-	void setIndentComment(boolean b);
+	@Override
+	public String getHeader() {
+		return header;
+	}
+
 }

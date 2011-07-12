@@ -31,8 +31,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.googlecode.socofo.common.modules.CommonsInjectionPlan;
-import com.googlecode.socofo.rules.api.RuleSet;
-import com.googlecode.socofo.rules.api.RulesLoader;
+import com.googlecode.socofo.rules.api.v1.RuleSet;
+import com.googlecode.socofo.rules.api.v1.RulesLoader;
 import com.googlecode.socofo.rules.modules.RulesInjectionPlan;
 
 /**

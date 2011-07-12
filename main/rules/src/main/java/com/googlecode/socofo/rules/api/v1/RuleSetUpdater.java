@@ -18,26 +18,19 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
-
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlType;
+package com.googlecode.socofo.rules.api.v1;
 
 /**
- * Some comment preparsing values.
+ * The contract for value-changing rulesets.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-@XmlType(name = "CommentParsingType", namespace = "http://www.ds2/ns/socofo")
-@XmlEnum
-public enum CommentParsing {
+public interface RuleSetUpdater extends RuleSet {
 	/**
-	 * The comment is untouched. No preparsing is done (Default)
+	 * Returns the setters for changing the rules for xml sources.
+	 * 
+	 * @return the setters contract
 	 */
-	NoParsing,
-	/**
-	 * Replaces any NEWLINE chars with a single SPACE
-	 */
-	ReplaceNewlinesWithSpace;
+	XmlFormatRulesUpdater getXmlFormatRulesUpdater();
 }

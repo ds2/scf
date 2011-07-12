@@ -18,15 +18,15 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.impl;
+package com.googlecode.socofo.rules.impl.v1;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.googlecode.socofo.rules.api.RuleSetUpdater;
-import com.googlecode.socofo.rules.api.XmlFormatRules;
-import com.googlecode.socofo.rules.api.XmlFormatRulesUpdater;
+import com.googlecode.socofo.rules.api.v1.RuleSetUpdater;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
+import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
 
 /**
  * The root implementation for formatter rules.

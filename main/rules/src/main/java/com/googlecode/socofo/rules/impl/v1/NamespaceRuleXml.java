@@ -18,12 +18,12 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.impl;
+package com.googlecode.socofo.rules.impl.v1;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.googlecode.socofo.rules.api.NamespaceRule;
+import com.googlecode.socofo.rules.api.v1.NamespaceRule;
 
 /**
  * @author kaeto23

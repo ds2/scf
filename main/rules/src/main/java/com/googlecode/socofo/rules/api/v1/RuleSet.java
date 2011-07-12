@@ -18,26 +18,22 @@
 /**
  * 
  */
-package com.googlecode.socofo.rules.api;
+package com.googlecode.socofo.rules.api.v1;
+
+import java.io.Serializable;
 
 /**
- * The contract for getting the setters for various xml transformations.
+ * The contract for a bunch of transformation rules.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface XmlFormatRulesUpdater extends XmlFormatRules {
+public interface RuleSet extends Serializable {
 	/**
-	 * Returns the updater for the NEWLINE rules.
+	 * Returns the rules for formatting xml source code.
 	 * 
-	 * @return the setter for the NEWLINE rules
+	 * @return the rules for xml source code
 	 */
-	NewlineRulesUpdater getNewlineRulesUpdater();
+	XmlFormatRules getXmlFormatRules();
 
-	/**
-	 * Returns the updater for the xml comments rules.
-	 * 
-	 * @return the updater
-	 */
-	XmlCommentsRulesUpdater getCommentsRulesUpdater();
 }
