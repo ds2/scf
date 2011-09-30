@@ -26,6 +26,11 @@ package com.googlecode.socofo.core.impl.xml;
  */
 public class EndElement extends BaseXmlObject {
 	public EndElement() {
+		this(null);
+	}
+
+	public EndElement(String string) {
+		super(string);
 		startSeq = "</";
 		endTag = true;
 	}

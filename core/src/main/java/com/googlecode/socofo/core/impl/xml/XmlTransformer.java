@@ -20,9 +20,7 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
-import java.util.List;
 import java.util.Stack;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -37,8 +35,6 @@ import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.grammar.XmlGrammar;
 import com.googlecode.socofo.grammar.XmlParser;
-import com.googlecode.socofo.rules.api.FinalBracketPolicy;
-import com.googlecode.socofo.rules.api.NewlineRules;
 import com.googlecode.socofo.rules.api.RuleSet;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
 
@@ -135,6 +131,7 @@ public class XmlTransformer implements SourceTransformer {
 		log.finer("Starting token run");
 		XmlObject currentObject = null;
 		Stack<String> elementStack = new Stack<String>();
+		XmlObject lastObject = null;
 		while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
 			log.finest("Token (" + token.getType() + ") for this run: "
 					+ token.getText());
@@ -144,7 +141,9 @@ public class XmlTransformer implements SourceTransformer {
 				break;
 			case XmlGrammar.PI_STOP:
 				// write Element
-				currentObject.writeElement(currentIndent, sw, rules, lh);
+				currentObject.writeElement(lastObject, currentIndent, sw,
+						rules, lh);
+				lastObject = currentObject;
 				currentObject = null;
 				break;
 			case XmlGrammar.WS:

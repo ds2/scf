@@ -20,6 +20,7 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.googlecode.socofo.core.api.LineHandler;
@@ -27,28 +28,79 @@ import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.rules.api.XmlFormatRules;
 
 /**
- * contract for an XML object
+ * contract for an XML object.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
-public interface XmlObject {
+public interface XmlObject extends Serializable {
+	/**
+	 * Sets the element name of this xml object.
+	 * 
+	 * @param s
+	 *            the element name
+	 */
 	void setElementName(String s);
 
+	/**
+	 * Returns the name of the xml element.
+	 * 
+	 * @return null, or the name of the xml element
+	 */
 	String getElementName();
 
+	/**
+	 * Sets the attribute name. This method is handy for adding attributes where
+	 * you don't know the value yet.
+	 * 
+	 * @param s
+	 *            the attribute name
+	 */
 	void setAttributName(String s);
 
+	/**
+	 * Sets the attribute value, of a attribute name is set. This will put the
+	 * name and this value to the list of attributes of this xml element.
+	 * 
+	 * @param s
+	 *            the attribute value
+	 */
 	void setAttributValue(String s);
 
+	/**
+	 * Checks if this xml object has attributes.
+	 * 
+	 * @return TRUE if it has, otherwise FALSE
+	 */
 	boolean hasAttributes();
 
+	/**
+	 * Returns the attributes.
+	 * 
+	 * @return an empty map, or all attributes.
+	 */
 	Map<String, String> getAttributes();
 
+	/**
+	 * Returns the start sequence for this element.
+	 * 
+	 * @return the start sequence. Usually &lt;
+	 */
 	String getStartSequence();
 
+	/**
+	 * Returns the end sequence of this xml element.
+	 * 
+	 * @return usually &gt;
+	 */
 	String getEndSequence();
 
+	/**
+	 * Sets the end sequence of this xml object.
+	 * 
+	 * @param s
+	 *            the end sequence. Default is &gt;
+	 */
 	void setEndSequence(String s);
 
 	/**
@@ -86,6 +138,21 @@ public interface XmlObject {
 	 * @param lh
 	 *            the line handler
 	 */
-	void writeElement(final int indent, SourceWriter sw, XmlFormatRules rules,
-			LineHandler lh);
+	void writeElement(XmlObject lastObject, final int indent, SourceWriter sw,
+			XmlFormatRules rules, LineHandler lh);
+
+	/**
+	 * Returns the tree level of this element.
+	 * 
+	 * @return the tree level of this xml object
+	 */
+	int getLevel();
+
+	/**
+	 * Sets the tree level for this object.
+	 * 
+	 * @param l
+	 *            the tree level
+	 */
+	void setLevel(int l);
 }
