@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>ds2.base.oss</groupId>
-    <artifactId>jee-oss-parent</artifactId>
-    <version>0.14-SNAPSHOT</version>
+    <artifactId>jee-base</artifactId>
+    <version>0.30</version>
   </parent>
   <groupId>com.googlecode.socofo</groupId>
   <artifactId>socofo-complete</artifactId>
