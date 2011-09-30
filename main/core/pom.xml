@@ -38,8 +38,15 @@
       <artifactId>testng</artifactId>
     </dependency>
     <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jdk14</artifactId>
+      <artifactId>slf4j-log4j12</artifactId>
     </dependency>
   </dependencies>
+  <properties>
+    <log4j.config>META-INF/test-log4j.xml</log4j.config>
+  </properties>
 </project>

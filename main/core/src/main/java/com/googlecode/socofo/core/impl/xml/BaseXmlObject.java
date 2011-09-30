@@ -239,10 +239,11 @@ public class BaseXmlObject implements XmlObject {
      * @throws TranslationException
      *             if the line became too long
      */
+    @Override
     public void writeElement(final XmlObject lastObject, final int indent,
         final SourceWriter sw, final XmlFormatRules rules, final LineHandler lh)
         throws TranslationException {
-        LOG.debug("entering with params: {} {}", new Object[] { indent, this });
+        LOG.debug("entering with params: {} ", new Object[] { indent, this });
         NewlineRules nlRules = rules.getNewlineRules();
         if (nlRules == null) {
             LOG.warn("No NL rules found, using defaults");

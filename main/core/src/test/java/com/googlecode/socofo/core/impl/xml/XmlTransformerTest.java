@@ -29,10 +29,11 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeMethod;
+import org.slf4j.MDC;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
@@ -92,12 +93,12 @@ public class XmlTransformerTest {
      * @throws java.lang.Exception
      *             if an error occurred.
      */
-    @BeforeMethod
+    @BeforeClass
     public void setUp() throws Exception {
         formatRules =
             rulesLoader.loadFormatRules(getClass().getResourceAsStream(
                 "/xmlconfig.xml"));
-        Assert.assertNotNull(formatRules);
+        assertNotNull(formatRules);
         LOG.info("Rules are {}", formatRules);
         to.setRules(new RuleSet() {
             
@@ -114,12 +115,17 @@ public class XmlTransformerTest {
         dest.setFile(new File("target/sample1.result.xml"));
     }
     
+    @AfterMethod
+    public void afterMethod() {
+        MDC.remove("testCaseName");
+    }
+    
     /**
      * Test method for
      * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#setRules(com.googlecode.socofo.rules.api.v1.RuleSet)}
      * .
      */
-    @Test
+    @Test(enabled = false)
     public final void testLoadRules() {
         to.setRules(new RuleSet() {
             
@@ -165,18 +171,18 @@ public class XmlTransformerTest {
         try {
             sr.loadStream(getClass().getResourceAsStream("/sample1.xml"),
                 "utf-8");
-        } catch (LoadingException e) {
+        } catch (final LoadingException e) {
             fail(e.getLocalizedMessage());
         }
-        String xmlSample = sr.getContent();
+        final String xmlSample = sr.getContent();
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
         try {
             to.performTranslation();
-        } catch (TranslationException e) {
+        } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
-        String result = to.getResult();
+        final String result = to.getResult();
         assertNotNull(result);
         assertTrue(result.length() > 0);
         LOG.info("Result is\n" + result);
@@ -192,18 +198,18 @@ public class XmlTransformerTest {
         try {
             sr.loadStream(getClass().getResourceAsStream("/sample2.xml"),
                 "utf-8");
-        } catch (LoadingException e) {
+        } catch (final LoadingException e) {
             fail(e.getLocalizedMessage());
         }
-        String xmlSample = sr.getContent();
+        final String xmlSample = sr.getContent();
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
         try {
             to.performTranslation();
-        } catch (TranslationException e) {
+        } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
-        String result = to.getResult();
+        final String result = to.getResult();
         assertNotNull(result);
         assertTrue(result.length() > 0);
         LOG.info("Result is\n" + result);
@@ -212,34 +218,38 @@ public class XmlTransformerTest {
     
     /**
      * Simple translation test.
+     * 
+     * @throws TranslationException
+     *             if an error occurred.
      */
     @Test
-    public final void testTranslation1() {
-        String xmlSample = "<a><b/></a>";
+    public final void testTranslation1() throws TranslationException {
+        MDC.put("testCaseName", "testTranslation1");
+        final String xmlSample = "<a><b/></a>";
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
-        try {
-            to.performTranslation();
-        } catch (TranslationException e) {
-            fail(e.getLocalizedMessage());
-        }
-        String result = to.getResult();
+        to.performTranslation();
+        final String result = to.getResult();
         assertNotNull(result);
-        LOG.info("rules are {}", formatRules);
+        LOG.info("rules are {}", to.getRuleSet());
+        MDC.remove("testCaseName");
         assertEquals(result, "<a>\n  <b/>\n</a>\n");
     }
     
+    /**
+     * Simple test.
+     * 
+     * @throws TranslationException
+     *             if an error occurred.
+     */
     @Test
-    public final void testTranslation2() {
-        String xmlSample = "<a><b></b></a>";
+    public final void testTranslation2() throws TranslationException {
+        MDC.put("testCaseName", "testTranslation2");
+        final String xmlSample = "<a><b></b></a>";
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
-        try {
-            to.performTranslation();
-        } catch (TranslationException e) {
-            fail(e.getLocalizedMessage());
-        }
-        String result = to.getResult();
+        to.performTranslation();
+        final String result = to.getResult();
         assertNotNull(result);
         assertEquals(result, "<a>\n  <b></b>\n</a>\n");
     }
