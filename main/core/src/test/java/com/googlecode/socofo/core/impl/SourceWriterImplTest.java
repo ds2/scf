@@ -27,7 +27,7 @@ import static org.testng.Assert.fail;
 
 import javax.inject.Inject;
 
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
@@ -55,9 +55,8 @@ public class SourceWriterImplTest {
      * @throws java.lang.Exception
      *             any error
      */
-    @BeforeClass
+    @BeforeMethod
     public void setUp() throws Exception {
-        to = new SourceWriterImpl();
         to.setCommonAttributes(getAttributes());
         to.prepare();
     }
@@ -69,6 +68,11 @@ public class SourceWriterImplTest {
      */
     private CommonAttributes getAttributes() {
         return new CommonAttributes() {
+            
+            /**
+             * The svuid.
+             */
+            private static final long serialVersionUID = 5970259051595764059L;
             
             @Override
             public int getMaxLinewidth() {
@@ -106,7 +110,7 @@ public class SourceWriterImplTest {
             to.addLine(0, "hello");
             to.finish();
             assertEquals("hello\n", to.getResult());
-        } catch (TranslationException e) {
+        } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
     }
@@ -147,7 +151,7 @@ public class SourceWriterImplTest {
         } catch (TranslationException e) {
             fail(e.getLocalizedMessage());
         }
-        assertEquals("", to.getResult());
+        assertEquals(to.getResult(), "");
     }
     
     /**
