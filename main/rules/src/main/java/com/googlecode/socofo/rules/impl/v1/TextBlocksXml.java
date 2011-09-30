@@ -26,28 +26,31 @@ import javax.xml.bind.annotation.XmlType;
 import com.googlecode.socofo.rules.api.v1.TextBlocks;
 
 /**
- * @author kaeto23
+ * The textblocks xml dto.
+ * 
+ * @author Dirk Strauss
+ * @version 1.0
  * 
  */
 @XmlType(name = "TextBlocksType")
 public class TextBlocksXml implements TextBlocks {
-	/**
-	 * the svuid
-	 */
-	private static final long serialVersionUID = 2815059537069771320L;
-	@XmlElement
-	private String header;
-	@XmlElement
-	private String footer;
-
-	@Override
-	public String getFooter() {
-		return footer;
-	}
-
-	@Override
-	public String getHeader() {
-		return header;
-	}
-
+    /**
+     * the svuid.
+     */
+    private static final long serialVersionUID = 2815059537069771320L;
+    @XmlElement
+    private String header;
+    @XmlElement
+    private String footer;
+    
+    @Override
+    public String getFooter() {
+        return footer;
+    }
+    
+    @Override
+    public String getHeader() {
+        return header;
+    }
+    
 }

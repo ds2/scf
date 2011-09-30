@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * The implementations for the rules
+ * The implementations for the rules.
  */
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://www.ds2/ns/socofo/api")
 package com.googlecode.socofo.rules.api.v1;

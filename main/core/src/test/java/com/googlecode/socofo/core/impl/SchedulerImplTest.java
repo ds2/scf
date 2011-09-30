@@ -30,17 +30,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Guice;
+import org.testng.annotations.Test;
 
 import com.googlecode.socofo.core.api.Scheduler;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TranslationJob;
 
 /**
- * @author kaeto23
+ * The scheduler impl tests.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Guice(modules = { TestInjectionPlan.class })
 public class SchedulerImplTest {
@@ -48,7 +50,7 @@ public class SchedulerImplTest {
     private Scheduler to = null;
     private URL rulesUrl = null;
     
-    @Before
+    @BeforeClass
     public void setUp() throws Exception {
         to = new SchedulerImpl();
         File rulesFile = new File("src/test/resources/rules.xml");

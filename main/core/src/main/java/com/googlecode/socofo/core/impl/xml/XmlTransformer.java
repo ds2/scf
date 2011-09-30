@@ -47,18 +47,18 @@ import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
  */
 public class XmlTransformer implements SourceTransformer {
     /**
-     * the source writer to write the XML result to
+     * the source writer to write the XML result to.
      */
     @Inject
     private SourceWriter sw = null;
     /**
-     * The rules to transform the content
+     * The rules to transform the content.
      */
     private XmlFormatRules rules = null;
     /**
-     * A logger
+     * A logger.
      */
-    private static final transient Logger log = LoggerFactory
+    private static final transient Logger LOG = LoggerFactory
         .getLogger(XmlTransformer.class);
     /**
      * the xml grammar that has been loaded.
@@ -70,7 +70,7 @@ public class XmlTransformer implements SourceTransformer {
     @Inject
     private LineHandler lh = null;
     /**
-     * The tree handler to set the levels of the various xml objects
+     * The tree handler to set the levels of the various xml objects.
      */
     @Inject
     private TreeHandler treeHandler = null;
@@ -110,7 +110,7 @@ public class XmlTransformer implements SourceTransformer {
     @Override
     public void parseContent(final String s) {
         if (s == null || s.length() <= 0) {
-            log.warn("No content given!");
+            LOG.warn("No content given!");
             return;
         }
         final ANTLRStringStream ss = new ANTLRStringStream(s);
@@ -126,12 +126,12 @@ public class XmlTransformer implements SourceTransformer {
      */
     @Override
     public void performTranslation() throws TranslationException {
-        log.debug("entering");
+        LOG.debug("entering");
         if (sw == null) {
             throw new TranslationException(
                 "No source writer has been injected!");
         }
-        log.debug("preparing source writer");
+        LOG.debug("preparing source writer");
         sw.prepare();
         if (rules == null) {
             throw new TranslationException("No rules have been loaded!");
@@ -139,17 +139,17 @@ public class XmlTransformer implements SourceTransformer {
         if (rules.getCommonAttributes() == null) {
             throw new TranslationException("No CA rules have been loaded!");
         }
-        log.debug("Setting rules and attributes");
+        LOG.debug("Setting rules and attributes");
         sw.setCommonAttributes(rules.getCommonAttributes());
         lh.setTabSize(rules.getCommonAttributes().getTabSize());
         Token token;
         int currentIndent = 0;
-        log.debug("Starting token run");
+        LOG.debug("Starting token run");
         XmlObject currentObject = null;
         XmlObject lastObject = null;
         while ((token = grammar.nextToken()) != Token.EOF_TOKEN
             && token.getType() != XmlGrammar.EOF) {
-            log.debug("Token ({}) for this run: {}", token.getType(),
+            LOG.debug("Token ({}) for this run: {}", token.getType(),
                 token.getText());
             switch (token.getType()) {
                 case XmlGrammar.PI_START:
@@ -242,13 +242,13 @@ public class XmlTransformer implements SourceTransformer {
                     currentObject = null;
                     break;
                 default:
-                    log.warn("unknown token: type={} with content {}",
+                    LOG.warn("unknown token: type={} with content {}",
                         token.getType(), token.getText());
             }
         }
-        log.debug("finishing the result");
+        LOG.debug("finishing the result");
         sw.finish();
-        log.debug("exit");
+        LOG.debug("exit");
     }
     
     /**

@@ -10,13 +10,15 @@ import com.googlecode.socofo.rules.api.RulesConfig;
 import com.googlecode.socofo.rules.api.v1.RulesLoader;
 
 /**
- * @author Kaeto23
+ * The guice injection plan.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class InjectionPlan extends AbstractModule {
     
     /**
-     * 
+     * Inits the plan.
      */
     public InjectionPlan() {
         // TODO Auto-generated constructor stub

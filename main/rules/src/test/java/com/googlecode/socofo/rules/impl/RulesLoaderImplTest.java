@@ -32,13 +32,15 @@ import com.googlecode.socofo.rules.api.v1.RulesLoader;
 import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
 
 /**
- * @author kaeto23
+ * The rulesloader tests.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Guice(modules = { InjectionPlan.class })
 public class RulesLoaderImplTest {
     /**
-     * the test object
+     * the test object.
      */
     @Inject
     private RulesLoader to = null;

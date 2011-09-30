@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * The core api of the source code formatter
+ * The core api of the source code formatter.
  */
 package com.googlecode.socofo.core.api;
+

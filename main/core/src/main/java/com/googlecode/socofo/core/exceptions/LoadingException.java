@@ -21,8 +21,10 @@
 package com.googlecode.socofo.core.exceptions;
 
 /**
- * @author kaeto23
+ * A loader exception.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class LoadingException extends Exception {
     
@@ -37,7 +39,7 @@ public class LoadingException extends Exception {
      * @param s
      *            the error message
      */
-    public LoadingException(String s) {
+    public LoadingException(final String s) {
         super(s);
     }
     

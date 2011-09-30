@@ -30,16 +30,20 @@ import org.testng.annotations.Test;
 import com.googlecode.socofo.rules.api.v1.BreakFormat;
 
 /**
- * @author kaeto23
+ * The linehandler tests.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class LineHandlerImplTest {
     /**
-     * The test object
+     * The test object.
      */
     private LineHandlerImpl to = null;
     
     /**
+     * actions on setup.
+     * 
      * @throws java.lang.Exception
      *             if an error occurred
      */
@@ -141,23 +145,23 @@ public class LineHandlerImplTest {
     
     @Test
     public final void testWordPatterns() {
-        Matcher m = to.wordPattern.matcher("a ");
+        Matcher m = to.WORDPATTERN.matcher("a ");
         Assert.assertTrue(m.find());
         Assert.assertEquals("a ", m.group());
         
-        m = to.wordPattern.matcher("a   ");
+        m = to.WORDPATTERN.matcher("a   ");
         Assert.assertTrue(m.find());
         Assert.assertEquals("a   ", m.group());
         
-        m = to.wordPattern.matcher("a \t ");
+        m = to.WORDPATTERN.matcher("a \t ");
         Assert.assertTrue(m.find());
         Assert.assertEquals("a \t ", m.group());
         
-        m = to.wordPattern.matcher("abc \t ");
+        m = to.WORDPATTERN.matcher("abc \t ");
         Assert.assertTrue(m.find());
         Assert.assertEquals("abc \t ", m.group());
         
-        m = to.wordPattern.matcher(" abc \t ");
+        m = to.WORDPATTERN.matcher(" abc \t ");
         Assert.assertTrue(m.find());
         Assert.assertEquals("abc \t ", m.group());
     }

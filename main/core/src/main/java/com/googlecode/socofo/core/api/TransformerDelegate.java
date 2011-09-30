@@ -23,8 +23,8 @@ package com.googlecode.socofo.core.api;
 /**
  * A transformer delegate.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface TransformerDelegate {
     

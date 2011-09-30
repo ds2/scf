@@ -6,8 +6,8 @@ package com.googlecode.socofo.rules.api;
 /**
  * The configuration for rules retrieval.
  * 
- * @author Kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface RulesConfig {
     /**

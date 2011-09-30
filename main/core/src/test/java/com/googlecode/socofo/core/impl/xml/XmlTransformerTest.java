@@ -57,36 +57,38 @@ import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
 @Test(singleThreaded = true)
 public class XmlTransformerTest {
     /**
-     * a logger
+     * a logger.
      */
-    private static final transient Logger log = LoggerFactory
+    private static final transient Logger LOG = LoggerFactory
         .getLogger(XmlTransformerTest.class.getName());
     /**
-     * the transformer
+     * the transformer.
      */
     @Inject
     private XmlTransformer to = null;
     /**
-     * The rules loader
+     * The rules loader.
      */
     @Inject
     private RulesLoader rulesLoader = null;
     /**
-     * the xml transformation rules
+     * the xml transformation rules.
      */
     XmlFormatRules formatRules = null;
     /**
-     * The stream root
+     * The stream root.
      */
     @Inject
     private StreamRoot sr = null;
     /**
-     * the destination to write a result to
+     * the destination to write a result to.
      */
     @Inject
     private FileDestination dest = null;
     
     /**
+     * Actions before any test method.
+     * 
      * @throws java.lang.Exception
      *             if an error occurred.
      */
@@ -96,7 +98,7 @@ public class XmlTransformerTest {
             rulesLoader.loadFormatRules(getClass().getResourceAsStream(
                 "/xmlconfig.xml"));
         Assert.assertNotNull(formatRules);
-        log.info("Rules are {}", formatRules);
+        LOG.info("Rules are {}", formatRules);
         to.setRules(new RuleSet() {
             
             /**
@@ -177,7 +179,7 @@ public class XmlTransformerTest {
         String result = to.getResult();
         assertNotNull(result);
         assertTrue(result.length() > 0);
-        log.info("Result is\n" + result);
+        LOG.info("Result is\n" + result);
         dest.writeContent(result, "utf-8");
     }
     
@@ -204,12 +206,12 @@ public class XmlTransformerTest {
         String result = to.getResult();
         assertNotNull(result);
         assertTrue(result.length() > 0);
-        log.info("Result is\n" + result);
+        LOG.info("Result is\n" + result);
         dest.writeContent(result, "utf-8");
     }
     
     /**
-     * Simple translation test
+     * Simple translation test.
      */
     @Test
     public final void testTranslation1() {
@@ -223,7 +225,7 @@ public class XmlTransformerTest {
         }
         String result = to.getResult();
         assertNotNull(result);
-        log.info("rules are {}", formatRules);
+        LOG.info("rules are {}", formatRules);
         assertEquals(result, "<a>\n  <b/>\n</a>\n");
     }
     

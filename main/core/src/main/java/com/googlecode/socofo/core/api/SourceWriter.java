@@ -32,116 +32,116 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributes;
  * @version 1.0
  */
 public interface SourceWriter {
-
-	/**
-	 * Adds a new line to the writer, first adding some indents, and then adding
-	 * the given sequence of data. After that, the line is commited (a newline
-	 * sign is added).
-	 * 
-	 * @param indents
-	 *            the count of indents to write first
-	 * @param s
-	 *            the source code to add to this line, right after the indents
-	 * @return TRUE if successful, FALSE in case of the line becoming too long
-	 * @throws TranslationException
-	 *             if the line was too long to commit
-	 */
-	public boolean addLine(int indents, String s) throws TranslationException;
-
-	/**
-	 * Adds a sequence of data to the current line
-	 * 
-	 * @param s
-	 *            a sequence of data to add to the current line
-	 * @return TRUE if successful, otherwise FALSE in case of the line becoming
-	 *         too long
-	 */
-	public boolean addToLine(String s);
-
-	/**
-	 * Returns the current result of the source writer.
-	 * 
-	 * @return an empty string, or the current result of the transformation
-	 */
-	public String getResult();
-
-	/**
-	 * Prepares the writer. Usually this will clear the cache.
-	 */
-	public void prepare();
-
-	/**
-	 * Finalizes the cache. Usually, this will end the source writer, clears the
-	 * cache and prepares the result.
-	 * 
-	 * @throws TranslationException
-	 *             if the last line could not be committed successfully.
-	 */
-	public void finish() throws TranslationException;
-
-	/**
-	 * Sets the common attributes (line width, indent sequence etc.) to use
-	 * 
-	 * @param c
-	 *            the common attributes
-	 */
-	public void setCommonAttributes(CommonAttributes c);
-
-	/**
-	 * Adds to the current line the number of indents, plus the given text. No
-	 * newline is added after that.
-	 * 
-	 * @param currentIndent
-	 *            the count of indents to add to the current line
-	 * @param s
-	 *            the string to add
-	 * @return TRUE if successful, otherwise FALSE in case of line becoming too
-	 *         long, or something else.
-	 */
-	public boolean addToLine(int currentIndent, String s);
-
-	/**
-	 * Commits the current buffered line to the final source code. And clears
-	 * the line buffer right after.
-	 * 
-	 * @param ignoreLinelength
-	 *            flag to indicate that the line length check can be ignored.
-	 *            Set TRUE to ignore line length, default is FALSE
-	 * @return TRUE if line was commited successful, otherwise FALSE
-	 * @throws TranslationException
-	 *             if a line became too long
-	 */
-	public boolean commitLine(boolean ignoreLinelength)
-			throws TranslationException;
-
-	/**
-	 * Returns the result of the currentLine buffer.
-	 * 
-	 * @return the current line content
-	 */
-	public String getCurrentLine();
-
-	/**
-	 * Returns the length of the current line
-	 * 
-	 * @return the length of the current line (special counting for tab chars)
-	 */
-	public int getCurrentLineLength();
-
-	/**
-	 * Calculates the line length from the given string sequence. This typically
-	 * counts the letters and tab chars. The tab chars are handled separately
-	 * using the common attributes which contain how much WS signs represent a
-	 * single tab char.
-	 * 
-	 * @param indentSequence
-	 *            the string sequence to calculate the length
-	 * @return the length
-	 */
-	public int getLineLength(String indentSequence);
-
-	/**
-	 * Clears the current line buffer.
-	 */
-	public void clearCurrentLine();
+    
+    /**
+     * Adds a new line to the writer, first adding some indents, and then adding
+     * the given sequence of data. After that, the line is commited (a newline
+     * sign is added).
+     * 
+     * @param indents
+     *            the count of indents to write first
+     * @param s
+     *            the source code to add to this line, right after the indents
+     * @return TRUE if successful, FALSE in case of the line becoming too long
+     * @throws TranslationException
+     *             if the line was too long to commit
+     */
+    public boolean addLine(int indents, String s) throws TranslationException;
+    
+    /**
+     * Adds a sequence of data to the current line.
+     * 
+     * @param s
+     *            a sequence of data to add to the current line
+     * @return TRUE if successful, otherwise FALSE in case of the line becoming
+     *         too long
+     */
+    public boolean addToLine(String s);
+    
+    /**
+     * Returns the current result of the source writer.
+     * 
+     * @return an empty string, or the current result of the transformation
+     */
+    public String getResult();
+    
+    /**
+     * Prepares the writer. Usually this will clear the cache.
+     */
+    public void prepare();
+    
+    /**
+     * Finalizes the cache. Usually, this will end the source writer, clears the
+     * cache and prepares the result.
+     * 
+     * @throws TranslationException
+     *             if the last line could not be committed successfully.
+     */
+    public void finish() throws TranslationException;
+    
+    /**
+     * Sets the common attributes (line width, indent sequence etc.) to use.
+     * 
+     * @param c
+     *            the common attributes
+     */
+    public void setCommonAttributes(CommonAttributes c);
+    
+    /**
+     * Adds to the current line the number of indents, plus the given text. No
+     * newline is added after that.
+     * 
+     * @param currentIndent
+     *            the count of indents to add to the current line
+     * @param s
+     *            the string to add
+     * @return TRUE if successful, otherwise FALSE in case of line becoming too
+     *         long, or something else.
+     */
+    public boolean addToLine(int currentIndent, String s);
+    
+    /**
+     * Commits the current buffered line to the final source code. And clears
+     * the line buffer right after.
+     * 
+     * @param ignoreLinelength
+     *            flag to indicate that the line length check can be ignored.
+     *            Set TRUE to ignore line length, default is FALSE
+     * @return TRUE if line was commited successful, otherwise FALSE
+     * @throws TranslationException
+     *             if a line became too long
+     */
+    public boolean commitLine(boolean ignoreLinelength)
+        throws TranslationException;
+    
+    /**
+     * Returns the result of the currentLine buffer.
+     * 
+     * @return the current line content
+     */
+    public String getCurrentLine();
+    
+    /**
+     * Returns the length of the current line.
+     * 
+     * @return the length of the current line (special counting for tab chars)
+     */
+    public int getCurrentLineLength();
+    
+    /**
+     * Calculates the line length from the given string sequence. This typically
+     * counts the letters and tab chars. The tab chars are handled separately
+     * using the common attributes which contain how much WS signs represent a
+     * single tab char.
+     * 
+     * @param indentSequence
+     *            the string sequence to calculate the length
+     * @return the length
+     */
+    public int getLineLength(String indentSequence);
+    
+    /**
+     * Clears the current line buffer.
+     */
+    public void clearCurrentLine();
 }

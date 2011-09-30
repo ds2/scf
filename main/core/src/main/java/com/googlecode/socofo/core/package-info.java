@@ -19,3 +19,4 @@
  * Die Basisklassen des Kerns. Hier sind alles allgemeine Klassen und Interfaces
  */
 package com.googlecode.socofo.core;
+

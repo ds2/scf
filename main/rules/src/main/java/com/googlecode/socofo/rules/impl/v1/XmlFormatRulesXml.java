@@ -39,14 +39,16 @@ import com.googlecode.socofo.rules.api.v1.XmlCommentsRulesUpdater;
 import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
 
 /**
- * @author kaeto23
+ * The xml format rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @XmlRootElement(name = "xml-format")
 @XmlSeeAlso({ NamespaceRuleXml.class, CommonAttributesXml.class })
 public class XmlFormatRulesXml implements XmlFormatRulesUpdater {
     /**
-     * the svuid
+     * the svuid.
      */
     private static final long serialVersionUID = -2816143684776160066L;
     @XmlElement(required = true, type = CommonAttributesXml.class)

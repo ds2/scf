@@ -54,7 +54,7 @@ public class SchedulerImpl implements Scheduler {
     /**
      * a logger.
      */
-    private static final Logger log = LoggerFactory
+    private static final Logger LOG = LoggerFactory
         .getLogger(SchedulerImpl.class);
     /**
      * A list of translation jobs to do.
@@ -114,7 +114,7 @@ public class SchedulerImpl implements Scheduler {
     @Override
     public void addJobs(final List<TranslationJob> j) {
         if (j == null) {
-            log.warn("No jobs given!");
+            LOG.warn("No jobs given!");
             return;
         }
         this.jobs.addAll(j);
@@ -134,29 +134,29 @@ public class SchedulerImpl implements Scheduler {
     @Override
     public List<TranslationJob> createLocalJobs(final File baseDir,
         final File td, final List<SourceTypes> types) {
-        log.debug("entering: {} {} {}", new Object[] { baseDir, td, types });
+        LOG.debug("entering: {} {} {}", new Object[] { baseDir, td, types });
         final List<TranslationJob> rc = new ArrayList<TranslationJob>();
         if (baseDir == null) {
-            log.warn("No base directory given!");
+            LOG.warn("No base directory given!");
             return rc;
         }
         File targetDir = td;
         if (targetDir == null) {
-            log.info("Overwriting local files!");
+            LOG.info("Overwriting local files!");
             targetDir = baseDir;
         }
         if (types == null || types.size() <= 0) {
-            log.warn("No types given!");
+            LOG.warn("No types given!");
             return rc;
         }
         if (ruleSet == null) {
-            log.warn("No rules given!");
+            LOG.warn("No rules given!");
             return rc;
         }
         final List<File> sourceFiles = scanner.scan(baseDir, types);
-        log.debug("Got source files, counting {}", sourceFiles.size());
+        LOG.debug("Got source files, counting {}", sourceFiles.size());
         for (File sourceFile : sourceFiles) {
-            log.debug("Got this source file: {}", sourceFile.getAbsolutePath());
+            LOG.debug("Got this source file: {}", sourceFile.getAbsolutePath());
             final TranslationJob job = translationJob.get();
             final FileRoot fr = fileProv.get();
             try {
@@ -168,11 +168,11 @@ public class SchedulerImpl implements Scheduler {
                 job.setRule(ruleSet);
                 rc.add(job);
             } catch (final LoadingException e) {
-                log.debug("Loader error", e);
+                LOG.debug("Loader error", e);
             }
             
         }
-        log.debug("exiting: {}", rc.size());
+        LOG.debug("exiting: {}", rc.size());
         return rc;
     }
     
@@ -185,7 +185,7 @@ public class SchedulerImpl implements Scheduler {
             final List<TranslationException> translationErrors =
                 job.getErrors();
             for (TranslationException e : translationErrors) {
-                log.debug("Translation error", e);
+                LOG.debug("Translation error", e);
                 errorMsgs.add(e.getLocalizedMessage());
             }
         }
@@ -197,16 +197,16 @@ public class SchedulerImpl implements Scheduler {
      */
     @Override
     public void setRules(final URL formatterXml) {
-        log.debug("entering: {}", formatterXml);
+        LOG.debug("entering: {}", formatterXml);
         if (formatterXml == null) {
-            log.warn("No url given!");
+            LOG.warn("No url given!");
             return;
         }
         ruleSet = rulesLoader.loadRulesFromUrl(formatterXml);
         if (ruleSet != null) {
-            log.info("Rules loaded from " + formatterXml + ", successful.");
+            LOG.info("Rules loaded from " + formatterXml + ", successful.");
         }
-        log.debug("exiting {}", ruleSet);
+        LOG.debug("exiting {}", ruleSet);
     }
     
     /**
@@ -214,14 +214,14 @@ public class SchedulerImpl implements Scheduler {
      */
     @Override
     public void startScheduler() {
-        log.debug("entering");
+        LOG.debug("entering");
         for (TranslationJob job : jobs) {
-            log.debug("Starting job {}", job);
+            LOG.debug("Starting job {}", job);
             final Thread t = new Thread(threadGrp, job);
             t.start();
         }
-        log.debug("Active threads now: {}", threadGrp.activeCount());
-        log.debug("exiting");
+        LOG.debug("Active threads now: {}", threadGrp.activeCount());
+        LOG.debug("exiting");
     }
     
     /**

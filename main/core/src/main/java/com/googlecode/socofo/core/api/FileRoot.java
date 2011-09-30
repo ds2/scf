@@ -24,7 +24,6 @@ import java.io.File;
 
 import com.googlecode.socofo.core.exceptions.LoadingException;
 
-
 /**
  * Interface for reading source files.
  * 
@@ -32,13 +31,13 @@ import com.googlecode.socofo.core.exceptions.LoadingException;
  * @version 1.0
  */
 public interface FileRoot extends SourceRoot {
-	/**
-	 * Loads the given file
-	 * 
-	 * @param f
-	 *            the file to load
-	 * @throws LoadingException
-	 *             if an error occurred
-	 */
-	public void loadFile(File f) throws LoadingException;
+    /**
+     * Loads the given file.
+     * 
+     * @param f
+     *            the file to load
+     * @throws LoadingException
+     *             if an error occurred
+     */
+    public void loadFile(File f) throws LoadingException;
 }

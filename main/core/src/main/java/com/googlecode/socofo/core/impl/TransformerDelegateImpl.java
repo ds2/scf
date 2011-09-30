@@ -32,8 +32,8 @@ import com.googlecode.socofo.core.api.TransformerDelegate;
 /**
  * The base impl for the delegate.
  * 
- * @author dstrauss
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class TransformerDelegateImpl implements TransformerDelegate {
     /**
@@ -48,7 +48,7 @@ public class TransformerDelegateImpl implements TransformerDelegate {
      * {@inheritDoc}
      */
     @Override
-    public SourceTransformer getTransformerOfType(SourceTypes t) {
+    public SourceTransformer getTransformerOfType(final SourceTypes t) {
         SourceTransformer rc = null;
         switch (t) {
             case XML:

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * Basic implementations of the formatter core
+ * Basic implementations of the formatter core.
  */
 package com.googlecode.socofo.core.impl;
+

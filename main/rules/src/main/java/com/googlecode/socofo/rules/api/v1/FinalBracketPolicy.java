@@ -30,16 +30,16 @@ import javax.xml.bind.annotation.XmlEnum;
  */
 @XmlEnum
 public enum FinalBracketPolicy {
-	/**
-	 * Never do a break at a final bracket.
-	 */
-	Never,
-	/**
-	 * Always do a break at a final bracket.
-	 */
-	Always,
-	/**
-	 * Only do a final break when attributes were found
-	 */
-	OnAttributes;
+    /**
+     * Never do a break at a final bracket.
+     */
+    Never,
+    /**
+     * Always do a break at a final bracket.
+     */
+    Always,
+    /**
+     * Only do a final break when attributes were found.
+     */
+    OnAttributes;
 }

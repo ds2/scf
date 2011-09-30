@@ -41,12 +41,12 @@ import com.googlecode.socofo.core.exceptions.LoadingException;
  */
 public class FileRootImpl implements FileRoot {
     /**
-     * A logger
+     * A logger.
      */
     private static final transient Logger LOG = Logger
         .getLogger(FileRootImpl.class.getName());
     /**
-     * The content of the file
+     * The content of the file.
      */
     private String content = null;
     /**
@@ -55,17 +55,17 @@ public class FileRootImpl implements FileRoot {
     @Inject
     private SourceTypeDetector detector;
     /**
-     * The type of the source code
+     * The type of the source code.
      */
     private SourceTypes type = null;
     /**
-     * The io helper
+     * The io helper.
      */
     @Inject
     private IOHelper iohelper = null;
     
     /**
-     * Loads the given file
+     * Loads the given file.
      * 
      * @param f
      *            the file to load

@@ -8,13 +8,15 @@ import java.nio.charset.Charset;
 import com.googlecode.socofo.core.api.CoreConfig;
 
 /**
- * @author Kaeto23
+ * Basic config implementation.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class CoreConfigImpl implements CoreConfig {
     
     /**
-     * 
+     * Inits the dto.
      */
     public CoreConfigImpl() {
         // TODO Auto-generated constructor stub

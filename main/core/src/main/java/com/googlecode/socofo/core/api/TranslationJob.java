@@ -32,34 +32,34 @@ import com.googlecode.socofo.rules.api.v1.RuleSet;
  * @version 1.0
  */
 public interface TranslationJob extends Runnable {
-	/**
-	 * Sets the source code
-	 * 
-	 * @param sourceCode
-	 *            the source code to transform
-	 */
-	public void setSource(SourceRoot sourceCode);
-
-	/**
-	 * Sets the transformation rules for transforming the source code.
-	 * 
-	 * @param r
-	 *            the rules
-	 */
-	public void setRule(RuleSet r);
-
-	/**
-	 * Sets the destination of the transformed source code.
-	 * 
-	 * @param dest
-	 *            the destination of the transformed source code
-	 */
-	public void setDestination(SourceDestination dest);
-
-	/**
-	 * Returns a list of translation errors.
-	 * 
-	 * @return a list of translation errors
-	 */
-	public List<TranslationException> getErrors();
+    /**
+     * Sets the source code.
+     * 
+     * @param sourceCode
+     *            the source code to transform
+     */
+    public void setSource(SourceRoot sourceCode);
+    
+    /**
+     * Sets the transformation rules for transforming the source code.
+     * 
+     * @param r
+     *            the rules
+     */
+    public void setRule(RuleSet r);
+    
+    /**
+     * Sets the destination of the transformed source code.
+     * 
+     * @param dest
+     *            the destination of the transformed source code
+     */
+    public void setDestination(SourceDestination dest);
+    
+    /**
+     * Returns a list of translation errors.
+     * 
+     * @return a list of translation errors
+     */
+    public List<TranslationException> getErrors();
 }

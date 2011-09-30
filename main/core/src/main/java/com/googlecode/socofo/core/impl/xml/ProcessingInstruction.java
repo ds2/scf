@@ -20,18 +20,24 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
-
 /**
- * @author kaeto23
+ * A Processing instruction part.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class ProcessingInstruction extends BaseXmlObject {
-	/**
-	 * 
-	 */
-	public ProcessingInstruction() {
-		startSeq = "<?";
-		endSeq = "?>";
-	}
-
+    /**
+     * The svuid.
+     */
+    private static final long serialVersionUID = 4182810463016489544L;
+    
+    /**
+     * Inits the PI.
+     */
+    public ProcessingInstruction() {
+        startSeq = "<?";
+        endSeq = "?>";
+    }
+    
 }

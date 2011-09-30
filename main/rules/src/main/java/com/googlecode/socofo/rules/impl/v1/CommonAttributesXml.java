@@ -34,7 +34,7 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributesUpdater;
 @XmlType(name = "CommonAttributesType")
 public class CommonAttributesXml implements CommonAttributesUpdater {
     /**
-     * the svuid
+     * the svuid.
      */
     private static final long serialVersionUID = 8599603676435230001L;
     /**

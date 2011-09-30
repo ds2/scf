@@ -8,14 +8,16 @@ import javax.inject.Singleton;
 import com.googlecode.socofo.rules.api.RulesConfig;
 
 /**
- * @author Kaeto23
+ * The dto for the rules config.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Singleton
 public class RulesConfigImpl implements RulesConfig {
     
     /**
-     * 
+     * inits the impl.
      */
     public RulesConfigImpl() {
         // TODO Auto-generated constructor stub

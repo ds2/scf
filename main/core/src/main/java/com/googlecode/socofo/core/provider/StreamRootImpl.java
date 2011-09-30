@@ -39,11 +39,11 @@ import com.googlecode.socofo.core.api.StreamRoot;
  */
 public class StreamRootImpl implements StreamRoot {
     /**
-     * The content
+     * The content.
      */
     private String content = null;
     /**
-     * The iohelper
+     * The iohelper.
      */
     @Inject
     private IOHelper iohelper = null;

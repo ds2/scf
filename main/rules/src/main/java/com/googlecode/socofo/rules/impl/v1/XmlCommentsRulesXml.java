@@ -28,79 +28,81 @@ import com.googlecode.socofo.rules.api.v1.CommentParsing;
 import com.googlecode.socofo.rules.api.v1.XmlCommentsRulesUpdater;
 
 /**
- * @author kaeto23
+ * The xml comments rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @XmlType(name = "XmlCommentsRulesType")
 public class XmlCommentsRulesXml implements XmlCommentsRulesUpdater {
-	/**
-	 * the svuid
-	 */
-	private static final long serialVersionUID = 866115633795062805L;
-	@XmlElement
-	private Boolean breakAfterBegin = false;
-	@XmlElement
-	private Boolean breakBeforeEnd = false;
-	@XmlElement
-	private BreakFormat breakType = BreakFormat.NoBreak;
-	@XmlElement
-	private CommentParsing parsing = CommentParsing.NoParsing;
-	@XmlElement
-	private String commentIndentSpacer = "";
-	private Boolean indentComment = true;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getBreakAfterBegin() {
-		return breakAfterBegin;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getBreakBeforeEnd() {
-		return breakBeforeEnd;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public BreakFormat getBreakType() {
-		return breakType;
-	}
-
-	@Override
-	public CommentParsing getParsing() {
-		return parsing;
-	}
-
-	@Override
-	public String getCommentIndentSpacer() {
-		return commentIndentSpacer;
-	}
-
-	@Override
-	public Boolean isIndentComment() {
-		return indentComment;
-	}
-
-	@Override
-	public void setBreakAfterBegin(boolean b) {
-		breakAfterBegin = b;
-	}
-
-	@Override
-	public void setBreakBeforeEnd(boolean b) {
-		breakBeforeEnd = b;
-	}
-
-	@Override
-	public void setIndentComment(boolean b) {
-		indentComment = b;
-	}
-
+    /**
+     * the svuid.
+     */
+    private static final long serialVersionUID = 866115633795062805L;
+    @XmlElement
+    private Boolean breakAfterBegin = false;
+    @XmlElement
+    private Boolean breakBeforeEnd = false;
+    @XmlElement
+    private BreakFormat breakType = BreakFormat.NoBreak;
+    @XmlElement
+    private CommentParsing parsing = CommentParsing.NoParsing;
+    @XmlElement
+    private String commentIndentSpacer = "";
+    private Boolean indentComment = true;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getBreakAfterBegin() {
+        return breakAfterBegin;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getBreakBeforeEnd() {
+        return breakBeforeEnd;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BreakFormat getBreakType() {
+        return breakType;
+    }
+    
+    @Override
+    public CommentParsing getParsing() {
+        return parsing;
+    }
+    
+    @Override
+    public String getCommentIndentSpacer() {
+        return commentIndentSpacer;
+    }
+    
+    @Override
+    public Boolean isIndentComment() {
+        return indentComment;
+    }
+    
+    @Override
+    public void setBreakAfterBegin(boolean b) {
+        breakAfterBegin = b;
+    }
+    
+    @Override
+    public void setBreakBeforeEnd(boolean b) {
+        breakBeforeEnd = b;
+    }
+    
+    @Override
+    public void setIndentComment(boolean b) {
+        indentComment = b;
+    }
+    
 }

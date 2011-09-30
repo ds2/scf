@@ -37,7 +37,7 @@ public enum CommentParsing {
      */
     NoParsing,
     /**
-     * Replaces any NEWLINE chars with a single SPACE
+     * Replaces any NEWLINE chars with a single SPACE.
      */
     ReplaceNewlinesWithSpace;
 }

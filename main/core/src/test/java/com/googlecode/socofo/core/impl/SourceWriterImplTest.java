@@ -20,38 +20,42 @@
  */
 package com.googlecode.socofo.core.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 import javax.inject.Inject;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Guice;
+import org.testng.annotations.Test;
 
 import com.googlecode.socofo.core.api.SourceWriter;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
 /**
- * @author kaeto23
+ * The sourcewriter tests.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Guice(modules = { TestInjectionPlan.class })
 public class SourceWriterImplTest {
     /**
-     * The test object
+     * The test object.
      */
     @Inject
     private SourceWriter to;
     
     /**
+     * Actions to perform in start.
+     * 
      * @throws java.lang.Exception
      *             any error
      */
-    @Before
+    @BeforeClass
     public void setUp() throws Exception {
         to = new SourceWriterImpl();
         to.setCommonAttributes(getAttributes());
@@ -59,7 +63,7 @@ public class SourceWriterImplTest {
     }
     
     /**
-     * Returns some attributes to use
+     * Returns some attributes to use.
      * 
      * @return the common attributes
      */
@@ -91,6 +95,7 @@ public class SourceWriterImplTest {
     /**
      * Test method for
      * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addLine(int, java.lang.String)}
+     * .
      * 
      */
     @Test

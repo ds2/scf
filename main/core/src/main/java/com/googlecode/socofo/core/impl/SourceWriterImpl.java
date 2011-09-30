@@ -38,25 +38,25 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributes;
  */
 public class SourceWriterImpl implements SourceWriter {
     /**
-     * The string buffer to store content in
+     * The string buffer to store content in.
      */
     private StringBuffer sb = null;
     /**
-     * the line buffer
+     * the line buffer.
      */
     private StringBuffer currentLine = null;
     /**
-     * The common attributes for NEWLINE, maxLineLength and indentSequence
+     * The common attributes for NEWLINE, maxLineLength and indentSequence.
      */
     private CommonAttributes ca = null;
     /**
-     * the NewLine terminator
+     * the NewLine terminator.
      */
     private String newline = "\n";
     /**
-     * A logger
+     * A logger.
      */
-    private static final transient Logger log = LoggerFactory
+    private static final transient Logger LOG = LoggerFactory
         .getLogger(SourceWriterImpl.class);
     /**
      * The line handler.
@@ -65,7 +65,7 @@ public class SourceWriterImpl implements SourceWriter {
     private LineHandler lh = null;
     
     /**
-     * Inits the source buffer
+     * Inits the source buffer.
      */
     public SourceWriterImpl() {
         sb = new StringBuffer();
@@ -80,7 +80,7 @@ public class SourceWriterImpl implements SourceWriter {
         throws TranslationException {
         commitLine(false);
         if (indents < 0) {
-            log.error("Indents of {} are impossible!", indents);
+            LOG.error("Indents of {} are impossible!", indents);
             return false;
         }
         addIndents(currentLine, indents);
@@ -114,7 +114,7 @@ public class SourceWriterImpl implements SourceWriter {
     @Override
     public boolean addToLine(final int currentIndent, final String s) {
         if (s == null) {
-            log.info("No content given!");
+            LOG.info("No content given!");
             return false;
         }
         final StringBuffer tmpBuffer = new StringBuffer();
@@ -128,7 +128,7 @@ public class SourceWriterImpl implements SourceWriter {
             // ok
             currentLine.append(insertStr);
         } else {
-            log.warn("Line becomes too long: {}{}", currentLine, insertStr);
+            LOG.warn("Line becomes too long: {}{}", currentLine, insertStr);
             rc = false;
         }
         return rc;
@@ -144,11 +144,11 @@ public class SourceWriterImpl implements SourceWriter {
      */
     private void addIndents(final StringBuffer s, final int count) {
         if (count < 0) {
-            log.warn("Count is too low: {}", count);
+            LOG.warn("Count is too low: {}", count);
             return;
         }
         if (s == null) {
-            log.warn("No buffer given!");
+            LOG.warn("No buffer given!");
             return;
         }
         synchronized (s) {
@@ -180,7 +180,7 @@ public class SourceWriterImpl implements SourceWriter {
     @Override
     public void setCommonAttributes(final CommonAttributes c) {
         if (c == null) {
-            log.warn("No common attributes given!");
+            LOG.warn("No common attributes given!");
             return;
         }
         ca = c;
@@ -194,7 +194,7 @@ public class SourceWriterImpl implements SourceWriter {
     public boolean commitLine(final boolean ignoreLineLength)
         throws TranslationException {
         if (!ignoreLineLength && currentLine.length() > ca.getMaxLinewidth()) {
-            log.warn("line too long to commit: {}", currentLine);
+            LOG.warn("line too long to commit: {}", currentLine);
             if (ca.getStopOnLongline()) {
                 throw new TranslationException("Line too long to commit: "
                     + currentLine);
@@ -202,29 +202,29 @@ public class SourceWriterImpl implements SourceWriter {
             return false;
         }
         if (currentLine.length() <= 0) {
-            log.debug("nothing to commit: line is empty already");
+            LOG.debug("nothing to commit: line is empty already");
             return true;
         }
         sb.append(currentLine.toString());
-        log.debug("commiting this content: {}", currentLine.toString());
+        LOG.debug("commiting this content: {}", currentLine.toString());
         sb.append(newline);
         clearBuffer(currentLine);
         return true;
     }
     
     /**
-     * Clears the given string buffer
+     * Clears the given string buffer.
      * 
      * @param s
      *            the buffer to clear
      */
     private void clearBuffer(final StringBuffer s) {
         if (s == null) {
-            log.warn("No buffer given!");
+            LOG.warn("No buffer given!");
             return;
         }
         if (s.length() > 0) {
-            log.debug("This content will be cleared now: {}", s.toString());
+            LOG.debug("This content will be cleared now: {}", s.toString());
         }
         s.delete(0, s.length());
     }

@@ -32,13 +32,15 @@ import com.googlecode.socofo.rules.api.v1.RulesLoader;
 import com.googlecode.socofo.rules.impl.RulesLoaderImpl;
 
 /**
- * @author Kaeto23
+ * The injection plan for Guice.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public class TestInjectionPlan extends AbstractModule {
     
     /**
-     * 
+     * Inits the plan.
      */
     public TestInjectionPlan() {
         // TODO Auto-generated constructor stub
@@ -50,14 +52,14 @@ public class TestInjectionPlan extends AbstractModule {
      */
     @Override
     protected void configure() {
-        binder().bind(Scheduler.class).to(SchedulerImpl.class);
-        binder().bind(SourceWriter.class).to(SourceWriterImpl.class);
-        binder().bind(LineHandler.class).to(LineHandlerImpl.class);
-        binder().bind(IOHelper.class).to(IOHelperImpl.class);
-        binder().bind(FileDestination.class).to(FileDestinationImpl.class);
-        binder().bind(SourceTypeDetector.class).to(TypeDetectorImpl.class);
-        binder().bind(SourcefileScanner.class).to(SourcefileScannerImpl.class);
-        binder().bind(RulesLoader.class).to(RulesLoaderImpl.class);
+        bind(Scheduler.class).to(SchedulerImpl.class);
+        bind(SourceWriter.class).to(SourceWriterImpl.class);
+        bind(LineHandler.class).to(LineHandlerImpl.class);
+        bind(IOHelper.class).to(IOHelperImpl.class);
+        bind(FileDestination.class).to(FileDestinationImpl.class);
+        bind(SourceTypeDetector.class).to(TypeDetectorImpl.class);
+        bind(SourcefileScanner.class).to(SourcefileScannerImpl.class);
+        bind(RulesLoader.class).to(RulesLoaderImpl.class);
         bind(TranslationJob.class).to(TranslationJobImpl.class);
         bind(RulesConfig.class).to(RulesConfigImpl.class);
         bind(TransformerDelegate.class).to(TransformerDelegateImpl.class);

@@ -43,7 +43,7 @@ public class SourcefileScannerImpl implements SourcefileScanner {
     /**
      * A logger.
      */
-    private static final Logger log = Logger
+    private static final Logger LOG = Logger
         .getLogger(SourcefileScannerImpl.class.getName());
     /**
      * The source type detector.
@@ -59,7 +59,7 @@ public class SourcefileScannerImpl implements SourcefileScanner {
         final List<SourceTypes> types) {
         final List<File> rc = new ArrayList<File>();
         if (baseDirectory == null) {
-            log.warning("No base directory given!");
+            LOG.warning("No base directory given!");
             return rc;
         }
         rc.addAll(getFiles(baseDirectory, types.toArray(new SourceTypes[0])));
@@ -77,15 +77,15 @@ public class SourcefileScannerImpl implements SourcefileScanner {
      */
     protected List<File> getFiles(final File baseDir,
         final SourceTypes... types) {
-        log.entering(SchedulerImpl.class.getName(), "getFiles", new Object[] {
+        LOG.entering(SchedulerImpl.class.getName(), "getFiles", new Object[] {
             baseDir, types });
         final List<File> rc = new ArrayList<File>();
         if (baseDir == null) {
-            log.warning("No base directory given, returning empty list!");
+            LOG.warning("No base directory given, returning empty list!");
             return rc;
         }
         if (types == null || types.length <= 0) {
-            log.warning("No types given, returning empty list!");
+            LOG.warning("No types given, returning empty list!");
             return rc;
         }
         final List<SourceTypes> allowedTypes = new ArrayList<SourceTypes>();
@@ -96,7 +96,7 @@ public class SourcefileScannerImpl implements SourcefileScanner {
             new SourceFileFilter(localDetector, allowedTypes);
         final File[] foundFiles = baseDir.listFiles(fileFilter);
         rc.addAll(scanFilesAndDirectories(foundFiles, types));
-        log.exiting(SchedulerImpl.class.getName(), "getFiles", rc.size());
+        LOG.exiting(SchedulerImpl.class.getName(), "getFiles", rc.size());
         return rc;
     }
     
@@ -115,9 +115,9 @@ public class SourcefileScannerImpl implements SourcefileScanner {
         final List<File> rc = new ArrayList<File>();
         if (foundFiles != null && foundFiles.length > 0) {
             for (File foundFile : foundFiles) {
-                log.finest("found " + foundFile);
+                LOG.finest("found " + foundFile);
                 if (foundFile.isDirectory() && !rc.contains(foundFile)) {
-                    log.finer("Calling scan of child directory " + foundFile);
+                    LOG.finer("Calling scan of child directory " + foundFile);
                     rc.addAll(getFiles(foundFile, types));
                     continue;
                 }

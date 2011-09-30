@@ -20,8 +20,8 @@
  */
 package com.googlecode.socofo.core.impl.io;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 
@@ -34,8 +34,10 @@ import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.impl.TestInjectionPlan;
 
 /**
- * @author kaeto23
+ * The fileDest tests.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Guice(modules = { TestInjectionPlan.class })
 public class FileDestinationImplTest {

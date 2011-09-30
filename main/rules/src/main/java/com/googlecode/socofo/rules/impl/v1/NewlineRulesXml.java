@@ -26,66 +26,68 @@ import javax.xml.bind.annotation.XmlType;
 import com.googlecode.socofo.rules.api.v1.NewlineRulesUpdater;
 
 /**
- * @author kaeto23
+ * The NL rules.
  * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @XmlType(name = "NewlineRulesType")
 public class NewlineRulesXml implements NewlineRulesUpdater {
-	/**
-	 * the svuid
-	 */
-	private static final long serialVersionUID = 485959883495651756L;
-	@XmlElement
-	private Boolean beforeIfStatements = false;
-	@XmlElement
-	private Boolean beforeComment = false;
-	@XmlElement
-	private Boolean afterXmlEndTag = false;
-	@XmlElement
-	private Boolean afterEachXmlAttribute = false;
-	@XmlElement
-	private Boolean onLevelChange = false;
-	@XmlElement
-	private Boolean separateCommentTags = false;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getAfterEachXmlAttribute() {
-		return afterEachXmlAttribute;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getAfterXmlEndTag() {
-		return afterXmlEndTag;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getBeforeComment() {
-		return beforeComment;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getBeforeIfStatements() {
-		return beforeIfStatements;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getOnLevelChange() {
-		return onLevelChange;
-	}
-
+    /**
+     * the svuid.
+     */
+    private static final long serialVersionUID = 485959883495651756L;
+    @XmlElement
+    private Boolean beforeIfStatements = false;
+    @XmlElement
+    private Boolean beforeComment = false;
+    @XmlElement
+    private Boolean afterXmlEndTag = false;
+    @XmlElement
+    private Boolean afterEachXmlAttribute = false;
+    @XmlElement
+    private Boolean onLevelChange = false;
+    @XmlElement
+    private Boolean separateCommentTags = false;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getAfterEachXmlAttribute() {
+        return afterEachXmlAttribute;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getAfterXmlEndTag() {
+        return afterXmlEndTag;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getBeforeComment() {
+        return beforeComment;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getBeforeIfStatements() {
+        return beforeIfStatements;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getOnLevelChange() {
+        return onLevelChange;
+    }
+    
 }

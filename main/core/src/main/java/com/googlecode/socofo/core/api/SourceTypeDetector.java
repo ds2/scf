@@ -21,18 +21,18 @@
 package com.googlecode.socofo.core.api;
 
 /**
- * A source type detector
+ * A source type detector.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 public interface SourceTypeDetector {
-	/**
-	 * Guesses the file type by the file name suffix.
-	 * 
-	 * @param filename
-	 *            the file name
-	 * @return null, or the possible source type
-	 */
-	public SourceTypes guessTypeByFilename(String filename);
+    /**
+     * Guesses the file type by the file name suffix.
+     * 
+     * @param filename
+     *            the file name
+     * @return null, or the possible source type
+     */
+    public SourceTypes guessTypeByFilename(String filename);
 }

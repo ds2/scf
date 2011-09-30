@@ -30,15 +30,15 @@ import com.googlecode.socofo.core.api.SourceTypes;
 /**
  * The implementation of a source type detector.
  * 
- * @author kaeto23
- * 
+ * @author Dirk Strauss
+ * @version 1.0
  */
 @Singleton
 public class TypeDetectorImpl implements SourceTypeDetector {
     /**
-     * A logger
+     * A logger.
      */
-    private static final transient Logger log = Logger
+    private static final transient Logger LOG = Logger
         .getLogger(TypeDetectorImpl.class.getName());
     
     /**
@@ -47,12 +47,12 @@ public class TypeDetectorImpl implements SourceTypeDetector {
     @Override
     public SourceTypes guessTypeByFilename(String fn) {
         if (fn == null) {
-            log.warning("No filename given!");
+            LOG.warning("No filename given!");
             return null;
         }
         String filename = fn.trim();
         if (filename.length() <= 0) {
-            log.warning("filename to short to guess type from!");
+            LOG.warning("filename to short to guess type from!");
             return null;
         }
         filename = filename.toLowerCase();
@@ -71,7 +71,7 @@ public class TypeDetectorImpl implements SourceTypeDetector {
         if (filename.endsWith(".lua")) {
             return SourceTypes.Lua;
         }
-        log.info("Unknown type: " + fn);
+        LOG.info("Unknown type: " + fn);
         return null;
     }
 }

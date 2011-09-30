@@ -39,6 +39,8 @@ public class TreeHandlerImplTest {
     private TreeHandlerImpl to = null;
     
     /**
+     * Actions before any method.
+     * 
      * @throws java.lang.Exception
      *             if an error occurred.
      */
