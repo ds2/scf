@@ -22,7 +22,8 @@ package com.googlecode.socofo.core.impl;
 
 import java.util.logging.Logger;
 
-import com.google.inject.Singleton;
+import javax.inject.Singleton;
+
 import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
 
@@ -34,43 +35,43 @@ import com.googlecode.socofo.core.api.SourceTypes;
  */
 @Singleton
 public class TypeDetectorImpl implements SourceTypeDetector {
-	/**
-	 * A logger
-	 */
-	private static final transient Logger log = Logger
-			.getLogger(TypeDetectorImpl.class.getName());
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public SourceTypes guessTypeByFilename(String fn) {
-		if (fn == null) {
-			log.warning("No filename given!");
-			return null;
-		}
-		String filename = fn.trim();
-		if (filename.length() <= 0) {
-			log.warning("filename to short to guess type from!");
-			return null;
-		}
-		filename = filename.toLowerCase();
-		if (filename.endsWith(".xml")) {
-			return SourceTypes.XML;
-		}
-		if (filename.endsWith(".cs")) {
-			return SourceTypes.CSharp;
-		}
-		if (filename.endsWith(".java")) {
-			return SourceTypes.Java;
-		}
-		if (filename.endsWith(".xhtml")) {
-			return SourceTypes.XHTML;
-		}
-		if (filename.endsWith(".lua")) {
-			return SourceTypes.Lua;
-		}
-		log.info("Unknown type: " + fn);
-		return null;
-	}
+    /**
+     * A logger
+     */
+    private static final transient Logger log = Logger
+        .getLogger(TypeDetectorImpl.class.getName());
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SourceTypes guessTypeByFilename(String fn) {
+        if (fn == null) {
+            log.warning("No filename given!");
+            return null;
+        }
+        String filename = fn.trim();
+        if (filename.length() <= 0) {
+            log.warning("filename to short to guess type from!");
+            return null;
+        }
+        filename = filename.toLowerCase();
+        if (filename.endsWith(".xml")) {
+            return SourceTypes.XML;
+        }
+        if (filename.endsWith(".cs")) {
+            return SourceTypes.CSharp;
+        }
+        if (filename.endsWith(".java")) {
+            return SourceTypes.Java;
+        }
+        if (filename.endsWith(".xhtml")) {
+            return SourceTypes.XHTML;
+        }
+        if (filename.endsWith(".lua")) {
+            return SourceTypes.Lua;
+        }
+        log.info("Unknown type: " + fn);
+        return null;
+    }
 }

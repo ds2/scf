@@ -32,43 +32,48 @@ import com.googlecode.socofo.rules.api.v1.RuleSet;
  * @version 1.0
  */
 public interface SourceTransformer {
-	/**
-	 * Parses the given String of data into tokens and prepares the translation.
-	 * 
-	 * @param s
-	 *            the content to parse
-	 * @throws TranslationException
-	 *             if the content could not be parsed successfully.
-	 */
-	public void parseContent(String s) throws TranslationException;
-
-	/**
-	 * Loads the rules for the formation result.
-	 * 
-	 * @param r
-	 *            the ruleset
-	 */
-	public void setRules(RuleSet r);
-
-	/**
-	 * Performs the translation. This method should be run in a separate thread.
-	 * 
-	 * @throws TranslationException
-	 *             if a translation error occurred
-	 */
-	public void performTranslation() throws TranslationException;
-
-	/**
-	 * Returns the formatted result.
-	 * 
-	 * @return the formatted result
-	 */
-	public String getResult();
-
-	/**
-	 * Returns the loaded rules.
-	 * 
-	 * @return the loaded rules, or null if not yet loaded
-	 */
-	public RuleSet getRules();
+    /**
+     * The qualifier name for the xml transformer.
+     */
+    static final String XML = "xml";
+    
+    /**
+     * Parses the given String of data into tokens and prepares the translation.
+     * 
+     * @param s
+     *            the content to parse
+     * @throws TranslationException
+     *             if the content could not be parsed successfully.
+     */
+    public void parseContent(String s) throws TranslationException;
+    
+    /**
+     * Loads the rules for the formation result.
+     * 
+     * @param r
+     *            the ruleset
+     */
+    public void setRules(RuleSet r);
+    
+    /**
+     * Performs the translation. This method should be run in a separate thread.
+     * 
+     * @throws TranslationException
+     *             if a translation error occurred
+     */
+    public void performTranslation() throws TranslationException;
+    
+    /**
+     * Returns the formatted result.
+     * 
+     * @return the formatted result
+     */
+    public String getResult();
+    
+    /**
+     * Returns the loaded rules.
+     * 
+     * @return the loaded rules, or null if not yet loaded
+     */
+    public RuleSet getRules();
 }

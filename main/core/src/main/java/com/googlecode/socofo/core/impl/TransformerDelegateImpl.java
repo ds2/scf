@@ -21,12 +21,13 @@
  */
 package com.googlecode.socofo.core.impl;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
+
 import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TransformerDelegate;
-import com.googlecode.socofo.core.impl.xml.XmlTransformer;
 
 /**
  * The base impl for the delegate.
@@ -35,29 +36,28 @@ import com.googlecode.socofo.core.impl.xml.XmlTransformer;
  * 
  */
 public class TransformerDelegateImpl implements TransformerDelegate {
-	/**
-	 * The injector to use.
-	 */
-	@Inject
-	private Injector ij;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public SourceTransformer getTransformerOfType(SourceTypes t) {
-		SourceTransformer rc = null;
-		switch (t) {
-		case XML:
-			rc = new XmlTransformer();
-			break;
-		default:
-			break;
-		}
-		if (rc != null) {
-			ij.injectMembers(rc);
-		}
-		return rc;
-	}
-
+    /**
+     * The xml transformer. It is up to the JSR-299 implementation to define
+     * one.
+     */
+    @Inject
+    @Named(SourceTransformer.XML)
+    private Provider<SourceTransformer> xml;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SourceTransformer getTransformerOfType(SourceTypes t) {
+        SourceTransformer rc = null;
+        switch (t) {
+            case XML:
+                rc = xml.get();
+                break;
+            default:
+                break;
+        }
+        return rc;
+    }
+    
 }

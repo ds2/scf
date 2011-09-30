@@ -4,6 +4,8 @@
 package com.googlecode.socofo.rules.api;
 
 /**
+ * The configuration for rules retrieval.
+ * 
  * @author Kaeto23
  * 
  */

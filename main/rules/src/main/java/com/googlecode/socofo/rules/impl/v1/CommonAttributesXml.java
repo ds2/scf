@@ -33,61 +33,87 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributesUpdater;
  */
 @XmlType(name = "CommonAttributesType")
 public class CommonAttributesXml implements CommonAttributesUpdater {
-	/**
-	 * the svuid
-	 */
-	private static final long serialVersionUID = 8599603676435230001L;
-	/**
-	 * the maximum line width.
-	 */
-	@XmlElement(required = true)
-	private int maxLineWidth = 0;
-	/**
-	 * the indent sequence.
-	 */
-	@XmlElement(required = true)
-	private String indentSequence = null;
-	/**
-	 * the tab size.
-	 */
-	@XmlElement(required = false, defaultValue = "4")
-	private int tabSize = 4;
-	/**
-	 * the flag to stop on too long lines.
-	 */
-	@XmlElement(defaultValue = "false")
-	private Boolean stopOnLongline = false;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getIndentSequence() {
-		return indentSequence;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getMaxLinewidth() {
-		return maxLineWidth;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getTabSize() {
-		return tabSize;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getStopOnLongline() {
-		return stopOnLongline;
-	}
-
+    /**
+     * the svuid
+     */
+    private static final long serialVersionUID = 8599603676435230001L;
+    /**
+     * the maximum line width.
+     */
+    @XmlElement(required = true)
+    private int maxLineWidth = 0;
+    /**
+     * the indent sequence.
+     */
+    @XmlElement(required = true)
+    private String indentSequence = null;
+    /**
+     * the tab size.
+     */
+    @XmlElement(required = false, defaultValue = "4")
+    private int tabSize = 4;
+    /**
+     * the flag to stop on too long lines.
+     */
+    @XmlElement(defaultValue = "false")
+    private Boolean stopOnLongline = false;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getIndentSequence() {
+        return indentSequence;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaxLinewidth() {
+        return maxLineWidth;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getTabSize() {
+        return tabSize;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getStopOnLongline() {
+        return stopOnLongline;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("CommonAttributesXml [maxLineWidth=");
+        builder.append(maxLineWidth);
+        builder.append(", ");
+        if (indentSequence != null) {
+            builder.append("indentSequence=\"");
+            builder.append(indentSequence);
+            builder.append("\", ");
+        }
+        builder.append("tabSize=");
+        builder.append(tabSize);
+        builder.append(", ");
+        if (stopOnLongline != null) {
+            builder.append("stopOnLongline=");
+            builder.append(stopOnLongline);
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+    
 }

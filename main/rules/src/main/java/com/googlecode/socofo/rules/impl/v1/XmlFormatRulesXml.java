@@ -43,121 +43,126 @@ import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
  * 
  */
 @XmlRootElement(name = "xml-format")
-@XmlSeeAlso( { NamespaceRuleXml.class, CommonAttributesXml.class })
+@XmlSeeAlso({ NamespaceRuleXml.class, CommonAttributesXml.class })
 public class XmlFormatRulesXml implements XmlFormatRulesUpdater {
-	/**
-	 * the svuid
-	 */
-	private static final long serialVersionUID = -2816143684776160066L;
-	@XmlElement(required = true, type = CommonAttributesXml.class)
-	private CommonAttributes commonAttributes = null;
-	@XmlElement(required = false)
-	private Boolean separateAttributesPerLine = false;
-	@XmlElement(required = false)
-	private FinalBracketPolicy alignFinalBracketOnNewline = FinalBracketPolicy.Never;
-	@XmlElement(required = false)
-	private Boolean clearBlankLines = false;
-	@XmlElement(required = false)
-	private Boolean insertWsAtEmptyElement = false;
-	@XmlElement
-	private Boolean sortAttributes = false;
-	@XmlElements(value = { @XmlElement(type = NamespaceRuleXml.class, name = "enforceNamespace") })
-	private List<NamespaceRule> namespaceRules = null;
-	@XmlElement(type = TextBlocksXml.class)
-	private TextBlocks textBlocks = null;
-	@XmlElement(type = XmlCommentsRulesXml.class)
-	private XmlCommentsRules commentsRules = null;
-	@XmlElement(type = NewlineRulesXml.class)
-	private NewlineRules newlineRules = null;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public FinalBracketPolicy getAlignFinalBracketOnNewline() {
-		return alignFinalBracketOnNewline;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getClearBlanklines() {
-		return clearBlankLines;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public CommonAttributes getCommonAttributes() {
-		return commonAttributes;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Boolean getInsertWsAtEmptyElement() {
-		return insertWsAtEmptyElement;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<NamespaceRule> getNamespaceRules() {
-		return namespaceRules;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public TextBlocks getTextBlocks() {
-		return textBlocks;
-	}
-
-	@Override
-	public Boolean getSortAttributes() {
-		return sortAttributes;
-	}
-
-	@Override
-	public XmlCommentsRules getCommentsRules() {
-		return commentsRules;
-	}
-
-	@Override
-	public NewlineRules getNewlineRules() {
-		return newlineRules;
-	}
-
-	@XmlTransient
-	public NewlineRulesUpdater getNewlineRulesUpdater() {
-		return (NewlineRulesUpdater) newlineRules;
-	}
-
-	@Override
-	public XmlCommentsRulesUpdater getCommentsRulesUpdater() {
-		return (XmlCommentsRulesUpdater) commentsRules;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		final StringBuffer sb = new StringBuffer();
-		sb.append(getClass().getName());
-		sb.append("(");
-		sb.append("sepAttrPerLine=").append(separateAttributesPerLine);
-		sb.append(",finalBracketOnNl=").append(alignFinalBracketOnNewline);
-		sb.append(",clearBlankLns=").append(clearBlankLines);
-		sb.append(",insertWsEmptyEl=").append(insertWsAtEmptyElement);
-		sb.append(",sortAttrs=").append(sortAttributes);
-		sb.append(")");
-		return sb.toString();
-	}
-
+    /**
+     * the svuid
+     */
+    private static final long serialVersionUID = -2816143684776160066L;
+    @XmlElement(required = true, type = CommonAttributesXml.class)
+    private CommonAttributes commonAttributes = null;
+    @XmlElement(required = false)
+    private Boolean separateAttributesPerLine = false;
+    @XmlElement(required = false)
+    private FinalBracketPolicy alignFinalBracketOnNewline =
+        FinalBracketPolicy.Never;
+    @XmlElement(required = false)
+    private Boolean clearBlankLines = false;
+    @XmlElement(required = false)
+    private Boolean insertWsAtEmptyElement = false;
+    @XmlElement
+    private Boolean sortAttributes = false;
+    @XmlElements(value = { @XmlElement(
+        type = NamespaceRuleXml.class,
+        name = "enforceNamespace") })
+    private List<NamespaceRule> namespaceRules = null;
+    @XmlElement(type = TextBlocksXml.class)
+    private TextBlocks textBlocks = null;
+    @XmlElement(type = XmlCommentsRulesXml.class)
+    private XmlCommentsRules commentsRules = null;
+    @XmlElement(type = NewlineRulesXml.class)
+    private NewlineRules newlineRules = null;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FinalBracketPolicy getAlignFinalBracketOnNewline() {
+        return alignFinalBracketOnNewline;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getClearBlanklines() {
+        return clearBlankLines;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CommonAttributes getCommonAttributes() {
+        return commonAttributes;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getInsertWsAtEmptyElement() {
+        return insertWsAtEmptyElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<NamespaceRule> getNamespaceRules() {
+        return namespaceRules;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TextBlocks getTextBlocks() {
+        return textBlocks;
+    }
+    
+    @Override
+    public Boolean getSortAttributes() {
+        return sortAttributes;
+    }
+    
+    @Override
+    public XmlCommentsRules getCommentsRules() {
+        return commentsRules;
+    }
+    
+    @Override
+    public NewlineRules getNewlineRules() {
+        return newlineRules;
+    }
+    
+    @Override
+    @XmlTransient
+    public NewlineRulesUpdater getNewlineRulesUpdater() {
+        return (NewlineRulesUpdater) newlineRules;
+    }
+    
+    @Override
+    public XmlCommentsRulesUpdater getCommentsRulesUpdater() {
+        return (XmlCommentsRulesUpdater) commentsRules;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName());
+        sb.append("(");
+        sb.append("sepAttrPerLine=").append(separateAttributesPerLine);
+        sb.append(",finalBracketOnNl=").append(alignFinalBracketOnNewline);
+        sb.append(",clearBlankLns=").append(clearBlankLines);
+        sb.append(",insertWsEmptyEl=").append(insertWsAtEmptyElement);
+        sb.append(",sortAttrs=").append(sortAttributes);
+        sb.append(",ca=").append(commonAttributes);
+        sb.append(")");
+        return sb.toString();
+    }
+    
 }

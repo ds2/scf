@@ -40,5 +40,5 @@ public interface FileRoot extends SourceRoot {
 	 * @throws LoadingException
 	 *             if an error occurred
 	 */
-	public void setFile(File f) throws LoadingException;
+	public void loadFile(File f) throws LoadingException;
 }

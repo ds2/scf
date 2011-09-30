@@ -44,7 +44,7 @@ public class FileDestinationImplTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.io.FileDestinationImpl#writeContent(java.lang.String, java.lang.String)}
+     * {@link com.googlecode.socofo.core.provider.FileDestinationImpl#writeContent(java.lang.String, java.lang.String)}
      * .
      */
     @Test
@@ -61,7 +61,7 @@ public class FileDestinationImplTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.io.FileDestinationImpl#setFile(java.io.File)}
+     * {@link com.googlecode.socofo.core.provider.FileDestinationImpl#setFile(java.io.File)}
      * .
      */
     @Test

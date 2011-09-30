@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.googlecode.socofo.core.impl.io;
+package com.googlecode.socofo.core.provider;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -72,7 +72,8 @@ public class FileRootImpl implements FileRoot {
      * @throws LoadingException
      *             if an error occurred
      */
-    public void setFile(final File f) throws LoadingException {
+    @Override
+    public void loadFile(final File f) throws LoadingException {
         if (f == null) {
             LOG.warning("No file given!");
             return;

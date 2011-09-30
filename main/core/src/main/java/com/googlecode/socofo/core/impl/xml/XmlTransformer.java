@@ -20,6 +20,8 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
+import javax.inject.Inject;
+
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -28,7 +30,6 @@ import org.antlr.runtime.TokenStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceWriter;
@@ -146,7 +147,8 @@ public class XmlTransformer implements SourceTransformer {
         log.debug("Starting token run");
         XmlObject currentObject = null;
         XmlObject lastObject = null;
-        while ((token = grammar.nextToken()) != Token.EOF_TOKEN) {
+        while ((token = grammar.nextToken()) != Token.EOF_TOKEN
+            && token.getType() != XmlGrammar.EOF) {
             log.debug("Token ({}) for this run: {}", token.getType(),
                 token.getText());
             switch (token.getType()) {
@@ -247,37 +249,6 @@ public class XmlTransformer implements SourceTransformer {
         log.debug("finishing the result");
         sw.finish();
         log.debug("exit");
-    }
-    
-    /**
-     * Sets the source writer. This method here is usually called in a test
-     * case. DO NOT USE IT IN PRODUCTION!!
-     * 
-     * @param s
-     *            the source writer to use
-     */
-    protected void setTestSw(final SourceWriter s) {
-        this.sw = s;
-    }
-    
-    /**
-     * Sets the test line handler to perform some unit tests.
-     * 
-     * @param i
-     *            the line handler to use for performing tests
-     */
-    public void setTestLh(final LineHandler i) {
-        this.lh = i;
-    }
-    
-    /**
-     * Sets the test tree handler.
-     * 
-     * @param th
-     *            the tree handler, used for tests
-     */
-    public void setTestTreehandler(final TreeHandler th) {
-        treeHandler = th;
     }
     
     /**

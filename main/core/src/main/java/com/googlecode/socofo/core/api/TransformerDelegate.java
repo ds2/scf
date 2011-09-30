@@ -27,12 +27,13 @@ package com.googlecode.socofo.core.api;
  * 
  */
 public interface TransformerDelegate {
-	/**
-	 * Returns the transformer for the given source type.
-	 * 
-	 * @param t
-	 *            the source type
-	 * @return the transformer, or null if unknown.
-	 */
-	SourceTransformer getTransformerOfType(SourceTypes t);
+    
+    /**
+     * Returns the transformer for the given source type.
+     * 
+     * @param t
+     *            the source type
+     * @return the transformer, or null if unknown.
+     */
+    SourceTransformer getTransformerOfType(SourceTypes t);
 }

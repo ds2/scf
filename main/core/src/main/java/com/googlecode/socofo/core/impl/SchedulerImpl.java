@@ -160,7 +160,7 @@ public class SchedulerImpl implements Scheduler {
             final TranslationJob job = translationJob.get();
             final FileRoot fr = fileProv.get();
             try {
-                fr.setFile(sourceFile);
+                fr.loadFile(sourceFile);
                 job.setSource(fr);
                 final FileDestination fd = destProv.get();
                 fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));

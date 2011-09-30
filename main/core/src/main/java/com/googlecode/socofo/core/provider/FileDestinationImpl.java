@@ -18,7 +18,7 @@
 /**
  * 
  */
-package com.googlecode.socofo.core.impl.io;
+package com.googlecode.socofo.core.provider;
 
 import java.io.File;
 import java.io.FileOutputStream;
