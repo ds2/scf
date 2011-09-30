@@ -72,7 +72,7 @@ public enum SourceTypes {
      *            the name of the source type
      * @return the source type, or null if not found.
      */
-    public static SourceTypes findByName(String t) {
+    public static SourceTypes findByName(final String t) {
         for (SourceTypes type : values()) {
             if (type.name().equalsIgnoreCase(t)) {
                 return type;

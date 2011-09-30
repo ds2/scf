@@ -69,7 +69,7 @@ public class SchedulerImpl implements Scheduler {
      * The rules loader.
      */
     @Inject
-    private RulesLoader rulesLoader = null;
+    private RulesLoader rulesLoader;
     /**
      * The rule set.
      */
@@ -82,7 +82,7 @@ public class SchedulerImpl implements Scheduler {
      * The scanner for source files.
      */
     @Inject
-    private SourcefileScanner scanner = null;
+    private SourcefileScanner scanner;
     /**
      * A provider for translation jobs.
      */
