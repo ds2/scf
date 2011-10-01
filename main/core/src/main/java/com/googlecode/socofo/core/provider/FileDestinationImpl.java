@@ -24,9 +24,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.core.api.FileDestination;
@@ -45,8 +47,8 @@ public class FileDestinationImpl implements FileDestination {
     /**
      * A logger.
      */
-    private static final Logger LOG = Logger
-        .getLogger(FileDestinationImpl.class.getName());
+    private static final Logger LOG = LoggerFactory
+        .getLogger(FileDestinationImpl.class);
     /**
      * The iohelper.
      */
@@ -58,13 +60,12 @@ public class FileDestinationImpl implements FileDestination {
      */
     @Override
     public void writeContent(final String s, final String enc) {
-        LOG.entering(FileDestinationImpl.class.getName(), "writeContent");
         if (dest == null) {
-            LOG.severe("No destination set!");
+            LOG.warn("No destination set!");
             return;
         }
         if (s == null) {
-            LOG.severe("Nothing to write!");
+            LOG.warn("Nothing to write!");
             return;
         }
         OutputStreamWriter fw = null;
@@ -86,12 +87,11 @@ public class FileDestinationImpl implements FileDestination {
             fw.write(s);
             fw.flush();
         } catch (final IOException e) {
-            LOG.throwing(FileDestinationImpl.class.getName(), "writeContent", e);
+            LOG.error("writeContent", e);
         } finally {
             iohelper.closeWriter(fw);
             iohelper.closeOutputstream(fos);
         }
-        LOG.exiting(FileDestinationImpl.class.getName(), "writeContent");
     }
     
     /**
@@ -115,18 +115,16 @@ public class FileDestinationImpl implements FileDestination {
      */
     protected String parseDestination2(final String baseDirStr,
         final String targetDirStr, final String sourceFileStr) {
-        LOG.entering(FileDestinationImpl.class.getName(), "parseDestination2",
-            new Object[] { baseDirStr, targetDirStr, sourceFileStr });
         if (baseDirStr == null) {
-            LOG.warning("No base directory given!");
+            LOG.warn("No base directory given!");
             return null;
         }
         if (sourceFileStr == null || sourceFileStr.length() <= 0) {
-            LOG.warning("No source file given!");
+            LOG.warn("No source file given!");
             return null;
         }
         if (!sourceFileStr.startsWith(baseDirStr + File.separatorChar)) {
-            LOG.warning("The source file (" + sourceFileStr
+            LOG.warn("The source file (" + sourceFileStr
                 + ") is NOT a part of the base directory " + baseDirStr + "!");
             return null;
         }
@@ -135,8 +133,6 @@ public class FileDestinationImpl implements FileDestination {
             final String base = sourceFileStr.substring(baseDirStr.length());
             rc = targetDirStr + base;
         }
-        LOG.exiting(FileDestinationImpl.class.getName(), "parseDestination2",
-            rc);
         return rc;
     }
     
@@ -146,14 +142,12 @@ public class FileDestinationImpl implements FileDestination {
     @Override
     public File parseDestination(final File baseDir, final File targetDir,
         final File sourceFile) {
-        LOG.entering(FileDestinationImpl.class.getName(), "parseDestination",
-            new Object[] { baseDir, targetDir, sourceFile });
         if (baseDir == null) {
-            LOG.severe("No base directory given!");
+            LOG.warn("No base directory given!");
             return null;
         }
         if (sourceFile == null) {
-            LOG.severe("No source file given!");
+            LOG.warn("No source file given!");
             return null;
         }
         final String baseDirStr = baseDir.getAbsolutePath();
@@ -163,18 +157,7 @@ public class FileDestinationImpl implements FileDestination {
         final String fileDestStr =
             parseDestination2(baseDirStr, targetDirStr, sourceFileStr);
         final File rc = new File(fileDestStr);
-        LOG.exiting(FileDestinationImpl.class.getName(), "parseDestination", rc);
         return rc;
-    }
-    
-    /**
-     * Sets the test io helper.
-     * 
-     * @param i
-     *            the iohelper for test runs
-     */
-    public void setTestIohelper(final IOHelper i) {
-        iohelper = i;
     }
     
 }

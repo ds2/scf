@@ -22,9 +22,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.core.api.FileRoot;
@@ -43,7 +45,7 @@ public class FileRootImpl implements FileRoot {
     /**
      * A logger.
      */
-    private static final transient Logger LOG = Logger
+    private static final transient Logger LOG = LoggerFactory
         .getLogger(FileRootImpl.class.getName());
     /**
      * The content of the file.
@@ -75,7 +77,7 @@ public class FileRootImpl implements FileRoot {
     @Override
     public void loadFile(final File f) throws LoadingException {
         if (f == null) {
-            LOG.warning("No file given!");
+            LOG.warn("No file given!");
             return;
         }
         FileReader fr = null;
@@ -94,10 +96,10 @@ public class FileRootImpl implements FileRoot {
             content = sb.toString();
             type = detector.guessTypeByFilename(f.getAbsolutePath());
         } catch (FileNotFoundException e) {
-            LOG.throwing(FileRootImpl.class.getName(), "loadFile", e);
+            LOG.debug("loadFile", e);
             throw new LoadingException("File not found: " + f.getAbsolutePath());
         } catch (IOException e) {
-            LOG.throwing(FileRootImpl.class.getName(), "loadFile", e);
+            LOG.debug("loadFile", e);
             throw new LoadingException("IO error when loading the file: "
                 + e.getLocalizedMessage());
         } finally {

@@ -20,9 +20,10 @@
  */
 package com.googlecode.socofo.core.impl;
 
-import java.util.logging.Logger;
-
 import javax.inject.Singleton;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
@@ -38,8 +39,8 @@ public class TypeDetectorImpl implements SourceTypeDetector {
     /**
      * A logger.
      */
-    private static final transient Logger LOG = Logger
-        .getLogger(TypeDetectorImpl.class.getName());
+    private static final transient Logger LOG = LoggerFactory
+        .getLogger(TypeDetectorImpl.class);
     
     /**
      * {@inheritDoc}
@@ -47,12 +48,12 @@ public class TypeDetectorImpl implements SourceTypeDetector {
     @Override
     public SourceTypes guessTypeByFilename(String fn) {
         if (fn == null) {
-            LOG.warning("No filename given!");
+            LOG.warn("No filename given!");
             return null;
         }
         String filename = fn.trim();
         if (filename.length() <= 0) {
-            LOG.warning("filename to short to guess type from!");
+            LOG.warn("filename to short to guess type from!");
             return null;
         }
         filename = filename.toLowerCase();
