@@ -13,13 +13,6 @@
   <description>The base api of the project</description>
   <dependencies>
     <dependency>
-      <groupId>com.googlecode.socofo</groupId>
-      <artifactId>socofo-config</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
