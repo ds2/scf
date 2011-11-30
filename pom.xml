@@ -4,7 +4,7 @@
   <parent>
     <groupId>ds2.base.oss</groupId>
     <artifactId>jee-base</artifactId>
-    <version>0.36</version>
+    <version>0.41</version>
   </parent>
   <groupId>com.googlecode.socofo</groupId>
   <artifactId>socofo-complete</artifactId>
@@ -12,6 +12,15 @@
   <packaging>pom</packaging>
   <name>SoCoFo Complete</name>
   <description>This project contains the config, the main code formatter, and the website.</description>
+  <properties>
+    <minJavaVersion>1.6</minJavaVersion>
+    <issueTrackerId>SCF</issueTrackerId>
+    <licenseHeaderTemplate>/oss/gpl-v3-header.txt</licenseHeaderTemplate>
+    <license.header.author>dstrauss</license.header.author>
+    <license.header.description>Another source code formatter</license.header.description>
+    <siteProjectName>scf</siteProjectName>
+    <license.header.projectName>SoCoFo</license.header.projectName>
+  </properties>
   <url>http://code.google.com/p/socofo/</url>
   <issueManagement>
     <system>redmine</system>
@@ -28,8 +37,9 @@
   </modules>
   <distributionManagement>
     <site>
-      <id>ds2.sites</id>
-      <url>dav:https://dev.cerberus.ds2/mavenrepo/site/socofo/${project.version}</url>
+      <id>${siteDeployId}}</id>
+      <name>${siteDeployName}</name>
+      <url>${siteDeployUrl}</url>
     </site>
   </distributionManagement>
 </project>

@@ -40,69 +40,10 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>com.googlecode.socofo</groupId>
-            <artifactId>socofo-config</artifactId>
-            <version>${scf.config.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <releaseProfiles>googleRelease</releaseProfiles>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>com.googlecode.socofo</groupId>
-            <artifactId>socofo-config</artifactId>
-            <version>${scf.config.version}</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <!-- <basedir>${basedir}</basedir> -->
-          <header>/configs/license_header.txt</header>
-          <excludes>
-            <exclude>.hg/**</exclude>
-            <exclude>**/*test.txt</exclude>
-            <exclude>.hgignore</exclude>
-            <exclude>.hgtags</exclude>
-            <exclude>BUILD.txt</exclude>
-            <exclude>.clover/**</exclude>
-            <exclude>**/test*.xml</exclude>
-            <exclude>**/test*.txt</exclude>
-            <exclude>**/.checkstyle</exclude>
-            <exclude>**/.pmd</exclude>
-            <exclude>README.txt</exclude>
-            <exclude>**/license_header.txt</exclude>
-            <exclude>**/package-info.java</exclude>
-            <exclude>**/*.apt</exclude>
-            <exclude>**/site.xml</exclude>
-            <exclude>**/nb-configuration.xml</exclude>
-          </excludes>
-          <encoding>utf-8</encoding>
-          <mapping>
-            <g>JAVADOC_STYLE</g>
-          </mapping>
-          <properties>
-            <year>${project.inceptionYear}</year>
-          </properties>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>deploy</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
