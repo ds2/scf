@@ -4,7 +4,7 @@
   <parent>
     <groupId>ds2.base.oss</groupId>
     <artifactId>jee-base</artifactId>
-    <version>0.41</version>
+    <version>0.42</version>
   </parent>
   <groupId>com.googlecode.socofo</groupId>
   <artifactId>socofo-complete</artifactId>
@@ -16,7 +16,7 @@
     <minJavaVersion>1.6</minJavaVersion>
     <issueTrackerId>SCF</issueTrackerId>
     <licenseHeaderTemplate>/oss/gpl-v3-header.txt</licenseHeaderTemplate>
-    <license.header.author>dstrauss</license.header.author>
+    <license.header.author>Dirk Strauss</license.header.author>
     <license.header.description>Another source code formatter</license.header.description>
     <siteProjectName>scf</siteProjectName>
     <license.header.projectName>SoCoFo</license.header.projectName>
@@ -35,6 +35,21 @@
     <module>config</module>
     <module>main</module>
   </modules>
+  <licenses>
+    <license>
+      <distribution>repo</distribution>
+      <name>GNU GENERAL PUBLIC LICENSE</name>
+      <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+    </license>
+  </licenses>
+  <mailingLists>
+    <mailingList>
+      <archive>http://groups.google.com/group/socofo-dev</archive>
+      <name>SoCoFo Developer Mailing list</name>
+      <post>socofo-dev@googlegroups.com</post>
+      <unsubscribe>socofo-dev+unsubscribe@googlegroups.com</unsubscribe>
+    </mailingList>
+  </mailingLists>
   <distributionManagement>
     <site>
       <id>${siteDeployId}}</id>
