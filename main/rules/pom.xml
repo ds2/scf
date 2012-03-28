@@ -1,6 +1,4 @@
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -29,41 +27,11 @@
   <description>the rules that configure the formatters</description>
   <build>
     <plugins>
-      <plugin>
-        <groupId>com.sun.tools.jxc.maven2</groupId>
-        <artifactId>maven-jaxb-schemagen-plugin</artifactId>
-        <configuration>
-          <schemas>
-            <schema>
-              <namespace>http://www.ds2/ns/socofo</namespace>
-              <file>scf-schema.xsd</file>
-            </schema>
-            <schema>
-              <namespace>http://www.ds2/ns/socofo/api</namespace>
-              <file>scf-api-schema.xsd</file>
-            </schema>
-          </schemas>
-          <includes>
-            <include>**/api/v1/*.java</include>
-            <include>**/impl/v1/*.java</include>
-          </includes>
-          <verbose>true</verbose>
-        </configuration>
-        <executions>
-          <execution>
-            <id>genXsd</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings 
-          only. It has no influence on the Maven build itself. -->
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. 
+          It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
@@ -91,4 +59,46 @@
       </plugins>
     </pluginManagement>
   </build>
+  <profiles>
+    <profile>
+      <id>genXsd</id>
+      <activation>
+        <jdk>1.6</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.sun.tools.jxc.maven2</groupId>
+            <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+            <configuration>
+              <schemas>
+                <schema>
+                  <namespace>http://www.ds2/ns/socofo</namespace>
+                  <file>scf-schema.xsd</file>
+                </schema>
+                <schema>
+                  <namespace>http://www.ds2/ns/socofo/api</namespace>
+                  <file>scf-api-schema.xsd</file>
+                </schema>
+              </schemas>
+              <includes>
+                <include>**/api/v1/*.java</include>
+                <include>**/impl/v1/*.java</include>
+              </includes>
+              <verbose>true</verbose>
+            </configuration>
+            <executions>
+              <execution>
+                <id>genXsd</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
