@@ -54,39 +54,39 @@ public class DefRuntime implements MainRuntime {
     private static final Logger log = LoggerFactory.getLogger(DefRuntime.class);
     
     /**
-     * the console to write log information to.
-     */
-    private PrintWriter console = null;
-    /**
-     * The scheduler.
-     */
-    @Inject
-    private Scheduler scheduler = null;
-    /**
      * The base directory that contains the source code files.
      */
-    private File baseDir = null;
+    private File baseDir;
     /**
-     * The target directory to write the transformed source code to.
+     * the console to write log information to.
      */
-    private File targetDir = null;
-    
-    /**
-     * Flag to indicate that the help screen should be displayed.
-     */
-    private boolean showHelp = false;
+    private PrintWriter console;
     /**
      * The url to the transformation rules.
      */
     private URL rulesUrl;
     /**
-     * The list of source types to scan for.
+     * The scheduler.
      */
-    private List<SourceTypes> types = null;
+    @Inject
+    private Scheduler scheduler;
+    
+    /**
+     * Flag to indicate that the help screen should be displayed.
+     */
+    private boolean showHelp;
     /**
      * Some source filters.
      */
-    private List<String> sourceFilters = null;
+    private List<String> sourceFilters;
+    /**
+     * The target directory to write the transformed source code to.
+     */
+    private File targetDir;
+    /**
+     * The list of source types to scan for.
+     */
+    private List<SourceTypes> types;
     
     /**
      * Inits the runtime.
@@ -102,43 +102,55 @@ public class DefRuntime implements MainRuntime {
         sourceFilters = new ArrayList<String>();
     }
     
-    /**
-     * Prints the help information.
-     */
-    private void printHelp() {
-        console.println("SoCoFo Source Code Formatter");
-        console.println("Copyright (C) 2009 Dirk Strauss <lexxy23@gmail.com>");
-        
-        console.println();
-        console.println("Parameters:");
-        console.println(PARAM_RULESURL
-            + " = sets the url where the formatter rules can be found ("
-            + PARAM_RULESURL + "=http://test.local/test/formatterRules.xml)");
-        console.println(PARAM_BASEDIR
-            + " = the base directory to scan for source files");
-        console
-            .println(PARAM_TARGETDIR
-                + " = the directory to write the results to; default is the base directory");
-        console
-            .println(PARAM_TYPES
-                + " = a list of types to transform; Supported types currently: xml");
+    @Override
+    public final void applySourceFilters(final List<String> filters) {
+        if (filters == null || filters.size() <= 0) {
+            return;
+        }
+        sourceFilters.addAll(filters);
     }
     
     /**
-     * Sets the scheduler for the tests.
+     * Checks a given param if it is a known parameter. This method fills the
+     * internal fields.
      * 
-     * @param instance
-     *            an instance of a scheduler
+     * @param arg
+     *            the parameter to check
      */
-    protected void setTestScheduler(final Scheduler instance) {
-        scheduler = instance;
+    private final void checkParam(final String arg) {
+        if (arg.startsWith(PARAM_BASEDIR) && baseDir == null) {
+            final String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
+            baseDir = new File(argSeq);
+            if (!baseDir.exists()) {
+                log.warn("Directory {} does not exist!", baseDir);
+            }
+        } else if (arg.startsWith(PARAM_RULESURL) && rulesUrl == null) {
+            try {
+                rulesUrl = new URL(arg.substring(PARAM_RULESURL.length() + 1));
+            } catch (final MalformedURLException e) {
+                log.debug(e.getLocalizedMessage(), e);
+            }
+        } else if (arg.startsWith(PARAM_TARGETDIR) && targetDir == null) {
+            final String argSeq = arg.substring(PARAM_TARGETDIR.length() + 1);
+            targetDir = new File(argSeq);
+        } else if (arg.startsWith(PARAM_HELP)) {
+            showHelp = true;
+        } else if (arg.startsWith(PARAM_TYPES)) {
+            final String argSeq = arg.substring(PARAM_TYPES.length() + 1);
+            final String[] typesIds = argSeq.split(",");
+            for (String typeId : typesIds) {
+                if (typeId != null && typeId.equalsIgnoreCase("xml")) {
+                    types.add(SourceTypes.XML);
+                }
+            }
+        }
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public int execute() {
+    public final int execute() {
         int rc = 0;
         if (showHelp) {
             printHelp();
@@ -203,7 +215,7 @@ public class DefRuntime implements MainRuntime {
      *            the parameters.
      * @return the result of the execution.
      */
-    public int execute(final String... args) {
+    public final int execute(final String... args) {
         parseParams(args);
         return execute();
     }
@@ -212,7 +224,7 @@ public class DefRuntime implements MainRuntime {
      * {@inheritDoc}
      */
     @Override
-    public File getBaseDirectory() {
+    public final File getBaseDirectory() {
         if (baseDir == null) {
             baseDir = new File("");
         }
@@ -223,15 +235,32 @@ public class DefRuntime implements MainRuntime {
      * {@inheritDoc}
      */
     @Override
-    public File getTargetDirectory() {
-        return targetDir;
+    public final URL getRulesUrl() {
+        return rulesUrl;
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public void parseParams(final String... args) {
+    public final File getTargetDirectory() {
+        return targetDir;
+    }
+    
+    /**
+     * Returns the source types to work with.
+     * 
+     * @return the source types
+     */
+    public final List<SourceTypes> getTypes() {
+        return types;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void parseParams(final String... args) {
         log.debug("entering: {}", args);
         if (args != null && args.length > 0) {
             for (String arg : args) {
@@ -248,54 +277,32 @@ public class DefRuntime implements MainRuntime {
     }
     
     /**
-     * Checks a given param if it is a known parameter. This method fills the
-     * internal fields.
-     * 
-     * @param arg
-     *            the parameter to check
+     * Prints the help information.
      */
-    private void checkParam(final String arg) {
-        if (arg.startsWith(PARAM_BASEDIR) && baseDir == null) {
-            final String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
-            baseDir = new File(argSeq);
-            if (!baseDir.exists()) {
-                log.warn("Directory {} does not exist!", baseDir);
-            }
-        } else if (arg.startsWith(PARAM_RULESURL) && rulesUrl == null) {
-            try {
-                rulesUrl = new URL(arg.substring(PARAM_RULESURL.length() + 1));
-            } catch (final MalformedURLException e) {
-                log.debug(e.getLocalizedMessage(), e);
-            }
-        } else if (arg.startsWith(PARAM_TARGETDIR) && targetDir == null) {
-            final String argSeq = arg.substring(PARAM_TARGETDIR.length() + 1);
-            targetDir = new File(argSeq);
-        } else if (arg.startsWith(PARAM_HELP)) {
-            showHelp = true;
-        } else if (arg.startsWith(PARAM_TYPES)) {
-            final String argSeq = arg.substring(PARAM_TYPES.length() + 1);
-            final String[] typesIds = argSeq.split(",");
-            for (String typeId : typesIds) {
-                if (typeId != null && typeId.equalsIgnoreCase("xml")) {
-                    types.add(SourceTypes.XML);
-                }
-            }
-        }
+    private void printHelp() {
+        console.println("SoCoFo Source Code Formatter");
+        console.println("Copyright (C) 2009 Dirk Strauss <lexxy23@gmail.com>");
+        
+        console.println();
+        console.println("Parameters:");
+        console.println(PARAM_RULESURL
+            + " = sets the url where the formatter rules can be found ("
+            + PARAM_RULESURL + "=http://test.local/test/formatterRules.xml)");
+        console.println(PARAM_BASEDIR
+            + " = the base directory to scan for source files");
+        console
+            .println(PARAM_TARGETDIR
+                + " = the directory to write the results to; default is the base directory");
+        console
+            .println(PARAM_TYPES
+                + " = a list of types to transform; Supported types currently: xml");
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean showHelpScreen() {
-        return showHelp;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void resetSettings() {
+    public final void resetSettings() {
         baseDir = null;
         targetDir = null;
         showHelp = false;
@@ -306,15 +313,7 @@ public class DefRuntime implements MainRuntime {
      * {@inheritDoc}
      */
     @Override
-    public URL getRulesUrl() {
-        return rulesUrl;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBaseDirectory(final File srcDir) {
+    public final void setBaseDirectory(final File srcDir) {
         baseDir = srcDir;
     }
     
@@ -322,37 +321,30 @@ public class DefRuntime implements MainRuntime {
      * {@inheritDoc}
      */
     @Override
-    public void setTargetDirectory(final File t) {
-        this.targetDir = t;
+    public final void setRules(final URL r) {
+        this.rulesUrl = r;
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setRules(final URL r) {
-        this.rulesUrl = r;
+    public final void setTargetDirectory(final File t) {
+        this.targetDir = t;
     }
     
     /**
-     * Returns the source types to work with.
+     * Sets the scheduler for the tests.
      * 
-     * @return the source types
+     * @param instance
+     *            an instance of a scheduler
      */
-    public List<SourceTypes> getTypes() {
-        return types;
+    protected final void setTestScheduler(final Scheduler instance) {
+        scheduler = instance;
     }
     
     @Override
-    public void applySourceFilters(List<String> filters) {
-        if (filters == null || filters.size() <= 0) {
-            return;
-        }
-        sourceFilters.addAll(filters);
-    }
-    
-    @Override
-    public void setTypes(List<String> types) {
+    public final void setTypes(final List<String> types) {
         if (types == null || types.size() <= 0) {
             return;
         }
@@ -367,6 +359,14 @@ public class DefRuntime implements MainRuntime {
             }
             this.types.add(detectedType);
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean showHelpScreen() {
+        return showHelp;
     }
     
 }

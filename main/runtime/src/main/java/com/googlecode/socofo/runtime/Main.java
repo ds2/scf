@@ -23,6 +23,7 @@ package com.googlecode.socofo.runtime;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.googlecode.socofo.common.api.MainRuntime;
+import com.googlecode.socofo.runtime.impl.RuntimeInjectionPlan;
 
 /**
  * Main program to let the formatter run on in a terminal.
@@ -30,20 +31,26 @@ import com.googlecode.socofo.common.api.MainRuntime;
  * @author Dirk Strauss
  * @version 1.0
  */
-public class Main {
-
-	/**
-	 * The main method.
-	 * 
-	 * @param args
-	 *            the runtime arguments.
-	 */
-	public static void main(final String[] args) {
-		final Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
-		final MainRuntime mr = ij.getInstance(MainRuntime.class);
-		mr.parseParams(args);
-		final int rc = mr.execute();
-		System.out.println("rc=" + rc);
-	}
-
+public final class Main {
+    /**
+     * The main method.
+     * 
+     * @param args
+     *            the runtime arguments.
+     */
+    public static void main(final String[] args) {
+        final Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
+        final MainRuntime mr = ij.getInstance(MainRuntime.class);
+        mr.parseParams(args);
+        final int rc = mr.execute();
+        System.out.println("rc=" + rc);
+    }
+    
+    /**
+     * Would init the class.
+     */
+    private Main() {
+        // nothing to do
+    }
+    
 }
