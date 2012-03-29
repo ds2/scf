@@ -43,25 +43,25 @@ public class TranslationJobImpl implements TranslationJob {
     /**
      * The destination of the transformation result.
      */
-    private SourceDestination dest = null;
+    private SourceDestination dest;
     /**
      * The rule set.
      */
-    private RuleSet rules = null;
+    private RuleSet rules;
     /**
      * The source to transform.
      */
-    private SourceRoot source = null;
+    private SourceRoot source;
     
     /**
      * A list of translation errors.
      */
-    private List<TranslationException> errors = null;
+    private List<TranslationException> errors;
     /**
      * The transformer delegate.
      */
     @Inject
-    private TransformerDelegate transformDelegate = null;
+    private TransformerDelegate transformDelegate;
     
     /**
      * Inits the job.
@@ -74,7 +74,7 @@ public class TranslationJobImpl implements TranslationJob {
      * {@inheritDoc}
      */
     @Override
-    public void setDestination(final SourceDestination d) {
+    public final void setDestination(final SourceDestination d) {
         this.dest = d;
     }
     
@@ -82,7 +82,7 @@ public class TranslationJobImpl implements TranslationJob {
      * {@inheritDoc}
      */
     @Override
-    public void setRule(final RuleSet r) {
+    public final void setRule(final RuleSet r) {
         if (r == null) {
             throw new IllegalArgumentException("Rules not given!");
         }
@@ -93,7 +93,7 @@ public class TranslationJobImpl implements TranslationJob {
      * {@inheritDoc}
      */
     @Override
-    public void setSource(final SourceRoot sourceCode) {
+    public final void setSource(final SourceRoot sourceCode) {
         source = sourceCode;
     }
     
@@ -101,9 +101,9 @@ public class TranslationJobImpl implements TranslationJob {
      * {@inheritDoc}
      */
     @Override
-    public void run() {
+    public final void run() {
         String result = "";
-        SourceTransformer tr =
+        final SourceTransformer tr =
             transformDelegate.getTransformerOfType(source.getType());
         try {
             if (tr == null) {
@@ -120,7 +120,7 @@ public class TranslationJobImpl implements TranslationJob {
             dest.writeContent(result, "utf-8");
         } catch (final TranslationException e) {
             errors.add(e);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             errors.add(new TranslationException(e.getLocalizedMessage(), e));
         }
     }
@@ -129,7 +129,7 @@ public class TranslationJobImpl implements TranslationJob {
      * {@inheritDoc}
      */
     @Override
-    public List<TranslationException> getErrors() {
+    public final List<TranslationException> getErrors() {
         return errors;
     }
     

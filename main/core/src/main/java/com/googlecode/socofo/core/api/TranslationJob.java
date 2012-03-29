@@ -38,7 +38,7 @@ public interface TranslationJob extends Runnable {
      * @param sourceCode
      *            the source code to transform
      */
-    public void setSource(SourceRoot sourceCode);
+    void setSource(SourceRoot sourceCode);
     
     /**
      * Sets the transformation rules for transforming the source code.
@@ -46,7 +46,7 @@ public interface TranslationJob extends Runnable {
      * @param r
      *            the rules
      */
-    public void setRule(RuleSet r);
+    void setRule(RuleSet r);
     
     /**
      * Sets the destination of the transformed source code.
@@ -54,12 +54,12 @@ public interface TranslationJob extends Runnable {
      * @param dest
      *            the destination of the transformed source code
      */
-    public void setDestination(SourceDestination dest);
+    void setDestination(SourceDestination dest);
     
     /**
      * Returns a list of translation errors.
      * 
      * @return a list of translation errors
      */
-    public List<TranslationException> getErrors();
+    List<TranslationException> getErrors();
 }

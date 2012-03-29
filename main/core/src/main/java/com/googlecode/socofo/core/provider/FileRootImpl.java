@@ -50,7 +50,7 @@ public class FileRootImpl implements FileRoot {
     /**
      * The content of the file.
      */
-    private String content = null;
+    private String content;
     /**
      * The source type detector.
      */
@@ -59,12 +59,12 @@ public class FileRootImpl implements FileRoot {
     /**
      * The type of the source code.
      */
-    private SourceTypes type = null;
+    private SourceTypes type;
     /**
      * The io helper.
      */
     @Inject
-    private IOHelper iohelper = null;
+    private IOHelper iohelper;
     
     /**
      * Loads the given file.
@@ -75,7 +75,7 @@ public class FileRootImpl implements FileRoot {
      *             if an error occurred
      */
     @Override
-    public void loadFile(final File f) throws LoadingException {
+    public final void loadFile(final File f) throws LoadingException {
         if (f == null) {
             LOG.warn("No file given!");
             return;
@@ -85,9 +85,9 @@ public class FileRootImpl implements FileRoot {
         try {
             fr = new FileReader(f);
             br = new BufferedReader(fr);
-            StringBuffer sb = new StringBuffer();
+            final StringBuffer sb = new StringBuffer();
             while (true) {
-                String l = br.readLine();
+                final String l = br.readLine();
                 if (l == null) {
                     break;
                 }
@@ -95,10 +95,10 @@ public class FileRootImpl implements FileRoot {
             }
             content = sb.toString();
             type = detector.guessTypeByFilename(f.getAbsolutePath());
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             LOG.debug("loadFile", e);
             throw new LoadingException("File not found: " + f.getAbsolutePath());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOG.debug("loadFile", e);
             throw new LoadingException("IO error when loading the file: "
                 + e.getLocalizedMessage());
@@ -112,7 +112,7 @@ public class FileRootImpl implements FileRoot {
      * {@inheritDoc}
      */
     @Override
-    public String getContent() {
+    public final String getContent() {
         return content;
     }
     
@@ -120,7 +120,7 @@ public class FileRootImpl implements FileRoot {
      * {@inheritDoc}
      */
     @Override
-    public SourceTypes getType() {
+    public final SourceTypes getType() {
         return type;
     }
     

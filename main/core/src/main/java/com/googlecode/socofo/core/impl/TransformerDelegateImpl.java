@@ -44,10 +44,17 @@ public class TransformerDelegateImpl implements TransformerDelegate {
     private Provider<SourceTransformer> xml;
     
     /**
+     * Inits the delegate.
+     */
+    public TransformerDelegateImpl() {
+        // nothing special to do
+    }
+    
+    /**
      * {@inheritDoc}
      */
     @Override
-    public SourceTransformer getTransformerOfType(final SourceTypes t) {
+    public final SourceTransformer getTransformerOfType(final SourceTypes t) {
         SourceTransformer rc = null;
         switch (t) {
             case XML:

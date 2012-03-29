@@ -35,7 +35,7 @@ public interface SourceTransformer {
     /**
      * The qualifier name for the xml transformer.
      */
-    static final String XML = "xml";
+    String XML = "xml";
     
     /**
      * Parses the given String of data into tokens and prepares the translation.
@@ -45,7 +45,7 @@ public interface SourceTransformer {
      * @throws TranslationException
      *             if the content could not be parsed successfully.
      */
-    public void parseContent(String s) throws TranslationException;
+    void parseContent(String s) throws TranslationException;
     
     /**
      * Loads the rules for the formation result.
@@ -53,7 +53,7 @@ public interface SourceTransformer {
      * @param r
      *            the ruleset
      */
-    public void setRules(RuleSet r);
+    void setRules(RuleSet r);
     
     /**
      * Performs the translation. This method should be run in a separate thread.
@@ -61,19 +61,19 @@ public interface SourceTransformer {
      * @throws TranslationException
      *             if a translation error occurred
      */
-    public void performTranslation() throws TranslationException;
+    void performTranslation() throws TranslationException;
     
     /**
      * Returns the formatted result.
      * 
      * @return the formatted result
      */
-    public String getResult();
+    String getResult();
     
     /**
      * Returns the loaded rules.
      * 
      * @return the loaded rules, or null if not yet loaded
      */
-    public RuleSet getRules();
+    RuleSet getRules();
 }

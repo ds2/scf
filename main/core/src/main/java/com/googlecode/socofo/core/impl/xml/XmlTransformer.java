@@ -50,11 +50,11 @@ public class XmlTransformer implements SourceTransformer {
      * the source writer to write the XML result to.
      */
     @Inject
-    private SourceWriter sw = null;
+    private SourceWriter sw;
     /**
      * The rules to transform the content.
      */
-    private XmlFormatRules rules = null;
+    private XmlFormatRules rules;
     /**
      * A logger.
      */
@@ -63,17 +63,17 @@ public class XmlTransformer implements SourceTransformer {
     /**
      * the xml grammar that has been loaded.
      */
-    private XmlGrammar grammar = null;
+    private XmlGrammar grammar;
     /**
      * The line handler.
      */
     @Inject
-    private LineHandler lh = null;
+    private LineHandler lh;
     /**
      * The tree handler to set the levels of the various xml objects.
      */
     @Inject
-    private TreeHandler treeHandler = null;
+    private TreeHandler treeHandler;
     /**
      * The loaded rule set.
      */
@@ -83,8 +83,9 @@ public class XmlTransformer implements SourceTransformer {
      * {@inheritDoc}
      */
     @Override
-    public String getResult() {
+    public final String getResult() {
         final String rc = sw.getResult();
+        LOG.debug("result of the transformation is\n{}", rc);
         return rc;
     }
     
@@ -92,7 +93,7 @@ public class XmlTransformer implements SourceTransformer {
      * {@inheritDoc}
      */
     @Override
-    public void setRules(final RuleSet r) {
+    public final void setRules(final RuleSet r) {
         if (r == null) {
             throw new IllegalArgumentException("Ruleset not set!");
         }
@@ -108,16 +109,16 @@ public class XmlTransformer implements SourceTransformer {
      * {@inheritDoc}
      */
     @Override
-    public void parseContent(final String s) {
+    public final void parseContent(final String s) {
         if (s == null || s.length() <= 0) {
             LOG.warn("No content given!");
             return;
         }
+        LOG.debug("given string to parse is {}", s);
         final ANTLRStringStream ss = new ANTLRStringStream(s);
         final CharStream input = ss;
         grammar = new XmlGrammar(input);
-        TokenStream tr = null;
-        tr = new CommonTokenStream(grammar);
+        final TokenStream tr = new CommonTokenStream(grammar);
         new XmlParser(tr);
     }
     
@@ -256,7 +257,7 @@ public class XmlTransformer implements SourceTransformer {
      * 
      * @return the xml format rules
      */
-    public XmlFormatRules getRuleSet() {
+    public final XmlFormatRules getRuleSet() {
         return rules;
     }
     

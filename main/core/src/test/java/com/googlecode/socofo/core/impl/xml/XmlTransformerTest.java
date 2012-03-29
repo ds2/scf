@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl.xml;
 
 import static org.testng.Assert.assertEquals;
@@ -50,42 +47,43 @@ import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
 /**
  * class to test the xml transformer.
  * 
- * @author Dirk Strauss
+ * @author dstrauss
  * @version 1.0
  * 
  */
 @Guice(modules = { TestInjectionPlan.class })
-@Test(singleThreaded = true)
+@Test(singleThreaded = true, groups = "xml")
 public class XmlTransformerTest {
     /**
      * a logger.
      */
     private static final transient Logger LOG = LoggerFactory
         .getLogger(XmlTransformerTest.class.getName());
+    private static final String MDCPARAM = "testCaseName";
     /**
      * the transformer.
      */
     @Inject
-    private XmlTransformer to = null;
+    private XmlTransformer to;
     /**
      * The rules loader.
      */
     @Inject
-    private RulesLoader rulesLoader = null;
+    private RulesLoader rulesLoader;
     /**
      * the xml transformation rules.
      */
-    XmlFormatRules formatRules = null;
+    XmlFormatRules formatRules;
     /**
      * The stream root.
      */
     @Inject
-    private StreamRoot sr = null;
+    private StreamRoot sr;
     /**
      * the destination to write a result to.
      */
     @Inject
-    private FileDestination dest = null;
+    private FileDestination dest;
     
     /**
      * Actions before any test method.
@@ -94,7 +92,7 @@ public class XmlTransformerTest {
      *             if an error occurred.
      */
     @BeforeClass
-    public void setUp() throws Exception {
+    public final void setUp() throws Exception {
         formatRules =
             rulesLoader.loadFormatRules(getClass().getResourceAsStream(
                 "/xmlconfig.xml"));
@@ -115,9 +113,12 @@ public class XmlTransformerTest {
         dest.setFile(new File("target/sample1.result.xml"));
     }
     
+    /**
+     * Actions to perform after a test method run.
+     */
     @AfterMethod
-    public void afterMethod() {
-        MDC.remove("testCaseName");
+    public final void afterMethod() {
+        MDC.remove(MDCPARAM);
     }
     
     /**
@@ -156,6 +157,7 @@ public class XmlTransformerTest {
      */
     @Test
     public final void testParseContent() {
+        MDC.put(MDCPARAM, "testParseContent");
         to.parseContent(null);
         to.parseContent("");
     }
@@ -167,6 +169,7 @@ public class XmlTransformerTest {
      */
     @Test
     public final void testPerformTranslation() {
+        MDC.put(MDCPARAM, "testPerformTranslation");
         assertNotNull(sr);
         try {
             sr.loadStream(getClass().getResourceAsStream("/sample1.xml"),
@@ -194,6 +197,7 @@ public class XmlTransformerTest {
      */
     @Test
     public final void testPerformTranslation2() {
+        MDC.put(MDCPARAM, "testPerformTranslation2");
         assertNotNull(sr);
         try {
             sr.loadStream(getClass().getResourceAsStream("/sample2.xml"),
@@ -224,7 +228,7 @@ public class XmlTransformerTest {
      */
     @Test
     public final void testTranslation1() throws TranslationException {
-        MDC.put("testCaseName", "testTranslation1");
+        MDC.put(MDCPARAM, "testTranslation1");
         final String xmlSample = "<a><b/></a>";
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
@@ -244,7 +248,7 @@ public class XmlTransformerTest {
      */
     @Test
     public final void testTranslation2() throws TranslationException {
-        MDC.put("testCaseName", "testTranslation2");
+        MDC.put(MDCPARAM, "testTranslation2");
         final String xmlSample = "<a><b></b></a>";
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
@@ -254,38 +258,44 @@ public class XmlTransformerTest {
         assertEquals(result, "<a>\n  <b></b>\n</a>\n");
     }
     
+    /**
+     * XML transform test.
+     */
     @Test
     public final void testTranslation3() {
-        String xmlSample = "<a><b>text</b></a>";
+        MDC.put(MDCPARAM, "testTranslation3");
+        final String xmlSample = "<a><b>text</b></a>";
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
         try {
             to.performTranslation();
-        } catch (TranslationException e) {
+        } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
-        String result = to.getResult();
+        final String result = to.getResult();
         assertNotNull(result);
         assertEquals(result, "<a>\n  <b>text</b>\n</a>\n");
     }
     
     @Test
     public final void testTranslation4() {
-        String xmlSample = "<a><b a=\"13\"/></a>";
+        MDC.put(MDCPARAM, "testTranslation4");
+        final String xmlSample = "<a><b a=\"13\"/></a>";
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
         try {
             to.performTranslation();
-        } catch (TranslationException e) {
+        } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
-        String result = to.getResult();
+        final String result = to.getResult();
         assertNotNull(result);
         assertEquals("<a>\n  <b\n    a=\"13\"\n  />\n</a>\n", result);
     }
     
     @Test
     public final void testTranslation5() {
+        MDC.put(MDCPARAM, "testTranslation5");
         String xmlSample = "<a><b a=\"13\">test</b></a>";
         assertNotNull(xmlSample);
         to.parseContent(xmlSample);
