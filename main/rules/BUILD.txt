@@ -1,1 +1,0 @@
-You need to have JDK 1.6.0_10 or better to compile this artifact because we use JAXB :)
