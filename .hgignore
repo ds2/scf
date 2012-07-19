@@ -21,3 +21,14 @@ syntax: regexp
 \.checkstyle$
 syntax: regexp
 \.pmd$
+\.orig\..*$
+\.orig$
+\.chg\..*$
+\.rej$
+\.conflict\~$
+nb-configuration.xml$
+
+syntax: regexp
+\.DS_Store$
+syntax: regexp
+test-output$

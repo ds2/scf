@@ -1,0 +1,54 @@
+<!--
+
+    SoCoFo - Another source code formatter
+    Copyright (C) 2012  Dirk Strauss
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project name="Sample Project">
+  <version position="left" />
+  <publishDate position="navigation-bottom" />
+  <bannerLeft>
+    <name>Sonatype</name>
+    <src>images/logo.png</src>
+    <href>http://www.sonatype.com</href>
+  </bannerLeft>
+  <bannerRight>
+    <name>Right Banner</name>
+    <src>images/banner-right.png</src>
+    <href>http://www.yahoo.com</href>
+  </bannerRight>
+  <body>
+    <head>
+      <link href="http://sample.com/sites/sample-project/feeds/blog" type="application/atom+xml" id="auto-discovery" rel="alternate" title="Sample Project Blog" />
+    </head>
+    <menu name="Sample Project">
+      <item name="Overview" href="index.html" />
+      <item name="Developer Resources" href="/developer/index.html" collapse="true">
+        <item name="System Architecture" href="/developer/arch.html" />
+        <item name="Embedder's Guide" href="/developer/embed.html" />
+      </item>
+    </menu>
+    <menu ref="reports" />
+    <links>
+      <item name="Apache" href="http://www.apache.org" />
+      <item name="Maven" href="http://maven.apache.org" />
+    </links>
+    <breadcrumbs>
+      <item name="Codehaus" href="http://www.codehaus.org" />
+      <item name="Mojo" href="http://mojo.codehaus.org" />
+    </breadcrumbs>
+  </body>
+</project>

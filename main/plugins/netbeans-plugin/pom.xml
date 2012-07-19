@@ -1,0 +1,55 @@
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>socofo-plugins</artifactId>
+        <groupId>com.googlecode.socofo</groupId>
+        <version>0.0.2-SNAPSHOT</version>
+    </parent>
+    <artifactId>socofo-netbeans-plugin</artifactId>
+    <packaging>nbm</packaging>
+    <name>SoCoFo Plugins - Netbeans</name>
+    <description>The NetBeans integration plugin</description>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+                <version>3.1</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin> <!-- required since nbm-plugin 3.0-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>netbeans</id>
+            <name>repository hosting netbeans.org api artifacts</name>
+            <url>http://bits.netbeans.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-editor-indent</artifactId>
+            <version>RELEASE67</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

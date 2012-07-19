@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SoCoFo - Another source code formatter
+    Copyright (C) 2012  Dirk Strauss
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<!-- SoCoFo Source Code Formatter Copyright (C) 2009 Dirk Strauss <lexxy23@gmail.com> 
+  This program is free software: you can redistribute it and/or modify it under 
+  the terms of the GNU General Public License as published by the Free Software 
+  Foundation, either version 3 of the License, or (at your option) any later 
+  version. This program is distributed in the hope that it will be useful, 
+  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  more details. You should have received a copy of the GNU General Public License 
+  along with this program. If not, see <http://www.gnu.org/licenses/>. -->
+<p:xml-format
+  xmlns:p="http://www.ds2/ns/socofo"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ds2/ns/socofo http://www.ds2/ns/socofo ">
+  <commonAttributes>
+    <maxLineWidth>80</maxLineWidth>
+    <indentSequence><![CDATA[  ]]></indentSequence>
+    <tabSize>4</tabSize>
+  </commonAttributes>
+  <separateAttributesPerLine>true</separateAttributesPerLine>
+  <alignFinalBracketOnNewline>OnAttributes</alignFinalBracketOnNewline>
+  <commentsRules>
+    <breakType>BeautyBreak</breakType>
+  </commentsRules>
+  <newlineRules>
+    <beforeComment>true</beforeComment>
+    <afterXmlEndTag>true</afterXmlEndTag>
+    <afterEachXmlAttribute>true</afterEachXmlAttribute>
+  </newlineRules>
+</p:xml-format>
