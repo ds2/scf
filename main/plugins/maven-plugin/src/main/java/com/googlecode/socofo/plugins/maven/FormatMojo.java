@@ -53,14 +53,14 @@ public class FormatMojo extends AbstractMojo {
     /**
      * The base directory to scan for files.
      * 
-     * @parameter expression="${baseDir}"
+     * @parameter property="baseDir"
      *            default-value="${project.build.sourceDirectory}/.."
      */
     private File baseDir;
     /**
      * The current project to scan.
      * 
-     * @parameter expression="${project}"
+     * @parameter property="project"
      * @required
      * @readonly
      */
@@ -77,7 +77,7 @@ public class FormatMojo extends AbstractMojo {
     /**
      * URL to the formatter xml.
      * 
-     * @parameter expression="${formatterUrl}"
+     * @parameter property="formatterUrl"
      * @required
      */
     private String formatterUrl;
@@ -88,7 +88,7 @@ public class FormatMojo extends AbstractMojo {
     /**
      * The logging configuration (usually for jul).
      * 
-     * @parameter expression="${logConfig}"
+     * @parameter property="logConfig"
      */
     private File logConfig;
     /**
@@ -104,7 +104,7 @@ public class FormatMojo extends AbstractMojo {
     /**
      * The list of types to scan for.
      * 
-     * @parameter expression="${types}" property="scanTypes"
+     * @parameter property="scanTypes"
      * @required
      */
     private List<String> types;

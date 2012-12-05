@@ -57,6 +57,7 @@ public class DefRuntimeTest {
      * Actions to perform before any test method.
      * 
      * @throws java.lang.Exception
+     *             if an error occurred
      */
     @Before
     public void setUp() throws Exception {
