@@ -4,7 +4,7 @@
   <parent>
     <groupId>ds2.base.oss</groupId>
     <artifactId>jee-base</artifactId>
-    <version>0.67</version>
+    <version>0.68-SNAPSHOT</version>
   </parent>
   <groupId>com.googlecode.socofo</groupId>
   <artifactId>socofo-complete</artifactId>
@@ -15,7 +15,7 @@
   <properties>
     <minJavaVersion>1.6</minJavaVersion>
     <issueTrackerId>SCF</issueTrackerId>
-    <licenseHeaderTemplate>/oss/gpl-v3-header.txt</licenseHeaderTemplate>
+    <license.id>gpl_v3</license.id>
     <license.header.author>Dirk Strauss</license.header.author>
     <license.header.description>Another source code formatter</license.header.description>
     <siteProjectName>scf</siteProjectName>
