@@ -21,11 +21,20 @@ lexer grammar JavaGrammar;
     package com.googlecode.socofo.grammar;
 }
 
-IMPORT:
-'import '(~';')* ';'
+JAVA_FILE:
+PACKAGE_DECL? IMPORT_DECL* EOF
 ;
+
+IMPORT_DECL:
+'import' WS+ FQCN ';'
+;
+
+PACKAGE_DECL:
+'package' WS+ FQPN ';'
+;
+
 ANNOTATION:
-'@' LETTER (LETTER|DIGIT)*
+'@' CLASS_NAME
 ;
 ROUND_BRACE_OPEN: '(';
 ROUND_BRACE_CLOSE: ')';
@@ -37,6 +46,9 @@ CLASS_DEFINITION: 'class' WS+ NAMECHAR*;
 fragment NAMECHAR
     : LETTER | DIGIT | '.' | '-' | '_' | ':'
     ;
+fragment LETTER_OR_DIGIT:
+ LETTER | DIGIT
+ ;
 
 fragment DIGIT
     :    '0'..'9'
@@ -46,7 +58,17 @@ fragment LETTER
     : 'a'..'z'
     | 'A'..'Z'
     ;
-    
-
+PACKAGE_PART: // defines a single package name fragment
+  LETTER LETTER_OR_DIGIT*
+  ;
+FQPN: // a full qualified package name
+  PACKAGE_PART ('.' PACKAGE_PART)*
+;
+CLASS_NAME:
+LETTER LETTER_OR_DIGIT*
+;
+FQCN:
+ FQPN? CLASS_NAME
+;
 WS  :  (' '|'\r'|'\t'|'\u000C'|'\n')+ { $channel=HIDDEN; }
     ;

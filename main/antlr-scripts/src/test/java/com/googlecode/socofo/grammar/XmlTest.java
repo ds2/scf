@@ -59,7 +59,7 @@ public class XmlTest {
             final XmlGrammar lexer = new XmlGrammar(input);
             Token token;
             LOG.info("Entering token loop");
-            while ((token = lexer.nextToken()) != Token.EOF_TOKEN) {
+            while ((token = lexer.nextToken()) != null) {
                 LOG.info("Token (" + token.getType() + "): " + token.getText());
                 if (token.getType() == Token.EOF) {
                     break;
