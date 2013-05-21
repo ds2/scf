@@ -15,13 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-lexer grammar JavaGrammar;
+grammar JavaGrammar;
 
 @header {
     package com.googlecode.socofo.grammar;
 }
+import Defaults;
 
-JAVA_FILE:
+java_file:
 PACKAGE_DECL? WS*
 IMPORT_DECL* WS*
 EOF
@@ -35,15 +36,19 @@ PACKAGE_DECL:
 'package' WS+ FQPN ';'
 ;
 
+ANNOTATION:
+'@' CLASS_NAME
 ;
 ROUND_BRACE_OPEN: '(';
 ROUND_BRACE_CLOSE: ')';
 BRACE_OPEN: '{';
 BRACE_CLOSE:'}';
 
+CLASS_DEFINITION: 'class' WS+ CLASS_NAME;
+
 fragment DIGIT: '0'..'9';
 
-fragment LETTER: 'A'..'Z' | 'a'..'z';
+fragment LETTER: 'a'..'z' | 'A'..'Z';
 
 fragment LETTER_OR_DIGIT:
  LETTER | DIGIT
@@ -61,7 +66,6 @@ LETTER (LETTER_OR_DIGIT | '_')*
 FQCN: // full qualified Class name
  (PACKAGE_PART '.')* CLASS_NAME
 ;
-WS  :  (' '|'\t'|'\r'|'\n') { $channel=HIDDEN; }
-    ;
-COMMENT_MULTI: '/*' .* '*/' {$channel=HIDDEN;} ;
-COMMENT_SINGLELINE: '//' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;};
+//fragment WS  :  [' '|'\t'|'\r'|'\n'] -> skip;
+COMMENT_MULTI: '/*' .*? '*/' {skip();} ;
+COMMENT_SINGLELINE: '//' ~('\n'|'\r')* '\r'? '\n' {skip();};
