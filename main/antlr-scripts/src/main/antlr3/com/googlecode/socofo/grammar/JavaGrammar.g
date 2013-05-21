@@ -43,23 +43,16 @@ ROUND_BRACE_CLOSE: ')';
 BRACE_OPEN: '{';
 BRACE_CLOSE:'}';
 
-CLASS_DEFINITION: 'class' WS+ NAMECHAR*;
+CLASS_DEFINITION: 'class' WS+ CLASS_NAME;
 
-fragment NAMECHAR
-    : LETTER | DIGIT | '.' | '-' | '_' | ':'
-    ;
+fragment DIGIT: '0'..'9';
+
+fragment LETTER: 'a'..'z' | 'A'..'Z';
+
 fragment LETTER_OR_DIGIT:
  LETTER | DIGIT
  ;
 
-fragment DIGIT
-    :    '0'..'9'
-    ;
-
-fragment LETTER
-    : 'a'..'z'
-    | 'A'..'Z'
-    ;
 PACKAGE_PART: // defines a single package name fragment
   LETTER LETTER_OR_DIGIT*
   ;
@@ -67,10 +60,12 @@ FQPN: // a full qualified package name
   PACKAGE_PART ('.' PACKAGE_PART)*
 ;
 CLASS_NAME:
-LETTER LETTER_OR_DIGIT*
+LETTER (LETTER_OR_DIGIT | '_')*
 ;
-FQCN:
- FQPN? CLASS_NAME
+FQCN: // full qualified Class name
+ (PACKAGE_PART '.')* CLASS_NAME
 ;
-WS  :  (' '|'\r'|'\t'|'\u000C'|'\n')+ { $channel=HIDDEN; }
+WS  :  (' '|'\t'|'\r'|'\n') { $channel=HIDDEN; }
     ;
+COMMENT_MULTI: '/*' .* '*/' {$channel=HIDDEN;} ;
+COMMENT_SINGLELINE: '//' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;};
