@@ -20,7 +20,7 @@
     <license.header.description>Another source code formatter</license.header.description>
     <siteProjectName>scf</siteProjectName>
     <license.header.projectName>SoCoFo</license.header.projectName>
-    <license.header.year>2012</license.header.year>
+    <license.header.year>2013</license.header.year>
   </properties>
   <url>http://code.google.com/p/socofo/</url>
   <issueManagement>
