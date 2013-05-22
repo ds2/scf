@@ -22,10 +22,10 @@ package com.googlecode.socofo.grammar;
 
 import java.io.IOException;
 import java.io.InputStream;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.Token;
 
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -54,7 +54,7 @@ public class XmlTest {
             LOG.info("Loading XML sample");
             final InputStream is = getClass().getResourceAsStream("/test.xml");
             Assert.assertTrue(is != null);
-            final CharStream input = new ANTLRInputStream(is, "utf-8");
+            final CharStream input = new ANTLRInputStream(is);
             LOG.info("Lexering the sample");
             final XmlGrammar lexer = new XmlGrammar(input);
             Token token;
@@ -69,7 +69,7 @@ public class XmlTest {
             is.close();
             Assert.assertTrue(true);
         } catch (final IOException e) {
-            e.printStackTrace();
+          LOG.error("Error when loading the test xml class!", e);
             Assert.fail(e.getLocalizedMessage());
         }
     }

@@ -17,9 +17,6 @@
  */
 grammar JavaGrammar;
 
-@header {
-    package com.googlecode.socofo.grammar;
-}
 import Defaults;
 
 java_file:
@@ -46,10 +43,6 @@ BRACE_CLOSE:'}';
 
 CLASS_DEFINITION: 'class' WS+ CLASS_NAME;
 
-fragment DIGIT: '0'..'9';
-
-fragment LETTER: 'a'..'z' | 'A'..'Z';
-
 fragment LETTER_OR_DIGIT:
  LETTER | DIGIT
  ;
@@ -66,6 +59,3 @@ LETTER (LETTER_OR_DIGIT | '_')*
 FQCN: // full qualified Class name
  (PACKAGE_PART '.')* CLASS_NAME
 ;
-//fragment WS  :  [' '|'\t'|'\r'|'\n'] -> skip;
-COMMENT_MULTI: '/*' .*? '*/' {skip();} ;
-COMMENT_SINGLELINE: '//' ~('\n'|'\r')* '\r'? '\n' {skip();};

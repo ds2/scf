@@ -1,6 +1,6 @@
 /**
- * SoCoFo - Another source code formatter
- * Copyright (C) 2012  Dirk Strauss
+ * SoCoFo Source Code Formatter
+ * Copyright (C) 2009 Dirk Strauss <lexxy23@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,6 @@ parser  grammar XmlParser;
 options {
 tokenVocab=XmlGrammar; 
 language=Java;
-}
-
-@header {
-    package com.googlecode.socofo.grammar;
 }
 
 document  : element ;

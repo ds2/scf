@@ -1,6 +1,6 @@
 /**
- * SoCoFo - Another source code formatter
- * Copyright (C) 2012  Dirk Strauss
+ * SoCoFo Source Code Formatter
+ * Copyright (C) 2009 Dirk Strauss <lexxy23@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,32 +17,28 @@
  */
 lexer grammar XmlGrammar;
 
-@header {
-    package com.googlecode.socofo.grammar;
-}
-
 @members {
     boolean tagMode = false;
     boolean doctypeMode=false;
 }
 
 PI_START : '<?' { tagMode=true;};
-PI_STOP: {tagMode}?=> '?>' {tagMode=false;};
+PI_STOP: {tagMode}? '?>' {tagMode=false;};
 
-CDATA_SECTION: {!tagMode}?=> '<![CDATA[' (~']')* ']]>' ;
+CDATA_SECTION: {!tagMode}? '<![CDATA[' (~']')* ']]>' ;
 
 COMMENT_SECTION:'<!--' (~'-')* '-->';
 
-DOCTYPE_SECTION: {!tagMode}?=> '<!DOCTYPE' (~'>')* '>' ;
+DOCTYPE_SECTION: {!tagMode}? '<!DOCTYPE' (~'>')* '>' ;
 
 TAG_START_OPEN : '<' { tagMode = true; } ;
 TAG_END_OPEN : '</' { tagMode = true; } ;
-TAG_CLOSE : { tagMode }?=> '>' { tagMode = false; } ;
-TAG_EMPTY_CLOSE : { tagMode }?=> '/>' { tagMode = false; } ;
+TAG_CLOSE : { tagMode }? '>' { tagMode = false; } ;
+TAG_EMPTY_CLOSE : { tagMode }? '/>' { tagMode = false; } ;
 
-ATTR_EQ : { tagMode }?=> '=' ;
+ATTR_EQ : { tagMode }? '=' ;
 
-ATTR_VALUE : { tagMode }?=>
+ATTR_VALUE : { tagMode }?
         ( '"' (~'"')* '"'
         | '\'' (~'\'')* '\''
         )
@@ -50,10 +46,10 @@ ATTR_VALUE : { tagMode }?=>
 
 /** ATTRIBUTE : GENERIC_ID (WS)* ATTR_EQ (WS)* ATTR_VALUE; */
 
-PCDATA : { !tagMode && !doctypeMode }?=> (~'<')+ ;
+PCDATA : { !tagMode && !doctypeMode }? (~'<')+ ;
 
 GENERIC_ID
-    : { tagMode }?=>
+    : { tagMode }?
       ( LETTER | '_' | ':') (NAMECHAR)*
     ;
 
@@ -71,6 +67,6 @@ fragment LETTER
     ;
     
 
-WS  :  { tagMode }?=>
-       (' '|'\r'|'\t'|'\u000C'|'\n')+ { $channel=HIDDEN; }
+WS  :  { tagMode }?
+       (' '|'\r'|'\t'|'\u000C'|'\n')+ { skip(); }
     ;
