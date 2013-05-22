@@ -1,6 +1,6 @@
 /*
  * SoCoFo - Another source code formatter
- * Copyright (C) 2012  Dirk Strauss
+ * Copyright (C) 2013  Dirk Strauss
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@ package com.googlecode.socofo.core.impl.xml;
 
 import javax.inject.Inject;
 
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.Token;
-import org.antlr.runtime.TokenStream;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,13 +110,13 @@ public class XmlTransformer implements SourceTransformer {
      */
     @Override
     public final void parseContent(final String s) {
-        if (s == null || s.length() <= 0) {
+        if ((s == null) || (s.length() <= 0)) {
             LOG.warn("No content given!");
             return;
         }
         LOG.debug("given string to parse is {}", s);
-        final ANTLRStringStream ss = new ANTLRStringStream(s);
-        final CharStream input = ss;
+        ANTLRInputStream antlrIS = new ANTLRInputStream(s);
+        final CharStream input = antlrIS;
         grammar = new XmlGrammar(input);
         final TokenStream tr = new CommonTokenStream(grammar);
         new XmlParser(tr);
@@ -148,8 +148,8 @@ public class XmlTransformer implements SourceTransformer {
         LOG.debug("Starting token run");
         XmlObject currentObject = null;
         XmlObject lastObject = null;
-        while ((token = grammar.nextToken()) != Token.EOF_TOKEN
-            && token.getType() != XmlGrammar.EOF) {
+        while (((token = grammar.nextToken()) != null)
+            && (token.getType() != XmlGrammar.EOF)) {
             LOG.debug("Token ({}) for this run: {}", token.getType(),
                 token.getText());
             switch (token.getType()) {

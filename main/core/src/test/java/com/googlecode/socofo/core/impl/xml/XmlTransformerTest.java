@@ -1,6 +1,6 @@
 /*
  * SoCoFo - Another source code formatter
- * Copyright (C) 2012  Dirk Strauss
+ * Copyright (C) 2013  Dirk Strauss
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,6 +59,9 @@ public class XmlTransformerTest {
      */
     private static final transient Logger LOG = LoggerFactory
         .getLogger(XmlTransformerTest.class.getName());
+    /**
+     * MDC name for the testcase.
+     */
     private static final String MDCPARAM = "testCaseName";
     /**
      * the transformer.
@@ -117,7 +120,7 @@ public class XmlTransformerTest {
      * Actions to perform after a test method run.
      */
     @AfterMethod
-    public final void afterMethod() {
+    public static final void afterMethod() {
         MDC.remove(MDCPARAM);
     }
     

@@ -15,12 +15,13 @@
     <plugins>
       <plugin>
         <groupId>org.antlr</groupId>
-        <artifactId>antlr3-maven-plugin</artifactId>
+        <artifactId>antlr4-maven-plugin</artifactId>
+        <version>4.0</version>
         <executions>
           <execution>
             <id>genAntlr</id>
             <goals>
-              <goal>antlr</goal>
+              <goal>antlr4</goal>
             </goals>
           </execution>
         </executions>
@@ -37,7 +38,8 @@
   <dependencies>
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr</artifactId>
+      <artifactId>antlr4</artifactId>
+      <version>4.0</version>
       <exclusions>
         <exclusion>
           <groupId>antlr</groupId>
@@ -52,6 +54,11 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
