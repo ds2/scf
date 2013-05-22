@@ -1,6 +1,6 @@
 /**
- * SoCoFo Source Code Formatter
- * Copyright (C) 2009 Dirk Strauss <lexxy23@gmail.com>
+ * SoCoFo - Another source code formatter
+ * Copyright (C) 2013  Dirk Strauss
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
