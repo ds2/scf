@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.common.impl;
 
 import java.io.IOException;
@@ -101,7 +98,7 @@ public class IOHelperImpl implements IOHelper {
     @Override
     public String createString(final byte[] byteArray, final String encoding) {
         String rc = null;
-        if (byteArray == null || byteArray.length <= 0) {
+        if ((byteArray == null) || (byteArray.length <= 0)) {
             LOG.warn("No content given to translate!");
             return rc;
         }
