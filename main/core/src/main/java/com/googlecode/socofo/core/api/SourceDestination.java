@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 /**
@@ -27,14 +24,14 @@ package com.googlecode.socofo.core.api;
  * @version 1.0
  */
 public interface SourceDestination {
-	/**
-	 * Writes the content of the transformation to the stream.
-	 * 
-	 * @param s
-	 *            the content to write
-	 * @param encoding
-	 *            the encoding to use. If null, the platform encoding will be
-	 *            used.
-	 */
-	public void writeContent(String s, String encoding);
+    /**
+     * Writes the content of the transformation to the stream.
+     * 
+     * @param s
+     *            the content to write
+     * @param encoding
+     *            the encoding to use. If null, the platform encoding will be
+     *            used.
+     */
+    void writeContent(String s, String encoding);
 }

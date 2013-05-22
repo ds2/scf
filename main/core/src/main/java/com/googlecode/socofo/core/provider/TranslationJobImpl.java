@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.provider;
 
 import java.util.ArrayList;
@@ -102,7 +99,7 @@ public class TranslationJobImpl implements TranslationJob {
      */
     @Override
     public final void run() {
-        String result = "";
+        String result;
         final SourceTransformer tr =
             transformDelegate.getTransformerOfType(source.getType());
         try {

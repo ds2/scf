@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 import java.io.File;
@@ -36,8 +33,10 @@ public interface FileRoot extends SourceRoot {
      * 
      * @param f
      *            the file to load
+     * @param encoding
+     *            the encoding to use
      * @throws LoadingException
      *             if an error occurred
      */
-    public void loadFile(File f) throws LoadingException;
+    void loadFile(File f, String encoding) throws LoadingException;
 }

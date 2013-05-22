@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 import com.googlecode.socofo.core.exceptions.TranslationException;
@@ -46,7 +43,7 @@ public interface SourceWriter {
      * @throws TranslationException
      *             if the line was too long to commit
      */
-    public boolean addLine(int indents, String s) throws TranslationException;
+    boolean addLine(int indents, String s) throws TranslationException;
     
     /**
      * Adds a sequence of data to the current line.
@@ -56,19 +53,19 @@ public interface SourceWriter {
      * @return TRUE if successful, otherwise FALSE in case of the line becoming
      *         too long
      */
-    public boolean addToLine(String s);
+    boolean addToLine(String s);
     
     /**
      * Returns the current result of the source writer.
      * 
      * @return an empty string, or the current result of the transformation
      */
-    public String getResult();
+    String getResult();
     
     /**
      * Prepares the writer. Usually this will clear the cache.
      */
-    public void prepare();
+    void prepare();
     
     /**
      * Finalizes the cache. Usually, this will end the source writer, clears the
@@ -77,7 +74,7 @@ public interface SourceWriter {
      * @throws TranslationException
      *             if the last line could not be committed successfully.
      */
-    public void finish() throws TranslationException;
+    void finish() throws TranslationException;
     
     /**
      * Sets the common attributes (line width, indent sequence etc.) to use.
@@ -85,7 +82,7 @@ public interface SourceWriter {
      * @param c
      *            the common attributes
      */
-    public void setCommonAttributes(CommonAttributes c);
+    void setCommonAttributes(CommonAttributes c);
     
     /**
      * Adds to the current line the number of indents, plus the given text. No
@@ -98,7 +95,7 @@ public interface SourceWriter {
      * @return TRUE if successful, otherwise FALSE in case of line becoming too
      *         long, or something else.
      */
-    public boolean addToLine(int currentIndent, String s);
+    boolean addToLine(int currentIndent, String s);
     
     /**
      * Commits the current buffered line to the final source code. And clears
@@ -111,22 +108,21 @@ public interface SourceWriter {
      * @throws TranslationException
      *             if a line became too long
      */
-    public boolean commitLine(boolean ignoreLinelength)
-        throws TranslationException;
+    boolean commitLine(boolean ignoreLinelength) throws TranslationException;
     
     /**
      * Returns the result of the currentLine buffer.
      * 
      * @return the current line content
      */
-    public String getCurrentLine();
+    String getCurrentLine();
     
     /**
      * Returns the length of the current line.
      * 
      * @return the length of the current line (special counting for tab chars)
      */
-    public int getCurrentLineLength();
+    int getCurrentLineLength();
     
     /**
      * Calculates the line length from the given string sequence. This typically
@@ -138,10 +134,10 @@ public interface SourceWriter {
      *            the string sequence to calculate the length
      * @return the length
      */
-    public int getLineLength(String indentSequence);
+    int getLineLength(String indentSequence);
     
     /**
      * Clears the current line buffer.
      */
-    public void clearCurrentLine();
+    void clearCurrentLine();
 }

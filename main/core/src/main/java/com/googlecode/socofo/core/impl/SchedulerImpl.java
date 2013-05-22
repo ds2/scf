@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl;
 
 import java.io.File;
@@ -160,7 +157,7 @@ public class SchedulerImpl implements Scheduler {
             final TranslationJob job = translationJob.get();
             final FileRoot fr = fileProv.get();
             try {
-                fr.loadFile(sourceFile);
+                fr.loadFile(sourceFile,"utf-8");
                 job.setSource(fr);
                 final FileDestination fd = destProv.get();
                 fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));

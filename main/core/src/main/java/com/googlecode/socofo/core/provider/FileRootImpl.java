@@ -75,7 +75,7 @@ public class FileRootImpl implements FileRoot {
      *             if an error occurred
      */
     @Override
-    public final void loadFile(final File f) throws LoadingException {
+    public final void loadFile(final File f, String enc) throws LoadingException {
         if (f == null) {
             LOG.warn("No file given!");
             return;
