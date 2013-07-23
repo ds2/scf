@@ -24,6 +24,7 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -41,17 +42,23 @@ import com.googlecode.socofo.core.impl.TestInjectionPlan;
  */
 @Guice(modules = { TestInjectionPlan.class })
 public class FileDestinationImplTest {
+    /**
+     * The test object.
+     */
     @Inject
-    private FileDestination to = null;
+    private FileDestination to;
     
     /**
      * Test method for
      * {@link com.googlecode.socofo.core.provider.FileDestinationImpl#writeContent(java.lang.String, java.lang.String)}
      * .
+     * 
+     * @throws IOException
+     *             if an IO error occurred
      */
     @Test
-    public final void testWriteContent() {
-        File targetFile = new File("target/delme.txt");
+    public final void testWriteContent() throws IOException {
+        final File targetFile = File.createTempFile("scf-filedestinationtest", ".txt");
         targetFile.delete();
         targetFile.deleteOnExit();
         to.setFile(targetFile);
@@ -63,8 +70,7 @@ public class FileDestinationImplTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.provider.FileDestinationImpl#setFile(java.io.File)}
-     * .
+     * {@link com.googlecode.socofo.core.provider.FileDestinationImpl#setFile(java.io.File)} .
      */
     @Test
     public final void testSetFileNull() {
