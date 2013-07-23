@@ -44,8 +44,7 @@ public class FileDestinationImpl implements FileDestination {
     /**
      * A logger.
      */
-    private static final Logger LOG = LoggerFactory
-        .getLogger(FileDestinationImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileDestinationImpl.class);
     /**
      * The iohelper.
      */
@@ -65,15 +64,14 @@ public class FileDestinationImpl implements FileDestination {
             LOG.warn("Nothing to write!");
             return;
         }
+        final File parentDir = dest.getParentFile();
+        parentDir.mkdirs();
         OutputStreamWriter fw = null;
         FileOutputStream fos = null;
         try {
-            final File parentDir = dest.getParentFile();
-            parentDir.mkdirs();
             final boolean fileCreated = dest.createNewFile();
             if (!fileCreated) {
-                LOG.info("File " + dest.getAbsolutePath()
-                    + " could not be created! Trying again.");
+                LOG.info("File " + dest.getAbsolutePath() + " could not be created! Trying again.");
             }
             fos = new FileOutputStream(dest);
             if (enc == null) {
@@ -110,19 +108,17 @@ public class FileDestinationImpl implements FileDestination {
      *            the source file absolute path
      * @return the target file absolute path
      */
-    protected String parseDestination2(final String baseDirStr,
-        final String targetDirStr, final String sourceFileStr) {
+    protected String parseDestination2(final String baseDirStr, final String targetDirStr, final String sourceFileStr) {
         if (baseDirStr == null) {
             LOG.warn("No base directory given!");
             return null;
         }
-        if (sourceFileStr == null || sourceFileStr.length() <= 0) {
+        if ((sourceFileStr == null) || (sourceFileStr.length() <= 0)) {
             LOG.warn("No source file given!");
             return null;
         }
         if (!sourceFileStr.startsWith(baseDirStr + File.separatorChar)) {
-            LOG.warn("The source file (" + sourceFileStr
-                + ") is NOT a part of the base directory " + baseDirStr + "!");
+            LOG.warn("The source file (" + sourceFileStr + ") is NOT a part of the base directory " + baseDirStr + "!");
             return null;
         }
         String rc = sourceFileStr;
@@ -137,8 +133,7 @@ public class FileDestinationImpl implements FileDestination {
      * {@inheritDoc}
      */
     @Override
-    public File parseDestination(final File baseDir, final File targetDir,
-        final File sourceFile) {
+    public File parseDestination(final File baseDir, final File targetDir, final File sourceFile) {
         if (baseDir == null) {
             LOG.warn("No base directory given!");
             return null;
@@ -148,11 +143,9 @@ public class FileDestinationImpl implements FileDestination {
             return null;
         }
         final String baseDirStr = baseDir.getAbsolutePath();
-        final String targetDirStr =
-            targetDir == null ? baseDirStr : targetDir.getAbsolutePath();
+        final String targetDirStr = targetDir == null ? baseDirStr : targetDir.getAbsolutePath();
         final String sourceFileStr = sourceFile.getAbsolutePath();
-        final String fileDestStr =
-            parseDestination2(baseDirStr, targetDirStr, sourceFileStr);
+        final String fileDestStr = parseDestination2(baseDirStr, targetDirStr, sourceFileStr);
         final File rc = new File(fileDestStr);
         return rc;
     }

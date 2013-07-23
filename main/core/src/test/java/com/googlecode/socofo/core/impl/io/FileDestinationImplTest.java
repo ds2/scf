@@ -63,9 +63,9 @@ public class FileDestinationImplTest {
         targetFile.deleteOnExit();
         to.setFile(targetFile);
         to.writeContent(null, null);
-        assertTrue(!targetFile.exists());
+        assertTrue(!targetFile.exists(), "Target file exists, but should not (yet)!");
         to.writeContent("", null);
-        assertTrue(targetFile.exists());
+        assertTrue(targetFile.exists(), "Target file is not present but should!");
     }
     
     /**
