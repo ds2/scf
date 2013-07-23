@@ -4,7 +4,7 @@
   <parent>
     <groupId>ds2.base.oss</groupId>
     <artifactId>jee-base</artifactId>
-    <version>0.74</version>
+    <version>0.78</version>
   </parent>
   <groupId>com.googlecode.socofo</groupId>
   <artifactId>socofo-complete</artifactId>
@@ -24,8 +24,8 @@
   </properties>
   <url>http://code.google.com/p/socofo/</url>
   <issueManagement>
-    <system>redmine</system>
-    <url>http://dev.kaeto23.de/redmine/socofo</url>
+    <system>JIRA</system>
+    <url>https://ds2dev.atlassian.net/browse/SCF</url>
   </issueManagement>
   <inceptionYear>2009</inceptionYear>
   <organization>
