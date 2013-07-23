@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.slf4j.Logger;
@@ -44,19 +45,9 @@ import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
  */
 public class XmlTransformer implements SourceTransformer {
     /**
-     * the source writer to write the XML result to.
-     */
-    @Inject
-    private SourceWriter sw;
-    /**
-     * The rules to transform the content.
-     */
-    private XmlFormatRules rules;
-    /**
      * A logger.
      */
-    private static final transient Logger LOG = LoggerFactory
-        .getLogger(XmlTransformer.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(XmlTransformer.class);
     /**
      * the xml grammar that has been loaded.
      */
@@ -67,14 +58,23 @@ public class XmlTransformer implements SourceTransformer {
     @Inject
     private LineHandler lh;
     /**
-     * The tree handler to set the levels of the various xml objects.
+     * The rules to transform the content.
      */
-    @Inject
-    private TreeHandler treeHandler;
+    private XmlFormatRules rules;
     /**
      * The loaded rule set.
      */
     private RuleSet ruleSet;
+    /**
+     * the source writer to write the XML result to.
+     */
+    @Inject
+    private SourceWriter sw;
+    /**
+     * The tree handler to set the levels of the various xml objects.
+     */
+    @Inject
+    private TreeHandler treeHandler;
     
     /**
      * {@inheritDoc}
@@ -90,16 +90,17 @@ public class XmlTransformer implements SourceTransformer {
      * {@inheritDoc}
      */
     @Override
-    public final void setRules(final RuleSet r) {
-        if (r == null) {
-            throw new IllegalArgumentException("Ruleset not set!");
-        }
-        if (r.getXmlFormatRules() == null) {
-            throw new IllegalArgumentException(
-                "The loaded rules do not contain XML rules!");
-        }
-        rules = r.getXmlFormatRules();
-        ruleSet = r;
+    public RuleSet getRules() {
+        return ruleSet;
+    }
+    
+    /**
+     * Returns the xml format rules.
+     * 
+     * @return the xml format rules
+     */
+    public final XmlFormatRules getRuleSet() {
+        return rules;
     }
     
     /**
@@ -126,11 +127,11 @@ public class XmlTransformer implements SourceTransformer {
     public void performTranslation() throws TranslationException {
         LOG.debug("entering");
         if (sw == null) {
-            throw new TranslationException(
-                "No source writer has been injected!");
+            throw new TranslationException("No source writer has been injected!");
         }
         LOG.debug("preparing source writer");
         sw.prepare();
+        treeHandler.reset();
         if (rules == null) {
             throw new TranslationException("No rules have been loaded!");
         }
@@ -145,10 +146,8 @@ public class XmlTransformer implements SourceTransformer {
         LOG.debug("Starting token run");
         XmlObject currentObject = null;
         XmlObject lastObject = null;
-        while (((token = grammar.nextToken()) != null)
-            && (token.getType() != XmlGrammar.EOF)) {
-            LOG.debug("Token ({}) for this run: {}", token.getType(),
-                token.getText());
+        while (((token = grammar.nextToken()) != null) && (token.getType() != Recognizer.EOF)) {
+            LOG.debug("Token ({}) for this run: {}", token.getType(), token.getText());
             switch (token.getType()) {
                 case XmlGrammar.PI_START:
                     currentObject = new ProcessingInstruction();
@@ -156,8 +155,7 @@ public class XmlTransformer implements SourceTransformer {
                 case XmlGrammar.PI_STOP:
                     // write Element
                     treeHandler.setLevel(currentObject);
-                    currentObject.writeElement(lastObject, currentIndent, sw,
-                        rules, lh);
+                    currentObject.writeElement(lastObject, currentIndent, sw, rules, lh);
                     lastObject = currentObject;
                     currentObject = null;
                     break;
@@ -184,8 +182,7 @@ public class XmlTransformer implements SourceTransformer {
                 case XmlGrammar.TAG_CLOSE:
                     // write element
                     treeHandler.setLevel(currentObject);
-                    currentObject.writeElement(lastObject, currentIndent, sw,
-                        rules, lh);
+                    currentObject.writeElement(lastObject, currentIndent, sw, rules, lh);
                     if (!currentObject.isEndTag()) {
                         currentIndent++;
                     } else {
@@ -197,8 +194,7 @@ public class XmlTransformer implements SourceTransformer {
                 case XmlGrammar.TAG_EMPTY_CLOSE:
                     currentObject.setEndSequence(token.getText());
                     treeHandler.setLevel(currentObject);
-                    currentObject.writeElement(lastObject, currentIndent, sw,
-                        rules, lh);
+                    currentObject.writeElement(lastObject, currentIndent, sw, rules, lh);
                     lastObject = currentObject;
                     currentObject = null;
                     break;
@@ -220,8 +216,7 @@ public class XmlTransformer implements SourceTransformer {
                     // insert WS detection here
                     // if (!currentObject.hasEmptyInnerContent()) {
                     treeHandler.setLevel(currentObject);
-                    currentObject.writeElement(lastObject, currentIndent, sw,
-                        rules, lh);
+                    currentObject.writeElement(lastObject, currentIndent, sw, rules, lh);
                     // }
                     lastObject = currentObject;
                     currentObject = null;
@@ -234,14 +229,12 @@ public class XmlTransformer implements SourceTransformer {
                     currentObject = new Comment();
                     currentObject.setInnerContent(token.getText());
                     treeHandler.setLevel(currentObject);
-                    currentObject.writeElement(lastObject, currentIndent, sw,
-                        rules, lh);
+                    currentObject.writeElement(lastObject, currentIndent, sw, rules, lh);
                     lastObject = currentObject;
                     currentObject = null;
                     break;
                 default:
-                    LOG.warn("unknown token: type={} with content {}",
-                        token.getType(), token.getText());
+                    LOG.warn("unknown token: type={} with content {}", token.getType(), token.getText());
             }
         }
         LOG.debug("finishing the result");
@@ -250,20 +243,18 @@ public class XmlTransformer implements SourceTransformer {
     }
     
     /**
-     * Returns the xml format rules.
-     * 
-     * @return the xml format rules
-     */
-    public final XmlFormatRules getRuleSet() {
-        return rules;
-    }
-    
-    /**
      * {@inheritDoc}
      */
     @Override
-    public RuleSet getRules() {
-        return ruleSet;
+    public final void setRules(final RuleSet r) {
+        if (r == null) {
+            throw new IllegalArgumentException("Ruleset not set!");
+        }
+        if (r.getXmlFormatRules() == null) {
+            throw new IllegalArgumentException("The loaded rules do not contain XML rules!");
+        }
+        rules = r.getXmlFormatRules();
+        ruleSet = r;
     }
     
 }

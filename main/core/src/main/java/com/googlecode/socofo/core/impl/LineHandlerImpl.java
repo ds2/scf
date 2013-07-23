@@ -39,8 +39,7 @@ public class LineHandlerImpl implements LineHandler {
     /**
      * A logger.
      */
-    private static final Logger LOG = LoggerFactory
-        .getLogger(LineHandlerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LineHandlerImpl.class);
     /**
      * Whitespace pattern.
      */
@@ -48,8 +47,7 @@ public class LineHandlerImpl implements LineHandler {
     /**
      * word pattern with whitespaces.
      */
-    protected static final Pattern WORDPATTERN = Pattern.compile("[\\S]+"
-        + PATTERN_WS.pattern());
+    protected static final Pattern WORDPATTERN = Pattern.compile("[\\S]+" + PATTERN_WS.pattern());
     /**
      * the count of spaces chars to represent a single tab.
      */
@@ -59,10 +57,9 @@ public class LineHandlerImpl implements LineHandler {
      * {@inheritDoc}
      */
     @Override
-    public List<String> breakContent(final int lineWidth, final String content,
-        final int firstIndent, final BreakFormat breakType) {
-        LOG.debug("entering", new Object[] { lineWidth, content, firstIndent,
-            breakType });
+    public List<String> breakContent(final int lineWidth, final String content, final int firstIndent,
+        final BreakFormat breakType) {
+        LOG.debug("entering", new Object[] { lineWidth, content, firstIndent, breakType });
         final List<String> rc = new ArrayList<String>();
         if ((content == null) || (content.length() <= 0)) {
             return rc;
@@ -111,15 +108,13 @@ public class LineHandlerImpl implements LineHandler {
                     String beforeToken = "";
                     switch (breakType) {
                         case BeautyBreak:
-                            beforeToken =
-                                currentLine.substring(0, tokenInsertOffset);
+                            beforeToken = currentLine.substring(0, tokenInsertOffset);
                             rc.add(beforeToken);
                             currentLine.delete(0, tokenInsertOffset);
                             break;
                         case BeautyForcedBreak:
                             while (getLengthOfBuffer(currentLine) > lineWidth) {
-                                beforeToken =
-                                    currentLine.substring(0, lineWidth);
+                                beforeToken = currentLine.substring(0, lineWidth);
                                 rc.add(beforeToken);
                                 currentLine.delete(0, lineWidth);
                             }
@@ -156,8 +151,8 @@ public class LineHandlerImpl implements LineHandler {
     }
     
     /**
-     * Separates the given line into a list of tokens. The term token referres
-     * to the string sequence defined by the regular expression pattern.
+     * Separates the given line into a list of tokens. The term token referres to the string
+     * sequence defined by the regular expression pattern.
      * 
      * @param line
      *            the line to separate
@@ -176,8 +171,7 @@ public class LineHandlerImpl implements LineHandler {
             String wordSeq = wordMatcher.group();
             tokenList.add(wordSeq);
             lastOffset = wordMatcher.end();
-            LOG.debug("found a seq between {} and {}", wordMatcher.start(),
-                lastOffset);
+            LOG.debug("found a seq between {} and {}", wordMatcher.start(), lastOffset);
         }
         if (lastOffset < line.length()) {
             // there is something missing
