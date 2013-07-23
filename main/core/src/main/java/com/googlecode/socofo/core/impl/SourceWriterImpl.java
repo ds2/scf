@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl;
 
 import javax.inject.Inject;
@@ -56,8 +53,7 @@ public class SourceWriterImpl implements SourceWriter {
     /**
      * A logger.
      */
-    private static final transient Logger LOG = LoggerFactory
-        .getLogger(SourceWriterImpl.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(SourceWriterImpl.class);
     /**
      * The line handler.
      */
@@ -76,8 +72,7 @@ public class SourceWriterImpl implements SourceWriter {
      * {@inheritDoc}
      */
     @Override
-    public boolean addLine(final int indents, final String s)
-        throws TranslationException {
+    public boolean addLine(final int indents, final String s) throws TranslationException {
         commitLine(false);
         if (indents < 0) {
             LOG.error("Indents of {} are impossible!", indents);
@@ -191,13 +186,11 @@ public class SourceWriterImpl implements SourceWriter {
      * 
      */
     @Override
-    public boolean commitLine(final boolean ignoreLineLength)
-        throws TranslationException {
-        if (!ignoreLineLength && currentLine.length() > ca.getMaxLinewidth()) {
+    public boolean commitLine(final boolean ignoreLineLength) throws TranslationException {
+        if (!ignoreLineLength && (currentLine.length() > ca.getMaxLinewidth())) {
             LOG.warn("line too long to commit: {}", currentLine);
             if (ca.getStopOnLongline()) {
-                throw new TranslationException("Line too long to commit: "
-                    + currentLine);
+                throw new TranslationException("Line too long to commit: " + currentLine);
             }
             return false;
         }
@@ -218,7 +211,7 @@ public class SourceWriterImpl implements SourceWriter {
      * @param s
      *            the buffer to clear
      */
-    private void clearBuffer(final StringBuffer s) {
+    private static void clearBuffer(final StringBuffer s) {
         if (s == null) {
             LOG.warn("No buffer given!");
             return;

@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 import java.util.List;
@@ -52,12 +49,10 @@ public interface LineHandler {
      *            the break behaviour when a single long word is found
      * @return a list of lines to print
      */
-    List<String> breakContent(int lineWidth, String content, int firstIndent,
-        BreakFormat breakType);
+    List<String> breakContent(int lineWidth, String content, int firstIndent, BreakFormat breakType);
     
     /**
-     * Calculates the line width for
-     * {@link #breakContent(int, String, int, BreakFormat)}.
+     * Calculates the line width for {@link #breakContent(int, String, int, BreakFormat)}.
      * 
      * @param maxLineWidth
      *            the maximum line width
@@ -69,9 +64,8 @@ public interface LineHandler {
     int calculateContentLineWidth(int maxLineWidth, int additionalChars);
     
     /**
-     * Cleans a given comment. This method checks for any line content that
-     * starts with WS* and removes them. This method ONLY removes the trailing
-     * WS sequence!! Nothing more.
+     * Cleans a given comment. This method checks for any line content that starts with WS* and
+     * removes them. This method ONLY removes the trailing WS sequence!! Nothing more.
      * 
      * @param innerContent
      *            the content to clean
@@ -80,8 +74,8 @@ public interface LineHandler {
     String cleanComment(String innerContent);
     
     /**
-     * Returns the given string without any NEWLINE characters. Such characters
-     * are replaced by a single WS (whitespace).
+     * Returns the given string without any NEWLINE characters. Such characters are replaced by a
+     * single WS (whitespace).
      * 
      * @param s
      *            the string to analyse

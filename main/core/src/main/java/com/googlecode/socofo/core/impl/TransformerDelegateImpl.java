@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl;
 
 import javax.inject.Inject;
@@ -27,6 +24,7 @@ import javax.inject.Provider;
 import com.googlecode.socofo.core.api.SourceTransformer;
 import com.googlecode.socofo.core.api.SourceTypes;
 import com.googlecode.socofo.core.api.TransformerDelegate;
+import javax.inject.Singleton;
 
 /**
  * The base impl for the delegate.
@@ -34,6 +32,7 @@ import com.googlecode.socofo.core.api.TransformerDelegate;
  * @author Dirk Strauss
  * @version 1.0
  */
+@Singleton
 public class TransformerDelegateImpl implements TransformerDelegate {
     /**
      * The xml transformer. It is up to the JSR-299 implementation to define

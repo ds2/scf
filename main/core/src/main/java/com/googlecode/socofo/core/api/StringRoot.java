@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 /**
@@ -33,7 +30,7 @@ public interface StringRoot extends SourceRoot {
      * @param s
      *            the content
      */
-    public void setContent(String s);
+    void setContent(String s);
     
     /**
      * Sets the type of the content.
@@ -41,5 +38,5 @@ public interface StringRoot extends SourceRoot {
      * @param t
      *            the type
      */
-    public void setType(SourceTypes t);
+    void setType(SourceTypes t);
 }

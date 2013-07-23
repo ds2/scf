@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl;
 
 import java.util.ArrayList;
@@ -42,8 +39,7 @@ public class LineHandlerImpl implements LineHandler {
     /**
      * A logger.
      */
-    private static final Logger LOG = LoggerFactory
-        .getLogger(LineHandlerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LineHandlerImpl.class);
     /**
      * Whitespace pattern.
      */
@@ -51,8 +47,7 @@ public class LineHandlerImpl implements LineHandler {
     /**
      * word pattern with whitespaces.
      */
-    protected static final Pattern WORDPATTERN = Pattern.compile("[\\S]+"
-        + PATTERN_WS.pattern());
+    protected static final Pattern WORDPATTERN = Pattern.compile("[\\S]+" + PATTERN_WS.pattern());
     /**
      * the count of spaces chars to represent a single tab.
      */
@@ -62,12 +57,11 @@ public class LineHandlerImpl implements LineHandler {
      * {@inheritDoc}
      */
     @Override
-    public List<String> breakContent(int lineWidth, String content,
-        int firstIndent, BreakFormat breakType) {
-        LOG.debug("entering", new Object[] { lineWidth, content, firstIndent,
-            breakType });
-        List<String> rc = new ArrayList<String>();
-        if (content == null || content.length() <= 0) {
+    public List<String> breakContent(final int lineWidth, final String content, final int firstIndent,
+        final BreakFormat breakType) {
+        LOG.debug("entering", new Object[] { lineWidth, content, firstIndent, breakType });
+        final List<String> rc = new ArrayList<String>();
+        if ((content == null) || (content.length() <= 0)) {
             return rc;
         }
         if (firstIndent >= lineWidth) {
@@ -75,7 +69,7 @@ public class LineHandlerImpl implements LineHandler {
             return rc;
         }
         LOG.debug("breaking content at default NEWLINE sequences");
-        Scanner scanner = new Scanner(content);
+        final Scanner scanner = new Scanner(content);
         scanner.useDelimiter("\n");
         LOG.debug("Entering line loop");
         boolean isFirstLine = true;
@@ -86,7 +80,7 @@ public class LineHandlerImpl implements LineHandler {
                 LOG.debug("line has no content, continuing");
                 continue;
             }
-            if (line.length() <= 0 || breakType.equals(BreakFormat.NoBreak)) {
+            if ((line.length() <= 0) || breakType.equals(BreakFormat.NoBreak)) {
                 LOG.debug("line is empty or has NOBREAK flag -> adding and continuing");
                 rc.add(line);
                 continue;
@@ -114,15 +108,13 @@ public class LineHandlerImpl implements LineHandler {
                     String beforeToken = "";
                     switch (breakType) {
                         case BeautyBreak:
-                            beforeToken =
-                                currentLine.substring(0, tokenInsertOffset);
+                            beforeToken = currentLine.substring(0, tokenInsertOffset);
                             rc.add(beforeToken);
                             currentLine.delete(0, tokenInsertOffset);
                             break;
                         case BeautyForcedBreak:
                             while (getLengthOfBuffer(currentLine) > lineWidth) {
-                                beforeToken =
-                                    currentLine.substring(0, lineWidth);
+                                beforeToken = currentLine.substring(0, lineWidth);
                                 rc.add(beforeToken);
                                 currentLine.delete(0, lineWidth);
                             }
@@ -159,8 +151,8 @@ public class LineHandlerImpl implements LineHandler {
     }
     
     /**
-     * Separates the given line into a list of tokens. The term token referres
-     * to the string sequence defined by the regular expression pattern.
+     * Separates the given line into a list of tokens. The term token referres to the string
+     * sequence defined by the regular expression pattern.
      * 
      * @param line
      *            the line to separate
@@ -170,7 +162,7 @@ public class LineHandlerImpl implements LineHandler {
     protected List<String> getTokens(final String line) {
         LOG.debug("entering with: {}", line);
         List<String> tokenList = new ArrayList<String>();
-        if (line == null || line.length() <= 0) {
+        if ((line == null) || (line.length() <= 0)) {
             return tokenList;
         }
         Matcher wordMatcher = WORDPATTERN.matcher(line);
@@ -179,8 +171,7 @@ public class LineHandlerImpl implements LineHandler {
             String wordSeq = wordMatcher.group();
             tokenList.add(wordSeq);
             lastOffset = wordMatcher.end();
-            LOG.debug("found a seq between {} and {}", wordMatcher.start(),
-                lastOffset);
+            LOG.debug("found a seq between {} and {}", wordMatcher.start(), lastOffset);
         }
         if (lastOffset < line.length()) {
             // there is something missing
@@ -197,7 +188,7 @@ public class LineHandlerImpl implements LineHandler {
      *            the buffer to analyze
      * @return the length of the buffer
      */
-    protected int getLengthOfBuffer(StringBuffer sb) {
+    protected int getLengthOfBuffer(final StringBuffer sb) {
         String s = sb.toString();
         return getLineWidth(tabCharSize, s);
     }
@@ -206,7 +197,7 @@ public class LineHandlerImpl implements LineHandler {
      * {@inheritDoc}
      */
     @Override
-    public int calculateContentLineWidth(int maxLineWidth, int ac) {
+    public int calculateContentLineWidth(final int maxLineWidth, final int ac) {
         if (maxLineWidth <= 0) {
             // no linewidth set
             return -1;
@@ -226,7 +217,7 @@ public class LineHandlerImpl implements LineHandler {
      * {@inheritDoc}
      */
     @Override
-    public String cleanComment(String lines) {
+    public String cleanComment(final String lines) {
         LOG.debug("entering: {}", lines);
         StringBuffer rc = new StringBuffer();
         if (lines == null) {
@@ -258,9 +249,9 @@ public class LineHandlerImpl implements LineHandler {
      * {@inheritDoc}
      */
     @Override
-    public String removeEnters(String s) {
+    public String removeEnters(final String s) {
         String rc = s;
-        if (rc == null || rc.length() <= 0) {
+        if ((rc == null) || (rc.length() <= 0)) {
             return "";
         }
         rc = rc.replaceAll("\n", " ");
@@ -271,7 +262,7 @@ public class LineHandlerImpl implements LineHandler {
      * {@inheritDoc}
      */
     @Override
-    public void setTabSize(int v) {
+    public void setTabSize(final int v) {
         if (v <= 0) {
             return;
         }
@@ -282,10 +273,10 @@ public class LineHandlerImpl implements LineHandler {
      * {@inheritDoc}
      */
     @Override
-    public int getLineWidth(int tabSize, String s) {
+    public int getLineWidth(final int tabSize, final String s) {
         LOG.debug("entering: {}", s);
         int rc = 0;
-        if (s == null || s.length() <= 0) {
+        if ((s == null) || (s.length() <= 0)) {
             return rc;
         }
         rc = s.length();
@@ -304,7 +295,7 @@ public class LineHandlerImpl implements LineHandler {
      */
     @Override
     public String getSequence(final int level, final String indentSequence) {
-        if (level <= 0 || indentSequence == null) {
+        if ((level <= 0) || (indentSequence == null)) {
             return "";
         }
         final StringBuffer sb = new StringBuffer();

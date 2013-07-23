@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.googlecode.socofo</groupId>
     <artifactId>socofo</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <artifactId>socofo-core</artifactId>
   <name>SoCoFo Core</name>
@@ -16,13 +16,13 @@
     <dependency>
       <groupId>com.googlecode.socofo</groupId>
       <artifactId>socofo-antlr-scripts</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.googlecode.socofo</groupId>
       <artifactId>socofo-rules</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -46,7 +46,4 @@
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>
   </dependencies>
-  <properties>
-    <log4j.config>META-INF/test-log4j.xml</log4j.config>
-  </properties>
 </project>

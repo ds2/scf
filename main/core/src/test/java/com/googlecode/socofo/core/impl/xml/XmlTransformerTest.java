@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
@@ -57,8 +57,7 @@ public class XmlTransformerTest {
     /**
      * a logger.
      */
-    private static final transient Logger LOG = LoggerFactory
-        .getLogger(XmlTransformerTest.class.getName());
+    private static final transient Logger LOG = LoggerFactory.getLogger(XmlTransformerTest.class.getName());
     /**
      * MDC name for the testcase.
      */
@@ -94,11 +93,9 @@ public class XmlTransformerTest {
      * @throws java.lang.Exception
      *             if an error occurred.
      */
-    @BeforeClass
-    public final void setUp() throws Exception {
-        formatRules =
-            rulesLoader.loadFormatRules(getClass().getResourceAsStream(
-                "/xmlconfig.xml"));
+    @BeforeMethod
+    public final void onMethod() throws Exception {
+        formatRules = rulesLoader.loadFormatRules(getClass().getResourceAsStream("/xmlconfig.xml"));
         assertNotNull(formatRules);
         LOG.info("Rules are {}", formatRules);
         to.setRules(new RuleSet() {
@@ -155,8 +152,7 @@ public class XmlTransformerTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#parseContent(java.lang.String)}
-     * .
+     * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#parseContent(java.lang.String)} .
      */
     @Test
     public final void testParseContent() {
@@ -167,16 +163,14 @@ public class XmlTransformerTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#performTranslation()}
-     * .
+     * {@link com.googlecode.socofo.core.impl.xml.XmlTransformer#performTranslation()} .
      */
     @Test
     public final void testPerformTranslation() {
         MDC.put(MDCPARAM, "testPerformTranslation");
         assertNotNull(sr);
         try {
-            sr.loadStream(getClass().getResourceAsStream("/sample1.xml"),
-                "utf-8");
+            sr.loadStream(getClass().getResourceAsStream("/sample1.xml"), "utf-8");
         } catch (final LoadingException e) {
             fail(e.getLocalizedMessage());
         }
@@ -203,8 +197,7 @@ public class XmlTransformerTest {
         MDC.put(MDCPARAM, "testPerformTranslation2");
         assertNotNull(sr);
         try {
-            sr.loadStream(getClass().getResourceAsStream("/sample2.xml"),
-                "utf-8");
+            sr.loadStream(getClass().getResourceAsStream("/sample2.xml"), "utf-8");
         } catch (final LoadingException e) {
             fail(e.getLocalizedMessage());
         }
@@ -339,9 +332,7 @@ public class XmlTransformerTest {
         }
         String result = to.getResult();
         assertNotNull(result);
-        assertEquals(
-            "<a>\n  <b>\n    <!--this is a long text-->\n  </b>\n</a>\n",
-            result);
+        assertEquals("<a>\n  <b>\n    <!--this is a long text-->\n  </b>\n</a>\n", result);
     }
     
     @Test
@@ -396,8 +387,7 @@ public class XmlTransformerTest {
         }
         String result = to.getResult();
         assertNotNull(result);
-        assertEquals("<a>\n  <!--\n    this is a long text\n  -->\n</a>\n",
-            result);
+        assertEquals("<a>\n  <!--\n    this is a long text\n  -->\n</a>\n", result);
     }
     
     @Test
@@ -438,8 +428,7 @@ public class XmlTransformerTest {
         }
         String result = to.getResult();
         assertNotNull(result);
-        assertEquals("<?xml\n" + "  version=\"1.0\"\n" + "?><a\n"
-            + "  xsi:ns=\"bla bla\"\n" + ">\n" + "  <b>\n"
+        assertEquals("<?xml\n" + "  version=\"1.0\"\n" + "?><a\n" + "  xsi:ns=\"bla bla\"\n" + ">\n" + "  <b>\n"
             + "    <txt>Hallo, Welt</txt>\n" + "  </b>\n" + "</a>\n", result);
     }
     
@@ -448,10 +437,8 @@ public class XmlTransformerTest {
         String xmlSample =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<tns:xml-format xmlns:tns=\"http://www.ds2/ns/socofo\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.ds2/ns/socofo http://www.ds2/ns/socofo \">\n"
-                + "  <commonAttributes>\n"
-                + "    <maxLineWidth>80</maxLineWidth>\n"
-                + "    <indentSequence>  </indentSequence>\n"
-                + "    <tabSize>4</tabSize>\n"
+                + "  <commonAttributes>\n" + "    <maxLineWidth>80</maxLineWidth>\n"
+                + "    <indentSequence>  </indentSequence>\n" + "    <tabSize>4</tabSize>\n"
                 + "  </commonAttributes></tns:xml-format>";
         assertNotNull(xmlSample);
         XmlFormatRules rs = to.getRuleSet();
@@ -467,18 +454,12 @@ public class XmlTransformerTest {
         }
         String result = to.getResult();
         assertNotNull(result);
-        assertEquals(
-            "<?xml\n"
-                + "  version=\"1.0\"\n"
-                + "  encoding=\"UTF-8\"\n"
-                + "?><tns:xml-format\n"
-                + "  xmlns:tns=\"http://www.ds2/ns/socofo\"\n"
-                + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-                + "  xsi:schemaLocation=\"http://www.ds2/ns/socofo http://www.ds2/ns/socofo \">\n"
-                + "  <commonAttributes>\n"
-                + "    <maxLineWidth>80</maxLineWidth>\n"
-                + "    <indentSequence></indentSequence>\n"
-                + "    <tabSize>4</tabSize>\n" + "  </commonAttributes>\n"
-                + "</tns:xml-format>\n", result);
+        assertEquals("<?xml\n" + "  version=\"1.0\"\n" + "  encoding=\"UTF-8\"\n" + "?><tns:xml-format\n"
+            + "  xmlns:tns=\"http://www.ds2/ns/socofo\"\n"
+            + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+            + "  xsi:schemaLocation=\"http://www.ds2/ns/socofo http://www.ds2/ns/socofo \">\n"
+            + "  <commonAttributes>\n" + "    <maxLineWidth>80</maxLineWidth>\n"
+            + "    <indentSequence></indentSequence>\n" + "    <tabSize>4</tabSize>\n" + "  </commonAttributes>\n"
+            + "</tns:xml-format>\n", result);
     }
 }

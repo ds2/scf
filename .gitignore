@@ -4,3 +4,6 @@ target
 .classpath
 .checkstyle
 bin
+*.orig
+*.versionsBackup
+test-output

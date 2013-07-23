@@ -5,14 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>socofo</artifactId>
   <name>SoCoFo Project</name>
-  <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Yet another source code formatter 4</description>
   <url>http://socofo.googlecode.com/</url>
-  <issueManagement>
-    <system>google</system>
-    <url>http://code.google.com/p/socofo/issues/list</url>
-  </issueManagement>
   <inceptionYear>2009</inceptionYear>
   <developers>
     <developer>
@@ -27,26 +22,10 @@
       </roles>
     </developer>
   </developers>
-  <scm>
-    <connection>scm:hg:https://socofo.googlecode.com/hg</connection>
-    <developerConnection>scm:hg:https://socofo.googlecode.com/hg</developerConnection>
-    <url>http://code.google.com/p/socofo/source/browse/</url>
-  </scm>
   <organization>
     <name>DS/2</name>
     <url>http://ds-2.de/</url>
   </organization>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <releaseProfiles>googleRelease</releaseProfiles>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <modules>
     <module>api</module>
     <module>antlr-scripts</module>
@@ -72,12 +51,10 @@
     </mailingList>
   </mailingLists>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <scf.config.version>0.0.1-SNAPSHOT</scf.config.version>
   </properties>
   <parent>
     <groupId>com.googlecode.socofo</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <artifactId>socofo-complete</artifactId>
     <relativePath>../pom.xml</relativePath>
   </parent>

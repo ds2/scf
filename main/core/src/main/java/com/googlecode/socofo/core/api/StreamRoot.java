@@ -15,15 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 import java.io.InputStream;
 
 import com.googlecode.socofo.core.exceptions.LoadingException;
-
 
 /**
  * Interface for reading source streams.
@@ -32,21 +28,24 @@ import com.googlecode.socofo.core.exceptions.LoadingException;
  * @version 1.0
  */
 public interface StreamRoot extends SourceRoot {
-	/**
-	 * Sets the stream to read the content from.
-	 * 
-	 * @param is
-	 *            the input stream that contains the content
-	 * @param enc
-	 *            the possible encoding. Set null if you want to use the default
-	 *            encoding (set by the injector)
-	 * @throws LoadingException
-	 *             if loading the stream did not succeed
-	 */
-	public void loadStream(InputStream is, String enc) throws LoadingException;
-	/**
-	 * Sets the type of the given stream.
-	 * @param type the type
-	 */
-	public void setType(SourceTypes type);
+    /**
+     * Sets the stream to read the content from.
+     * 
+     * @param is
+     *            the input stream that contains the content
+     * @param enc
+     *            the possible encoding. Set null if you want to use the default
+     *            encoding (set by the injector)
+     * @throws LoadingException
+     *             if loading the stream did not succeed
+     */
+    void loadStream(InputStream is, String enc) throws LoadingException;
+    
+    /**
+     * Sets the type of the given stream.
+     * 
+     * @param type
+     *            the type
+     */
+    void setType(SourceTypes type);
 }

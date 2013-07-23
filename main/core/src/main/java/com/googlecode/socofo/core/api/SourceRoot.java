@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 /**
@@ -33,12 +30,12 @@ public interface SourceRoot {
      * 
      * @return the content of the file, or null if an error occurred
      */
-    public String getContent();
+    String getContent();
     
     /**
      * Returns the possible type of the source code.
      * 
      * @return the possible type. May return null in case of no detection.
      */
-    public SourceTypes getType();
+    SourceTypes getType();
 }

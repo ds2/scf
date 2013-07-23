@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 import java.io.File;
@@ -30,25 +27,25 @@ import java.io.File;
  * 
  */
 public interface FileDestination extends SourceDestination {
-	/**
-	 * Sets the file to write the content to.
-	 * 
-	 * @param f
-	 *            the file destination
-	 */
-	void setFile(File f);
-
-	/**
-	 * Creates a destination file based on the base directory, the target
-	 * directory and the source file location.
-	 * 
-	 * @param baseDir
-	 *            the base directory
-	 * @param targetDir
-	 *            the target directory
-	 * @param sourceFile
-	 *            the source file, under baseDir
-	 * @return a full destination file
-	 */
-	File parseDestination(File baseDir, File targetDir, File sourceFile);
+    /**
+     * Sets the file to write the content to.
+     * 
+     * @param f
+     *            the file destination
+     */
+    void setFile(File f);
+    
+    /**
+     * Creates a destination file based on the base directory, the target
+     * directory and the source file location.
+     * 
+     * @param baseDir
+     *            the base directory
+     * @param targetDir
+     *            the target directory
+     * @param sourceFile
+     *            the source file, under baseDir
+     * @return a full destination file
+     */
+    File parseDestination(File baseDir, File targetDir, File sourceFile);
 }

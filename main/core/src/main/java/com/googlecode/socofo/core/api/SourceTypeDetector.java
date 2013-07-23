@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 /**
@@ -34,5 +31,5 @@ public interface SourceTypeDetector {
      *            the file name
      * @return null, or the possible source type
      */
-    public SourceTypes guessTypeByFilename(String filename);
+    SourceTypes guessTypeByFilename(String filename);
 }

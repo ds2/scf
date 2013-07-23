@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.api;
 
 import java.io.File;
@@ -30,15 +27,15 @@ import java.util.List;
  * @version 1.0
  */
 public interface SourcefileScanner {
-	/**
-	 * Scans the given directory for source files.
-	 * 
-	 * @param baseDirectory
-	 *            the directory to start scanning for source files. This method
-	 *            is recursive!
-	 * @param types
-	 *            the types to look for
-	 * @return a list of source files
-	 */
-	List<File> scan(File baseDirectory, List<SourceTypes> types);
+    /**
+     * Scans the given directory for source files.
+     * 
+     * @param baseDirectory
+     *            the directory to start scanning for source files. This method
+     *            is recursive!
+     * @param types
+     *            the types to look for
+     * @return a list of source files
+     */
+    List<File> scan(File baseDirectory, List<SourceTypes> types);
 }

@@ -4,7 +4,7 @@
   <parent>
     <artifactId>socofo</artifactId>
     <groupId>com.googlecode.socofo</groupId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <artifactId>socofo-runtime</artifactId>
   <name>SoCoFo Runtime</name>
@@ -13,7 +13,7 @@
     <dependency>
       <groupId>com.googlecode.socofo</groupId>
       <artifactId>socofo-core</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>

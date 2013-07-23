@@ -78,7 +78,7 @@ public class TestInjectionPlan extends AbstractModule {
         bind(SourcefileScanner.class).to(SourcefileScannerImpl.class);
         bind(RulesLoader.class).to(RulesLoaderImpl.class);
         bind(TranslationJob.class).to(TranslationJobImpl.class);
-        bind(RulesConfig.class).to(RulesConfigImpl.class);
+        bind(RulesConfig.class).to(RulesCoreTestConfigImpl.class);
         bind(TransformerDelegate.class).to(TransformerDelegateImpl.class);
         bind(SourceTransformer.class).annotatedWith(
             Names.named(SourceTransformer.XML)).to(XmlTransformer.class);

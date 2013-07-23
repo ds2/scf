@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.provider;
 
 import java.io.BufferedInputStream;
@@ -72,7 +69,7 @@ public class StreamRootImpl implements StreamRoot {
         final BufferedInputStream bis = new BufferedInputStream(is);
         final byte[] buffer = new byte[6000];
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int numRead = 0;
+        int numRead;
         while (true) {
             numRead = iohelper.read(bis, buffer);
             if (numRead < 0) {
