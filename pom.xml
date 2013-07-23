@@ -33,7 +33,6 @@
     <url>http://ds-2.de/</url>
   </organization>
   <modules>
-    <module>config</module>
     <module>main</module>
   </modules>
   <licenses>
