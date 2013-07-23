@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl;
 
 import static org.testng.Assert.assertEquals;
@@ -42,6 +39,7 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributes;
  * @version 1.0
  */
 @Guice(modules = { TestInjectionPlan.class })
+@Test(singleThreaded = true)
 public class SourceWriterImplTest {
     /**
      * The test object.
