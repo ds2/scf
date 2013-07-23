@@ -56,7 +56,7 @@ public class SourceWriterImplTest {
      *             any error
      */
     @BeforeMethod
-    public void setUp() throws Exception {
+    public final void setUp() throws Exception {
         to.setCommonAttributes(getAttributes());
         to.prepare();
     }
@@ -98,18 +98,17 @@ public class SourceWriterImplTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addLine(int, java.lang.String)}
-     * .
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addLine(int, java.lang.String)} .
      * 
      */
     @Test
     public final void testAddLine() {
         try {
             to.addLine(-1, null);
-            assertEquals("", to.getResult());
+            assertEquals(to.getResult(), "");
             to.addLine(0, "hello");
             to.finish();
-            assertEquals("hello\n", to.getResult());
+            assertEquals(to.getResult(), "hello\n");
         } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
@@ -117,31 +116,30 @@ public class SourceWriterImplTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(java.lang.String)}
-     * .
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(java.lang.String)} .
      */
     @Test
     public final void testAddToLineString() {
+        to.prepare();
         assertFalse(to.addToLine(null));
         try {
             to.finish();
-            assertEquals("", to.getResult());
+            assertEquals(to.getResult(), "");
             assertTrue(to.addToLine("hi"));
-            assertEquals("hi", to.getCurrentLine());
+            assertEquals(to.getCurrentLine(), "hi");
             to.prepare();
             assertTrue(to.addToLine("hello, "));
             assertTrue(to.addToLine("world"));
             to.commitLine(true);
-            assertEquals("hello, world\n", to.getResult());
-        } catch (TranslationException e) {
+            assertEquals(to.getResult(), "hello, world\n");
+        } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
     }
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(int, java.lang.String)}
-     * .
+     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(int, java.lang.String)} .
      */
     @Test
     public final void testAddToLineIntString() {
@@ -165,8 +163,7 @@ public class SourceWriterImplTest {
     }
     
     /**
-     * Test method for
-     * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#commitLine(boolean)}
+     * Test method for {@link com.googlecode.socofo.core.impl.SourceWriterImpl#commitLine(boolean)}
      * .
      */
     @Test
