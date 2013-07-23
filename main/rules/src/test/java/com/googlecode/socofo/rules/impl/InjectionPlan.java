@@ -48,7 +48,7 @@ public class InjectionPlan extends AbstractModule {
     @Override
     protected void configure() {
         binder().bind(RulesLoader.class).to(RulesLoaderImpl.class);
-        binder().bind(RulesConfig.class).to(RulesConfigImpl.class);
+        binder().bind(RulesConfig.class).to(RulesTestConfigImpl.class);
         binder().bind(IOHelper.class).to(IOHelperImpl.class);
     }
     

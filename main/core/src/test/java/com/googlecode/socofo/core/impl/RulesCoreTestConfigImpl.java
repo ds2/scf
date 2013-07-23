@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl;
 
 import javax.inject.Singleton;
@@ -31,12 +28,12 @@ import com.googlecode.socofo.rules.api.RulesConfig;
  * @version 1.0
  */
 @Singleton
-public class RulesConfigImpl implements RulesConfig {
+public class RulesCoreTestConfigImpl implements RulesConfig {
     
     /**
      * inits the impl.
      */
-    public RulesConfigImpl() {
+    public RulesCoreTestConfigImpl() {
         // TODO Auto-generated constructor stub
     }
     

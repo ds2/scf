@@ -6,3 +6,4 @@ target
 bin
 *.orig
 *.versionsBackup
+test-output
