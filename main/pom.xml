@@ -5,7 +5,6 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>socofo</artifactId>
   <name>SoCoFo Project</name>
-  <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Yet another source code formatter 4</description>
   <url>http://socofo.googlecode.com/</url>
@@ -77,7 +76,7 @@
   </properties>
   <parent>
     <groupId>com.googlecode.socofo</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <artifactId>socofo-complete</artifactId>
     <relativePath>../pom.xml</relativePath>
   </parent>

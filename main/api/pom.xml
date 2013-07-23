@@ -6,7 +6,7 @@
   <parent>
     <artifactId>socofo</artifactId>
     <groupId>com.googlecode.socofo</groupId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <artifactId>socofo-api</artifactId>
   <name>SoCoFo API</name>
