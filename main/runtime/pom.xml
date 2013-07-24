@@ -50,7 +50,7 @@
         <executions>
           <execution>
             <id>copy-dependencies</id>
-            <phase>process-sources</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy-dependencies</goal>
             </goals>
