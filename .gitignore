@@ -1,9 +1,7 @@
-.project
-.settings
 target
-.classpath
-.checkstyle
+.*
 bin
 *.orig
 *.versionsBackup
 test-output
+*.iml
