@@ -5,3 +5,4 @@ bin
 *.versionsBackup
 test-output
 *.iml
+out
