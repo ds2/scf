@@ -41,6 +41,7 @@ import com.googlecode.socofo.core.impl.TestInjectionPlan;
  * @version 1.0
  */
 @Guice(modules = { TestInjectionPlan.class })
+@Test(singleThreaded = true)
 public class FileDestinationImplTest {
     /**
      * The test object.
