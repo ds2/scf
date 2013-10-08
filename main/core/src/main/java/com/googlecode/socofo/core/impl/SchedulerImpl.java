@@ -51,8 +51,7 @@ public class SchedulerImpl implements Scheduler {
     /**
      * a logger.
      */
-    private static final Logger LOG = LoggerFactory
-        .getLogger(SchedulerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SchedulerImpl.class);
     /**
      * A list of translation jobs to do.
      */
@@ -114,7 +113,7 @@ public class SchedulerImpl implements Scheduler {
             LOG.warn("No jobs given!");
             return;
         }
-        this.jobs.addAll(j);
+        jobs.addAll(j);
     }
     
     /**
@@ -129,8 +128,7 @@ public class SchedulerImpl implements Scheduler {
      * {@inheritDoc}
      */
     @Override
-    public List<TranslationJob> createLocalJobs(final File baseDir,
-        final File td, final List<SourceTypes> types) {
+    public List<TranslationJob> createLocalJobs(final File baseDir, final File td, final List<SourceTypes> types) {
         LOG.debug("entering: {} {} {}", new Object[] { baseDir, td, types });
         final List<TranslationJob> rc = new ArrayList<TranslationJob>();
         if (baseDir == null) {
@@ -142,7 +140,7 @@ public class SchedulerImpl implements Scheduler {
             LOG.info("Overwriting local files!");
             targetDir = baseDir;
         }
-        if (types == null || types.size() <= 0) {
+        if ((types == null) || (types.size() <= 0)) {
             LOG.warn("No types given!");
             return rc;
         }
@@ -157,7 +155,7 @@ public class SchedulerImpl implements Scheduler {
             final TranslationJob job = translationJob.get();
             final FileRoot fr = fileProv.get();
             try {
-                fr.loadFile(sourceFile,"utf-8");
+                fr.loadFile(sourceFile, "utf-8");
                 job.setSource(fr);
                 final FileDestination fd = destProv.get();
                 fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));
@@ -179,8 +177,7 @@ public class SchedulerImpl implements Scheduler {
     @Override
     public List<String> getErrorMessages() {
         for (TranslationJob job : jobs) {
-            final List<TranslationException> translationErrors =
-                job.getErrors();
+            final List<TranslationException> translationErrors = job.getErrors();
             for (TranslationException e : translationErrors) {
                 LOG.debug("Translation error", e);
                 errorMsgs.add(e.getLocalizedMessage());
