@@ -4,7 +4,7 @@
   <parent>
     <groupId>ds2.base.oss</groupId>
     <artifactId>jee-base</artifactId>
-    <version>0.78</version>
+    <version>0.79</version>
   </parent>
   <groupId>com.googlecode.socofo</groupId>
   <artifactId>socofo-complete</artifactId>
@@ -57,4 +57,57 @@
       <url>${siteDeployUrl}</url>
     </site>
   </distributionManagement>
+  <profiles>
+    <profile>
+<id>no-repo-man</id>
+<repositories>
+<repository>
+<id>commondatastorage.google.ds2</id>
+<releases>
+<checksumPolicy>fail</checksumPolicy>
+<enabled>true</enabled>
+</releases>
+<snapshots>
+<enabled>false</enabled>
+</snapshots>
+<url>https://commondatastorage.googleapis.com/ds2/mvn/oss/releases</url>
+</repository>
+
+<repository>
+<snapshots>
+<enabled>false</enabled>
+</snapshots>
+<id>bintray</id>
+<name>Bintray DS/2 OSS Repository</name>
+<url>http://dl.bintray.com/dstrauss/ds2-oss</url>
+</repository>
+
+
+</repositories>
+<pluginRepositories>
+<pluginRepository>
+<id>commondatastorage.google.ds2</id>
+<releases>
+<checksumPolicy>fail</checksumPolicy>
+<enabled>true</enabled>
+</releases>
+<snapshots>
+<enabled>false</enabled>
+</snapshots>
+<url>https://commondatastorage.googleapis.com/ds2/mvn/oss/releases</url>
+</pluginRepository>
+
+<pluginRepository>
+<snapshots>
+<enabled>false</enabled>
+</snapshots>
+<id>bintray</id>
+<name>Bintray DS/2 OSS Repository</name>
+<url>http://dl.bintray.com/dstrauss/ds2-oss</url>
+</pluginRepository>
+
+
+</pluginRepositories>
+</profile>
+  </profiles>
 </project>
