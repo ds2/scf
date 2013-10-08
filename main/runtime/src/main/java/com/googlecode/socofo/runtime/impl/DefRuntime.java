@@ -176,7 +176,7 @@ public class DefRuntime implements MainRuntime {
             return RC_NORULES;
         }
         baseDir = getBaseDirectory();
-        log.info("Using base directory " + baseDir);
+        log.info("Using base directory " + baseDir.getAbsolutePath());
         log.info("Using target directory " + targetDir);
         jobs = scheduler.createLocalJobs(baseDir, targetDir, types);
         if (jobs.size() <= 0) {
