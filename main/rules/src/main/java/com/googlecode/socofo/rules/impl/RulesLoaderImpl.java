@@ -57,13 +57,15 @@ public class RulesLoaderImpl implements RulesLoader {
     /**
      * A logger.
      */
-    private static final transient Logger LOG = LoggerFactory
-        .getLogger(RulesLoaderImpl.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(RulesLoaderImpl.class);
     /**
      * the io helper.
      */
     @Inject
     private IOHelper iohelper = null;
+    /**
+     * The rules config to use.
+     */
     @Inject
     private RulesConfig config;
     
@@ -74,8 +76,7 @@ public class RulesLoaderImpl implements RulesLoader {
         try {
             jb = JAXBContext.newInstance(RuleSetXml.class);
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("Error when loading the XML contracts!", e);
         }
     }
     
@@ -83,7 +84,7 @@ public class RulesLoaderImpl implements RulesLoader {
      * {@inheritDoc}
      */
     @Override
-    public XmlFormatRules loadFormatRules(InputStream is) {
+    public XmlFormatRules loadFormatRules(final InputStream is) {
         if (is == null) {
             LOG.error("No inputstream given -> returning null");
             return null;
@@ -104,7 +105,7 @@ public class RulesLoaderImpl implements RulesLoader {
     }
     
     @Override
-    public RuleSet loadRules(InputStream is) {
+    public RuleSet loadRules(final InputStream is) {
         if (is == null) {
             LOG.error("No inputstream given -> returning null");
             return null;
@@ -129,20 +130,22 @@ public class RulesLoaderImpl implements RulesLoader {
     }
     
     @Override
-    public RuleSet loadRulesFromUrl(URL formatterXml) {
+    public RuleSet loadRulesFromUrl(final URL formatterXml) {
+        InputStream is = null;
+        RuleSet rc = null;
         try {
             URLConnection urlConn = formatterXml.openConnection();
             urlConn.setConnectTimeout(config.getConnectTimeout());
             urlConn.setReadTimeout(config.getReadTimeout());
             urlConn.connect();
-            InputStream is = urlConn.getInputStream();
-            RuleSet rc = loadRules(is);
-            iohelper.closeInputstream(is);
-            return rc;
+            is = urlConn.getInputStream();
+            rc = loadRules(is);
         } catch (IOException e) {
             LOG.error("loadRulesFromUrl", e);
+        } finally {
+            iohelper.closeInputstream(is);
         }
-        return null;
+        return rc;
     }
     
 }

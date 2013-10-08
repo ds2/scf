@@ -104,33 +104,32 @@ public class DefRuntime implements MainRuntime {
     
     @Override
     public final void applySourceFilters(final List<String> filters) {
-        if (filters == null || filters.size() <= 0) {
+        if ((filters == null) || (filters.size() <= 0)) {
             return;
         }
         sourceFilters.addAll(filters);
     }
     
     /**
-     * Checks a given param if it is a known parameter. This method fills the
-     * internal fields.
+     * Checks a given param if it is a known parameter. This method fills the internal fields.
      * 
      * @param arg
      *            the parameter to check
      */
     private final void checkParam(final String arg) {
-        if (arg.startsWith(PARAM_BASEDIR) && baseDir == null) {
+        if (arg.startsWith(PARAM_BASEDIR) && (baseDir == null)) {
             final String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
             baseDir = new File(argSeq);
             if (!baseDir.exists()) {
                 log.warn("Directory {} does not exist!", baseDir);
             }
-        } else if (arg.startsWith(PARAM_RULESURL) && rulesUrl == null) {
+        } else if (arg.startsWith(PARAM_RULESURL) && (rulesUrl == null)) {
             try {
                 rulesUrl = new URL(arg.substring(PARAM_RULESURL.length() + 1));
             } catch (final MalformedURLException e) {
                 log.debug(e.getLocalizedMessage(), e);
             }
-        } else if (arg.startsWith(PARAM_TARGETDIR) && targetDir == null) {
+        } else if (arg.startsWith(PARAM_TARGETDIR) && (targetDir == null)) {
             final String argSeq = arg.substring(PARAM_TARGETDIR.length() + 1);
             targetDir = new File(argSeq);
         } else if (arg.startsWith(PARAM_HELP)) {
@@ -139,7 +138,7 @@ public class DefRuntime implements MainRuntime {
             final String argSeq = arg.substring(PARAM_TYPES.length() + 1);
             final String[] typesIds = argSeq.split(",");
             for (String typeId : typesIds) {
-                if (typeId != null && typeId.equalsIgnoreCase("xml")) {
+                if ((typeId != null) && typeId.equalsIgnoreCase("xml")) {
                     types.add(SourceTypes.XML);
                 }
             }
@@ -164,6 +163,7 @@ public class DefRuntime implements MainRuntime {
             log.error("No rulesUrl given!");
             return RC_NORULES;
         }
+        types.add(SourceTypes.XML);
         if (types.size() <= 0) {
             log.error("No types given to scan for!");
             return RC_NOTYPES;
@@ -190,9 +190,7 @@ public class DefRuntime implements MainRuntime {
             try {
                 Thread.sleep(250);
             } catch (final InterruptedException e) {
-                log.debug(
-                    "Interrupted while sleeping, but this is not really critical",
-                    e);
+                log.debug("Interrupted while sleeping, but this is not really critical", e);
             }
         }
         final List<String> errorMessages = scheduler.getErrorMessages();
@@ -262,10 +260,10 @@ public class DefRuntime implements MainRuntime {
     @Override
     public final void parseParams(final String... args) {
         log.debug("entering: {}", args);
-        if (args != null && args.length > 0) {
+        if ((args != null) && (args.length > 0)) {
             for (String arg : args) {
                 log.debug("current arg is {}", arg);
-                if (arg == null || arg.length() <= 0) {
+                if ((arg == null) || (arg.length() <= 0)) {
                     continue;
                 }
                 checkParam(arg);
@@ -281,21 +279,15 @@ public class DefRuntime implements MainRuntime {
      */
     private void printHelp() {
         console.println("SoCoFo Source Code Formatter");
-        console.println("Copyright (C) 2009 Dirk Strauss <lexxy23@gmail.com>");
+        console.println("Copyright (C) 2009-2013 Dirk Strauss <dstrauss@ds-2.de>");
         
         console.println();
         console.println("Parameters:");
-        console.println(PARAM_RULESURL
-            + " = sets the url where the formatter rules can be found ("
-            + PARAM_RULESURL + "=http://test.local/test/formatterRules.xml)");
-        console.println(PARAM_BASEDIR
-            + " = the base directory to scan for source files");
-        console
-            .println(PARAM_TARGETDIR
-                + " = the directory to write the results to; default is the base directory");
-        console
-            .println(PARAM_TYPES
-                + " = a list of types to transform; Supported types currently: xml");
+        console.println(PARAM_RULESURL + " = sets the url where the formatter rules can be found (" + PARAM_RULESURL
+            + "=http://test.local/test/formatterRules.xml)");
+        console.println(PARAM_BASEDIR + " = the base directory to scan for source files");
+        console.println(PARAM_TARGETDIR + " = the directory to write the results to; default is the base directory");
+        console.println(PARAM_TYPES + " = a list of types to transform; Supported types currently: xml");
     }
     
     /**
@@ -322,7 +314,7 @@ public class DefRuntime implements MainRuntime {
      */
     @Override
     public final void setRules(final URL r) {
-        this.rulesUrl = r;
+        rulesUrl = r;
     }
     
     /**
@@ -330,7 +322,7 @@ public class DefRuntime implements MainRuntime {
      */
     @Override
     public final void setTargetDirectory(final File t) {
-        this.targetDir = t;
+        targetDir = t;
     }
     
     /**
@@ -345,16 +337,14 @@ public class DefRuntime implements MainRuntime {
     
     @Override
     public final void setTypes(final List<String> types) {
-        if (types == null || types.size() <= 0) {
+        if ((types == null) || (types.size() <= 0)) {
             return;
         }
         for (String t : types) {
             t = t.trim().toLowerCase();
             SourceTypes detectedType = SourceTypes.findByName(t);
             if (detectedType == null) {
-                log.warn(
-                    "Could not find a type with the name {}! Continue types scan.",
-                    t);
+                log.warn("Could not find a type with the name {}! Continue types scan.", t);
                 continue;
             }
             this.types.add(detectedType);
