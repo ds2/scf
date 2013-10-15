@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.rules.impl.v1;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -38,17 +35,19 @@ public class NewlineRulesXml implements NewlineRulesUpdater {
      */
     private static final long serialVersionUID = 485959883495651756L;
     @XmlElement
-    private Boolean beforeIfStatements = false;
+    private Boolean beforeIfStatements = Boolean.FALSE;
     @XmlElement
-    private Boolean beforeComment = false;
+    private Boolean beforeComment = Boolean.FALSE;
     @XmlElement
-    private Boolean afterXmlEndTag = false;
+    private Boolean afterXmlEndTag = Boolean.FALSE;
     @XmlElement
-    private Boolean afterEachXmlAttribute = false;
+    private Boolean afterEachXmlAttribute = Boolean.FALSE;
     @XmlElement
-    private Boolean onLevelChange = false;
+    private Boolean onLevelChange = Boolean.FALSE;
     @XmlElement
-    private Boolean separateCommentTags = false;
+    private Boolean separateCommentTags = Boolean.FALSE;
+    @XmlElement
+    private Boolean afterProcessingInstruction = Boolean.TRUE;
     
     /**
      * {@inheritDoc}
@@ -88,6 +87,11 @@ public class NewlineRulesXml implements NewlineRulesUpdater {
     @Override
     public Boolean getOnLevelChange() {
         return onLevelChange;
+    }
+    
+    @Override
+    public Boolean getAfterProcessingInstruction() {
+        return afterProcessingInstruction;
     }
     
 }

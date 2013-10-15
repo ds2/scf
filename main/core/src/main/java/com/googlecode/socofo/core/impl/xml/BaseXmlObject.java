@@ -49,8 +49,7 @@ public class BaseXmlObject implements XmlObject {
     /**
      * A logger.
      */
-    private static final Logger LOG = LoggerFactory
-        .getLogger(BaseXmlObject.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseXmlObject.class);
     /**
      * The element name.
      */
@@ -237,9 +236,8 @@ public class BaseXmlObject implements XmlObject {
      *             if the line became too long
      */
     @Override
-    public void writeElement(final XmlObject lastObject, final int indent,
-        final SourceWriter sw, final XmlFormatRules rules, final LineHandler lh)
-        throws TranslationException {
+    public void writeElement(final XmlObject lastObject, final int indent, final SourceWriter sw,
+        final XmlFormatRules rules, final LineHandler lh) throws TranslationException {
         LOG.debug("entering with params: {} ", new Object[] { indent, this });
         NewlineRules nlRules = rules.getNewlineRules();
         if (nlRules == null) {
@@ -274,17 +272,13 @@ public class BaseXmlObject implements XmlObject {
      * @throws TranslationException
      *             if an error occurred.
      */
-    private void printObjectBegin(final int lastObjectLevel,
-        final XmlObject lastObject, final SourceWriter sw,
+    private void printObjectBegin(final int lastObjectLevel, final XmlObject lastObject, final SourceWriter sw,
         final XmlFormatRules rules) throws TranslationException {
         LOG.debug("entering");
         boolean commitLine = false;
         commitLine |= getLevel() != lastObjectLevel;
-        commitLine |=
-            (this instanceof Comment)
-                && (rules.getCommentsRules().getBreakAfterBegin());
-        commitLine |=
-            (this instanceof EndElement) && (sw.getCurrentLineLength() <= 0);
+        commitLine |= (this instanceof Comment) && (rules.getCommentsRules().getBreakAfterBegin());
+        commitLine |= (this instanceof EndElement) && (sw.getCurrentLineLength() <= 0);
         if (commitLine) {
             LOG.debug("Committing currentLine");
             sw.commitLine(false);
@@ -294,15 +288,13 @@ public class BaseXmlObject implements XmlObject {
             sw.addToLine(getLevel() - 1, "");
         }
         boolean isElementText = false;
-        isElementText =
-            (lastObject instanceof StartElement) && this instanceof Text;
+        isElementText = (lastObject instanceof StartElement) && (this instanceof Text);
         LOG.debug("isElementText is {}", isElementText);
         sw.addToLine(0, getStartSequence());
         if (getElementName() != null) {
             sw.addToLine(getElementName());
         }
-        if (this instanceof Comment
-            && rules.getCommentsRules().getBreakAfterBegin()) {
+        if ((this instanceof Comment) && rules.getCommentsRules().getBreakAfterBegin()) {
             sw.commitLine(false);
         }
         LOG.debug("exiting");
@@ -322,8 +314,7 @@ public class BaseXmlObject implements XmlObject {
      * @throws TranslationException
      *             if an error occurred
      */
-    private void printObjectEnd(final XmlObject lastObject,
-        final XmlFormatRules rules, final SourceWriter sw,
+    private void printObjectEnd(final XmlObject lastObject, final XmlFormatRules rules, final SourceWriter sw,
         final NewlineRules nlRules) throws TranslationException {
         LOG.debug("entering");
         // align final bracket
@@ -331,8 +322,7 @@ public class BaseXmlObject implements XmlObject {
         if (fbp == null) {
             fbp = FinalBracketPolicy.Never;
         }
-        if (rules.getCommentsRules().getBreakBeforeEnd()
-            && (this instanceof Comment)) {
+        if (rules.getCommentsRules().getBreakBeforeEnd() && (this instanceof Comment)) {
             fbp = FinalBracketPolicy.Always;
         }
         LOG.debug("FB Policy is {}", fbp);
@@ -355,8 +345,7 @@ public class BaseXmlObject implements XmlObject {
             default:
                 break;
         }
-        if (this instanceof Comment
-            && rules.getCommentsRules().getBreakBeforeEnd()) {
+        if ((this instanceof Comment) && rules.getCommentsRules().getBreakBeforeEnd()) {
             sw.addToLine(getLevel() - 1, "");
         }
         sw.addToLine(getEndSequence());
@@ -370,13 +359,14 @@ public class BaseXmlObject implements XmlObject {
                 LOG.debug("Committing line (3)");
                 sw.commitLine(false);
             }
-        } else if (this instanceof Comment
-            && rules.getCommentsRules().getBreakBeforeEnd()) {
+        } else if ((this instanceof Comment) && rules.getCommentsRules().getBreakBeforeEnd()) {
+            sw.commitLine(false);
+        } else if ((this instanceof ProcessingInstruction)
+            && rules.getNewlineRules().getAfterProcessingInstruction().booleanValue()) {
             sw.commitLine(false);
         }
         LOG.debug("Checking currentLine buffer if the content makes sense for the next run");
-        if (sw.getCurrentLine().trim().length() <= 0 && this instanceof Text
-            && this.hasEmptyInnerContent()) {
+        if ((sw.getCurrentLine().trim().length() <= 0) && (this instanceof Text) && hasEmptyInnerContent()) {
             sw.clearCurrentLine();
         }
         LOG.debug("exiting");
@@ -394,8 +384,7 @@ public class BaseXmlObject implements XmlObject {
      * @throws TranslationException
      *             if an error occurred
      */
-    private void printAttributes(final XmlFormatRules rules,
-        final NewlineRules nlRules, final SourceWriter sw)
+    private void printAttributes(final XmlFormatRules rules, final NewlineRules nlRules, final SourceWriter sw)
         throws TranslationException {
         LOG.debug("entering");
         Map<String, String> attrs = getAttributes();
@@ -404,7 +393,7 @@ public class BaseXmlObject implements XmlObject {
             attrs = getOrderedMap(attrs);
         }
         for (Entry<String, String> keyValuePair : attrs.entrySet()) {
-            if (nlRules != null && nlRules.getAfterEachXmlAttribute()) {
+            if ((nlRules != null) && nlRules.getAfterEachXmlAttribute()) {
                 sw.commitLine(false);
             } else {
                 sw.addToLine(" ");
@@ -413,8 +402,7 @@ public class BaseXmlObject implements XmlObject {
             if (indentLevel <= 0) {
                 indentLevel = 1;
             }
-            final String attributeLine =
-                keyValuePair.getKey() + "=" + keyValuePair.getValue();
+            final String attributeLine = keyValuePair.getKey() + "=" + keyValuePair.getValue();
             final boolean success = sw.addToLine(indentLevel, attributeLine);
             if (!success) {
                 // use new line
@@ -437,47 +425,38 @@ public class BaseXmlObject implements XmlObject {
      * @throws TranslationException
      *             if a source writer exception occurrs
      */
-    private void printInnerText(final XmlFormatRules rules,
-        final SourceWriter sw, final LineHandler lh)
+    private void printInnerText(final XmlFormatRules rules, final SourceWriter sw, final LineHandler lh)
         throws TranslationException {
         LOG.debug("entering");
-        if (innerContent == null || innerContent.length() <= 0) {
+        if ((innerContent == null) || (innerContent.length() <= 0)) {
             LOG.debug("exiting: no innerContent");
             return;
         }
         // write inner content
         // ADDITIONALINDENT=indent made by a comment prefix
         int additionalIndent = 0;
-        final String commentPrefix =
-            rules.getCommentsRules().getCommentIndentSpacer();
+        final String commentPrefix = rules.getCommentsRules().getCommentIndentSpacer();
         if (this instanceof Comment) {
             additionalIndent = commentPrefix.length();
         }
         final int currentLineLength = sw.getCurrentLineLength();
         // COMMENTLINEWIDTH = the width of the comment, affected by
         // ADDITIONALINDENT
-        int commentLineWidth =
-            rules.getCommonAttributes().getMaxLinewidth() - additionalIndent;
+        int commentLineWidth = rules.getCommonAttributes().getMaxLinewidth() - additionalIndent;
         // FIRSTINDENT = the indent of the first line of the comment
         final int firstIndent = 0;
         if (rules.getCommentsRules().isIndentComment()) {
-            commentLineWidth -=
-                getLevel()
-                    * sw.getLineLength(rules.getCommonAttributes()
-                        .getIndentSequence());
+            commentLineWidth -= getLevel() * sw.getLineLength(rules.getCommonAttributes().getIndentSequence());
         }
         LOG.debug("comment line length is {}", commentLineWidth);
         final String innerContentClean = lh.cleanComment(getInnerContent());
         
         final List<String> lines =
-            lh.breakContent(commentLineWidth, innerContentClean, firstIndent,
-                rules.getCommentsRules().getBreakType());
+            lh.breakContent(commentLineWidth, innerContentClean, firstIndent, rules.getCommentsRules().getBreakType());
         boolean isOnStartLine = true;
         String commentIndent = "";
         if (rules.getCommentsRules().isIndentComment()) {
-            commentIndent =
-                lh.getSequence(getLevel(), rules.getCommonAttributes()
-                    .getIndentSequence());
+            commentIndent = lh.getSequence(getLevel(), rules.getCommonAttributes().getIndentSequence());
         }
         if (currentLineLength <= 0) {
             isOnStartLine = false;
@@ -501,8 +480,7 @@ public class BaseXmlObject implements XmlObject {
             isOnStartLine = false;
         }
         LOG.debug("Finished innerLine loop, checking FinalBracket");
-        if (this instanceof Comment
-            && rules.getCommentsRules().getBreakBeforeEnd()) {
+        if ((this instanceof Comment) && rules.getCommentsRules().getBreakBeforeEnd()) {
             sw.commitLine(false);
         }
         LOG.debug("exiting");
@@ -515,8 +493,7 @@ public class BaseXmlObject implements XmlObject {
      *            the original map to copy
      * @return the ordered map
      */
-    protected Map<String, String> getOrderedMap(
-        final Map<String, String> origMap) {
+    protected Map<String, String> getOrderedMap(final Map<String, String> origMap) {
         LOG.debug("entering with param: {}", origMap);
         final Map<String, String> rc = new LinkedHashMap<String, String>();
         final String[] keys = origMap.keySet().toArray(new String[0]);
