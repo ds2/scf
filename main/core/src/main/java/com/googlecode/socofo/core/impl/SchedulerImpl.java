@@ -55,11 +55,11 @@ public class SchedulerImpl implements Scheduler {
     /**
      * A list of translation jobs to do.
      */
-    private List<TranslationJob> jobs = null;
+    private List<TranslationJob> jobs;
     /**
      * The thread group to add the translation jobs to.
      */
-    private ThreadGroup threadGrp = null;
+    private ThreadGroup threadGrp;
     
     /**
      * The rules loader.
@@ -69,7 +69,7 @@ public class SchedulerImpl implements Scheduler {
     /**
      * The rule set.
      */
-    private RuleSet ruleSet = null;
+    private RuleSet ruleSet;
     /**
      * A list of error messages.
      */
@@ -129,7 +129,8 @@ public class SchedulerImpl implements Scheduler {
      */
     @Override
     public List<TranslationJob> createLocalJobs(final File baseDir, final File td, final List<SourceTypes> types) {
-        LOG.debug("entering: {} {} {}", new Object[] { baseDir, td, types });
+        LOG.debug("entering local job creator with base={}, target={} and types={}",
+            new Object[] { baseDir, td, types });
         final List<TranslationJob> rc = new ArrayList<TranslationJob>();
         if (baseDir == null) {
             LOG.warn("No base directory given!");
@@ -190,15 +191,15 @@ public class SchedulerImpl implements Scheduler {
      * {@inheritDoc}
      */
     @Override
-    public void setRules(final URL formatterXml) {
-        LOG.debug("entering: {}", formatterXml);
-        if (formatterXml == null) {
+    public void setRules(final URL rulesUrl) {
+        LOG.debug("entering: {}", rulesUrl);
+        if (rulesUrl == null) {
             LOG.warn("No url given!");
             return;
         }
-        ruleSet = rulesLoader.loadRulesFromUrl(formatterXml);
+        ruleSet = rulesLoader.loadRulesFromUrl(rulesUrl);
         if (ruleSet != null) {
-            LOG.info("Rules loaded from " + formatterXml + ", successful.");
+            LOG.info("Rules loaded from " + rulesUrl + ", successful.");
         }
         LOG.debug("exiting {}", ruleSet);
     }

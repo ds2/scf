@@ -19,7 +19,11 @@ package com.googlecode.socofo.core.impl.io;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.invoke.MethodHandles;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.googlecode.socofo.core.api.SourceTypeDetector;
 import com.googlecode.socofo.core.api.SourceTypes;
@@ -31,46 +35,49 @@ import com.googlecode.socofo.core.api.SourceTypes;
  * @version 1.0
  */
 public class SourceFileFilter implements FileFilter {
-	/**
-	 * the detector for the source files.
-	 */
-	private SourceTypeDetector localDetector = null;
-	/**
-	 * A list of allowed source file types.
-	 */
-	private List<SourceTypes> allowedTypes = null;
-
-	/**
-	 * Inits the filter.
-	 * 
-	 * @param detector
-	 *            the detector for source types
-	 * @param sourceTypes
-	 *            the list of allowed source types
-	 * 
-	 */
-	public SourceFileFilter(final SourceTypeDetector detector,
-			final List<SourceTypes> sourceTypes) {
-		localDetector = detector;
-		allowedTypes = sourceTypes;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean accept(final File pathname) {
-		boolean rc = false;
-		if (pathname.isDirectory()) {
-			rc = true;
-		} else {
-			final SourceTypes fileType = localDetector
-					.guessTypeByFilename(pathname.getName());
-			if (fileType != null && allowedTypes.contains(fileType)) {
-				rc = true;
-			}
-		}
-		return rc;
-	}
-
+    /**
+     * A logger.
+     */
+    private static final transient Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    /**
+     * the detector for the source files.
+     */
+    private SourceTypeDetector localDetector;
+    /**
+     * A list of allowed source file types.
+     */
+    private List<SourceTypes> allowedTypes;
+    
+    /**
+     * Inits the filter.
+     * 
+     * @param detector
+     *            the detector for source types
+     * @param sourceTypes
+     *            the list of allowed source types
+     * 
+     */
+    public SourceFileFilter(final SourceTypeDetector detector, final List<SourceTypes> sourceTypes) {
+        localDetector = detector;
+        allowedTypes = sourceTypes;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accept(final File pathname) {
+        boolean rc = false;
+        if (pathname.isDirectory()) {
+            rc = true;
+        } else {
+            final SourceTypes fileType = localDetector.guessTypeByFilename(pathname.getName());
+            LOG.debug("File {} is of type {}", new Object[] { pathname, fileType });
+            if ((fileType != null) && allowedTypes.contains(fileType)) {
+                rc = true;
+            }
+        }
+        LOG.debug("Accepting path {}: {}", new Object[] { pathname, Boolean.valueOf(rc) });
+        return rc;
+    }
 }

@@ -86,7 +86,9 @@ public class SourcefileScannerImpl implements SourcefileScanner {
             allowedTypes.add(type);
         }
         final FileFilter fileFilter = new SourceFileFilter(localDetector, allowedTypes);
+        LOG.debug("Scanning files in directory {}", baseDir);
         final File[] foundFiles = baseDir.listFiles(fileFilter);
+        LOG.debug("Following files were found in step 1: {}", new Object[] { foundFiles });
         rc.addAll(scanFilesAndDirectories(foundFiles, types));
         return rc;
     }
@@ -114,6 +116,7 @@ public class SourcefileScannerImpl implements SourcefileScanner {
                 rc.add(foundFile);
             }
         }
+        LOG.debug("Returning found files: {}", rc);
         return rc;
     }
     
