@@ -29,6 +29,7 @@ import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
 import com.googlecode.socofo.core.api.SourceWriter;
+import com.googlecode.socofo.core.exceptions.LineBufferTooLargeException;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
@@ -138,9 +139,11 @@ public class SourceWriterImplTest {
     /**
      * Test method for
      * {@link com.googlecode.socofo.core.impl.SourceWriterImpl#addToLine(int, java.lang.String)} .
+     * 
+     * @throws LineBufferTooLargeException
      */
     @Test
-    public final void testAddToLineIntString() {
+    public final void testAddToLineIntString() throws LineBufferTooLargeException {
         to.addToLine(-1, null);
         try {
             to.finish();

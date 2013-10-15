@@ -17,23 +17,26 @@
  */
 package com.googlecode.socofo.core.api;
 
+import com.googlecode.socofo.core.exceptions.LineBufferTooLargeException;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
 /**
- * Source writer interface for writing source file content. Implementations of
- * this class usually write to a stream which becomes the new source file
- * content.
+ * Source writer interface for writing source file content. Implementations of this class usually
+ * write to a stream which becomes the new source file content.
  * 
  * @author Dirk Strauss
  * @version 1.0
  */
 public interface SourceWriter {
+    /**
+     * The maximum length of a line (to prevent buffer overflows).
+     */
+    int MAX_LINE_LENGTH = 3000;
     
     /**
-     * Adds a new line to the writer, first adding some indents, and then adding
-     * the given sequence of data. After that, the line is commited (a newline
-     * sign is added).
+     * Adds a new line to the writer, first adding some indents, and then adding the given sequence
+     * of data. After that, the line is commited (a newline sign is added).
      * 
      * @param indents
      *            the count of indents to write first
@@ -50,8 +53,7 @@ public interface SourceWriter {
      * 
      * @param s
      *            a sequence of data to add to the current line
-     * @return TRUE if successful, otherwise FALSE in case of the line becoming
-     *         too long
+     * @return TRUE if successful, otherwise FALSE in case of the line becoming too long
      */
     boolean addToLine(String s);
     
@@ -68,8 +70,8 @@ public interface SourceWriter {
     void prepare();
     
     /**
-     * Finalizes the cache. Usually, this will end the source writer, clears the
-     * cache and prepares the result.
+     * Finalizes the cache. Usually, this will end the source writer, clears the cache and prepares
+     * the result.
      * 
      * @throws TranslationException
      *             if the last line could not be committed successfully.
@@ -85,25 +87,27 @@ public interface SourceWriter {
     void setCommonAttributes(CommonAttributes c);
     
     /**
-     * Adds to the current line the number of indents, plus the given text. No
-     * newline is added after that.
+     * Adds to the current line the number of indents, plus the given text. No newline is added
+     * after that.
      * 
      * @param currentIndent
      *            the count of indents to add to the current line
      * @param s
      *            the string to add
-     * @return TRUE if successful, otherwise FALSE in case of line becoming too
-     *         long, or something else.
+     * @return TRUE if successful, otherwise FALSE in case of line becoming too long, or something
+     *         else.
+     * @throws LineBufferTooLargeException
+     *             if the line is too long
      */
-    boolean addToLine(int currentIndent, String s);
+    boolean addToLine(int currentIndent, String s) throws LineBufferTooLargeException;
     
     /**
-     * Commits the current buffered line to the final source code. And clears
-     * the line buffer right after.
+     * Commits the current buffered line to the final source code. And clears the line buffer right
+     * after.
      * 
      * @param ignoreLinelength
-     *            flag to indicate that the line length check can be ignored.
-     *            Set TRUE to ignore line length, default is FALSE
+     *            flag to indicate that the line length check can be ignored. Set TRUE to ignore
+     *            line length, default is FALSE
      * @return TRUE if line was commited successful, otherwise FALSE
      * @throws TranslationException
      *             if a line became too long
@@ -125,10 +129,9 @@ public interface SourceWriter {
     int getCurrentLineLength();
     
     /**
-     * Calculates the line length from the given string sequence. This typically
-     * counts the letters and tab chars. The tab chars are handled separately
-     * using the common attributes which contain how much WS signs represent a
-     * single tab char.
+     * Calculates the line length from the given string sequence. This typically counts the letters
+     * and tab chars. The tab chars are handled separately using the common attributes which contain
+     * how much WS signs represent a single tab char.
      * 
      * @param indentSequence
      *            the string sequence to calculate the length

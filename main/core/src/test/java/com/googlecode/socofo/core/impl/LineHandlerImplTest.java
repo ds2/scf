@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * 
- */
 package com.googlecode.socofo.core.impl;
 
 import java.util.List;
@@ -61,29 +58,16 @@ public class LineHandlerImplTest {
     @Test
     public final void testBreakContent() {
         assertEqualList(to.breakContent(10, null, 0, null), "");
-        assertEqualList(
-            to.breakContent(10, "this is a test", 0, BreakFormat.BeautyBreak),
-            "this is a ", "test");
-        assertEqualList(
-            to.breakContent(10, "this is a test", 5, BreakFormat.BeautyBreak),
-            "this", "is a test");
-        assertEqualList(
-            to.breakContent(5, "1234567890", 0, BreakFormat.BeautyBreak),
-            "1234567890");
-        assertEqualList(
-            to.breakContent(5, "1234567890", 2, BreakFormat.BeautyBreak),
-            "1234567890");
-        assertEqualList(
-            to.breakContent(5, "1234567890", 5, BreakFormat.BeautyBreak), "");
-        assertEqualList(
-            to.breakContent(5, "1234567890", 0, BreakFormat.BeautyForcedBreak),
-            "12345", "67890");
-        assertEqualList(
-            to.breakContent(5, "1234567890", 2, BreakFormat.BeautyForcedBreak),
-            "123", "45678", "90");
+        assertEqualList(to.breakContent(10, "this is a test", 0, BreakFormat.BeautyBreak), "this is a ", "test");
+        assertEqualList(to.breakContent(10, "this is a test", 5, BreakFormat.BeautyBreak), "this", "is a test");
+        assertEqualList(to.breakContent(5, "1234567890", 0, BreakFormat.BeautyBreak), "1234567890");
+        assertEqualList(to.breakContent(5, "1234567890", 2, BreakFormat.BeautyBreak), "1234567890");
+        assertEqualList(to.breakContent(5, "1234567890", 5, BreakFormat.BeautyBreak), "");
+        assertEqualList(to.breakContent(5, "1234567890", 0, BreakFormat.BeautyForcedBreak), "12345", "67890");
+        assertEqualList(to.breakContent(5, "1234567890", 2, BreakFormat.BeautyForcedBreak), "123", "45678", "90");
     }
     
-    private void assertEqualList(List<String> l, String... elements) {
+    private void assertEqualList(final List<String> l, final String... elements) {
         if (l == null) {
             Assert.fail("List is null");
             return;
@@ -92,8 +76,7 @@ public class LineHandlerImplTest {
         for (String item : l) {
             String mustItem = elements[index++];
             if (!mustItem.equals(item)) {
-                Assert.fail("Item \"" + mustItem + "\" is not the same as \""
-                    + item + "\"");
+                Assert.fail("Item \"" + mustItem + "\" is not the same as \"" + item + "\"");
                 break;
             }
         }
@@ -112,8 +95,7 @@ public class LineHandlerImplTest {
     
     /**
      * Test method for
-     * {@link com.googlecode.socofo.core.impl.LineHandlerImpl#cleanComment(java.lang.String)}
-     * .
+     * {@link com.googlecode.socofo.core.impl.LineHandlerImpl#cleanComment(java.lang.String)} .
      */
     @Test
     public final void testCleanComment() {
@@ -122,10 +104,8 @@ public class LineHandlerImplTest {
         Assert.assertEquals("word", to.cleanComment("word"));
         Assert.assertEquals("word\nword2", to.cleanComment("word\nword2"));
         Assert.assertEquals("word\nword2", to.cleanComment("word\n* word2"));
-        Assert
-            .assertEquals("word\nword2", to.cleanComment("word\n    * word2"));
-        Assert.assertEquals("word\nword2",
-            to.cleanComment("word\n  \t  * word2"));
+        Assert.assertEquals("word\nword2", to.cleanComment("word\n    * word2"));
+        Assert.assertEquals("word\nword2", to.cleanComment("word\n  \t  * word2"));
     }
     
     @Test
@@ -171,8 +151,7 @@ public class LineHandlerImplTest {
         assertEqualList(to.getTokens(null), "");
         assertEqualList(to.getTokens("this"), "this");
         assertEqualList(to.getTokens("this is "), "this ", "is ");
-        assertEqualList(to.getTokens("this is a test"), "this ", "is ", "a ",
-            "test");
+        assertEqualList(to.getTokens("this is a test"), "this ", "is ", "a ", "test");
     }
     
     @Test
