@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <File>${java.io.tmpdir}/scf-debug.log</File>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+    </layout>
+  </appender>
+  <logger name="com.googlecode.socofo" level="${scf-log-level:-INFO}">
+    <appender-ref ref="FILE" />
+  </logger>
+  <root level="${root-level:-INFO}">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
