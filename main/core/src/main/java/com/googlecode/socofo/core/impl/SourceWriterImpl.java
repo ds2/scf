@@ -126,7 +126,7 @@ public class SourceWriterImpl implements SourceWriter {
             // ok
             currentLine.append(insertStr);
         } else {
-            LOG.warn("Line becomes too long: {}{}", currentLine, insertStr);
+            LOG.debug("Line becomes too long: {}{}", currentLine, insertStr);
             rc = false;
         }
         if (lineLength >= MAX_LINE_LENGTH) {
