@@ -29,42 +29,48 @@ import java.io.Serializable;
  * @version 1.0
  */
 public interface NewlineRules extends Serializable {
-	/**
-	 * Flag for NEWLINE after an XML closing tag.
-	 * 
-	 * @return flag value
-	 */
-	Boolean getAfterXmlEndTag();
-
-	/**
-	 * Flag for NEWLINE after each xml attribute.
-	 * 
-	 * @return flag value
-	 */
-	Boolean getAfterEachXmlAttribute();
-
-	/**
-	 * Flag for NEWLINE before a xml comment.
-	 * 
-	 * @return flag value
-	 */
-	Boolean getBeforeComment();
-
-	/**
-	 * Flag for NEWLINE before an if statement.
-	 * 
-	 * @return flag value
-	 */
-	Boolean getBeforeIfStatements();
-
-	/**
-	 * Flag for NEWLINE when the level of any future element is different from
-	 * the current one. Usually, this means that a NL will be done when you
-	 * close a tag and a new tag will needed. There are some exceptions, like a
-	 * following TEXT element which basically is a new element. But in this
-	 * case, a level change will not occur.
-	 * 
-	 * @return TRUE if a NL should be done on level change, otherwise FALSE
-	 */
-	Boolean getOnLevelChange();
+    /**
+     * Flag for NEWLINE after an XML closing tag.
+     * 
+     * @return flag value
+     */
+    Boolean getAfterXmlEndTag();
+    
+    /**
+     * Flag for NEWLINE after each xml attribute.
+     * 
+     * @return flag value
+     */
+    Boolean getAfterEachXmlAttribute();
+    
+    /**
+     * Flag for NEWLINE before a xml comment.
+     * 
+     * @return flag value
+     */
+    Boolean getBeforeComment();
+    
+    /**
+     * Flag for NEWLINE before an if statement.
+     * 
+     * @return flag value
+     */
+    Boolean getBeforeIfStatements();
+    
+    /**
+     * Flag for NEWLINE when the level of any future element is different from the current one.
+     * Usually, this means that a NL will be done when you close a tag and a new tag will needed.
+     * There are some exceptions, like a following TEXT element which basically is a new element.
+     * But in this case, a level change will not occur.
+     * 
+     * @return TRUE if a NL should be done on level change, otherwise FALSE
+     */
+    Boolean getOnLevelChange();
+    
+    /**
+     * Flag for a NEWLINE in case of a processing instruction.
+     * 
+     * @return TRUE or FALSE, or null if not set
+     */
+    Boolean getAfterProcessingInstruction();
 }

@@ -51,16 +51,15 @@ public class SchedulerImpl implements Scheduler {
     /**
      * a logger.
      */
-    private static final Logger LOG = LoggerFactory
-        .getLogger(SchedulerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SchedulerImpl.class);
     /**
      * A list of translation jobs to do.
      */
-    private List<TranslationJob> jobs = null;
+    private List<TranslationJob> jobs;
     /**
      * The thread group to add the translation jobs to.
      */
-    private ThreadGroup threadGrp = null;
+    private ThreadGroup threadGrp;
     
     /**
      * The rules loader.
@@ -70,7 +69,7 @@ public class SchedulerImpl implements Scheduler {
     /**
      * The rule set.
      */
-    private RuleSet ruleSet = null;
+    private RuleSet ruleSet;
     /**
      * A list of error messages.
      */
@@ -114,7 +113,7 @@ public class SchedulerImpl implements Scheduler {
             LOG.warn("No jobs given!");
             return;
         }
-        this.jobs.addAll(j);
+        jobs.addAll(j);
     }
     
     /**
@@ -129,9 +128,9 @@ public class SchedulerImpl implements Scheduler {
      * {@inheritDoc}
      */
     @Override
-    public List<TranslationJob> createLocalJobs(final File baseDir,
-        final File td, final List<SourceTypes> types) {
-        LOG.debug("entering: {} {} {}", new Object[] { baseDir, td, types });
+    public List<TranslationJob> createLocalJobs(final File baseDir, final File td, final List<SourceTypes> types) {
+        LOG.debug("entering local job creator with base={}, target={} and types={}",
+            new Object[] { baseDir, td, types });
         final List<TranslationJob> rc = new ArrayList<TranslationJob>();
         if (baseDir == null) {
             LOG.warn("No base directory given!");
@@ -142,7 +141,7 @@ public class SchedulerImpl implements Scheduler {
             LOG.info("Overwriting local files!");
             targetDir = baseDir;
         }
-        if (types == null || types.size() <= 0) {
+        if ((types == null) || (types.size() <= 0)) {
             LOG.warn("No types given!");
             return rc;
         }
@@ -157,7 +156,7 @@ public class SchedulerImpl implements Scheduler {
             final TranslationJob job = translationJob.get();
             final FileRoot fr = fileProv.get();
             try {
-                fr.loadFile(sourceFile,"utf-8");
+                fr.loadFile(sourceFile, "utf-8");
                 job.setSource(fr);
                 final FileDestination fd = destProv.get();
                 fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));
@@ -179,8 +178,7 @@ public class SchedulerImpl implements Scheduler {
     @Override
     public List<String> getErrorMessages() {
         for (TranslationJob job : jobs) {
-            final List<TranslationException> translationErrors =
-                job.getErrors();
+            final List<TranslationException> translationErrors = job.getErrors();
             for (TranslationException e : translationErrors) {
                 LOG.debug("Translation error", e);
                 errorMsgs.add(e.getLocalizedMessage());
@@ -193,15 +191,15 @@ public class SchedulerImpl implements Scheduler {
      * {@inheritDoc}
      */
     @Override
-    public void setRules(final URL formatterXml) {
-        LOG.debug("entering: {}", formatterXml);
-        if (formatterXml == null) {
+    public void setRules(final URL rulesUrl) {
+        LOG.debug("entering: {}", rulesUrl);
+        if (rulesUrl == null) {
             LOG.warn("No url given!");
             return;
         }
-        ruleSet = rulesLoader.loadRulesFromUrl(formatterXml);
+        ruleSet = rulesLoader.loadRulesFromUrl(rulesUrl);
         if (ruleSet != null) {
-            LOG.info("Rules loaded from " + formatterXml + ", successful.");
+            LOG.info("Rules loaded from " + rulesUrl + ", successful.");
         }
         LOG.debug("exiting {}", ruleSet);
     }

@@ -18,7 +18,7 @@
 package com.googlecode.socofo.core.exceptions;
 
 /**
- * A loader exception.
+ * A loader exception. Usually thrown on preparing the jobs.
  * 
  * @author Dirk Strauss
  * @version 1.0

@@ -41,20 +41,18 @@ public class SourcefileScannerImpl implements SourcefileScanner {
     /**
      * A logger.
      */
-    private static final Logger LOG = LoggerFactory
-        .getLogger(SourcefileScannerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SourcefileScannerImpl.class);
     /**
      * The source type detector.
      */
     @Inject
-    private SourceTypeDetector localDetector = null;
+    private SourceTypeDetector localDetector;
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<File> scan(final File baseDirectory,
-        final List<SourceTypes> types) {
+    public List<File> scan(final File baseDirectory, final List<SourceTypes> types) {
         final List<File> rc = new ArrayList<File>();
         if (baseDirectory == null) {
             LOG.warn("No base directory given!");
@@ -73,14 +71,13 @@ public class SourcefileScannerImpl implements SourcefileScanner {
      *            the list of allowed types
      * @return a list of found files matching the source type criteria
      */
-    protected List<File> getFiles(final File baseDir,
-        final SourceTypes... types) {
+    protected List<File> getFiles(final File baseDir, final SourceTypes... types) {
         final List<File> rc = new ArrayList<File>();
         if (baseDir == null) {
             LOG.warn("No base directory given, returning empty list!");
             return rc;
         }
-        if (types == null || types.length <= 0) {
+        if ((types == null) || (types.length <= 0)) {
             LOG.warn("No types given, returning empty list!");
             return rc;
         }
@@ -88,9 +85,10 @@ public class SourcefileScannerImpl implements SourcefileScanner {
         for (SourceTypes type : types) {
             allowedTypes.add(type);
         }
-        final FileFilter fileFilter =
-            new SourceFileFilter(localDetector, allowedTypes);
+        final FileFilter fileFilter = new SourceFileFilter(localDetector, allowedTypes);
+        LOG.debug("Scanning files in directory {}", baseDir);
         final File[] foundFiles = baseDir.listFiles(fileFilter);
+        LOG.debug("Following files were found in step 1: {}", new Object[] { foundFiles });
         rc.addAll(scanFilesAndDirectories(foundFiles, types));
         return rc;
     }
@@ -99,16 +97,15 @@ public class SourcefileScannerImpl implements SourcefileScanner {
      * Scans the given list of files for the given source type and returns them.
      * 
      * @param foundFiles
-     *            the found files. If one of them is a directory, this method
-     *            checks the content of the directory.
+     *            the found files. If one of them is a directory, this method checks the content of
+     *            the directory.
      * @param types
      *            the list of allowed types.
      * @return all source files matching the given source types
      */
-    private List<File> scanFilesAndDirectories(final File[] foundFiles,
-        final SourceTypes... types) {
+    private List<File> scanFilesAndDirectories(final File[] foundFiles, final SourceTypes... types) {
         final List<File> rc = new ArrayList<File>();
-        if (foundFiles != null && foundFiles.length > 0) {
+        if ((foundFiles != null) && (foundFiles.length > 0)) {
             for (File foundFile : foundFiles) {
                 LOG.debug("found {}", foundFile);
                 if (foundFile.isDirectory() && !rc.contains(foundFile)) {
@@ -119,6 +116,7 @@ public class SourcefileScannerImpl implements SourcefileScanner {
                 rc.add(foundFile);
             }
         }
+        LOG.debug("Returning found files: {}", rc);
         return rc;
     }
     

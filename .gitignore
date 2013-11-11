@@ -6,3 +6,5 @@ bin
 test-output
 *.iml
 out
+dependency-reduced-pom.xml
+delme

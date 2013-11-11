@@ -423,13 +423,13 @@ public class XmlTransformerTest {
         to.parseContent(xmlSample);
         try {
             to.performTranslation();
-        } catch (TranslationException e) {
+        } catch (final TranslationException e) {
             fail(e.getLocalizedMessage());
         }
-        String result = to.getResult();
+        final String result = to.getResult();
         assertNotNull(result);
-        assertEquals("<?xml\n" + "  version=\"1.0\"\n" + "?><a\n" + "  xsi:ns=\"bla bla\"\n" + ">\n" + "  <b>\n"
-            + "    <txt>Hallo, Welt</txt>\n" + "  </b>\n" + "</a>\n", result);
+        assertEquals(result, "<?xml\n" + "  version=\"1.0\"\n" + "?>\n<a\n" + "  xsi:ns=\"bla bla\"\n" + ">\n"
+            + "  <b>\n" + "    <txt>Hallo, Welt</txt>\n" + "  </b>\n" + "</a>\n");
     }
     
     @Test
@@ -454,12 +454,12 @@ public class XmlTransformerTest {
         }
         String result = to.getResult();
         assertNotNull(result);
-        assertEquals("<?xml\n" + "  version=\"1.0\"\n" + "  encoding=\"UTF-8\"\n" + "?><tns:xml-format\n"
+        assertEquals(result, "<?xml\n" + "  version=\"1.0\"\n" + "  encoding=\"UTF-8\"\n" + "?>\n<tns:xml-format\n"
             + "  xmlns:tns=\"http://www.ds2/ns/socofo\"\n"
             + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
             + "  xsi:schemaLocation=\"http://www.ds2/ns/socofo http://www.ds2/ns/socofo \">\n"
             + "  <commonAttributes>\n" + "    <maxLineWidth>80</maxLineWidth>\n"
             + "    <indentSequence></indentSequence>\n" + "    <tabSize>4</tabSize>\n" + "  </commonAttributes>\n"
-            + "</tns:xml-format>\n", result);
+            + "</tns:xml-format>\n");
     }
 }

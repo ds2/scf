@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.googlecode.socofo.core.api.LineHandler;
 import com.googlecode.socofo.core.api.SourceWriter;
+import com.googlecode.socofo.core.exceptions.LineBufferTooLargeException;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.v1.CommonAttributes;
 
@@ -35,30 +36,31 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributes;
  */
 public class SourceWriterImpl implements SourceWriter {
     /**
-     * The string buffer to store content in.
-     */
-    private StringBuffer sb = null;
-    /**
-     * the line buffer.
-     */
-    private StringBuffer currentLine = null;
-    /**
-     * The common attributes for NEWLINE, maxLineLength and indentSequence.
-     */
-    private CommonAttributes ca = null;
-    /**
-     * the NewLine terminator.
-     */
-    private String newline = "\n";
-    /**
      * A logger.
      */
     private static final transient Logger LOG = LoggerFactory.getLogger(SourceWriterImpl.class);
     /**
+     * The string buffer to store content in.
+     */
+    private StringBuffer sb;
+    /**
+     * the line buffer.
+     */
+    private StringBuffer currentLine;
+    /**
+     * The common attributes for NEWLINE, maxLineLength and indentSequence.
+     */
+    private CommonAttributes ca;
+    /**
+     * the NewLine terminator.
+     */
+    private String newline = "\n";
+    
+    /**
      * The line handler.
      */
     @Inject
-    private LineHandler lh = null;
+    private LineHandler lh;
     
     /**
      * Inits the source buffer.
@@ -105,9 +107,10 @@ public class SourceWriterImpl implements SourceWriter {
     
     /**
      * {@inheritDoc}
+     * 
      */
     @Override
-    public boolean addToLine(final int currentIndent, final String s) {
+    public boolean addToLine(final int currentIndent, final String s) throws LineBufferTooLargeException {
         if (s == null) {
             LOG.info("No content given!");
             return false;
@@ -123,8 +126,12 @@ public class SourceWriterImpl implements SourceWriter {
             // ok
             currentLine.append(insertStr);
         } else {
-            LOG.warn("Line becomes too long: {}{}", currentLine, insertStr);
+            LOG.debug("Line becomes too long: {}{}", currentLine, insertStr);
             rc = false;
+        }
+        if (lineLength >= MAX_LINE_LENGTH) {
+            throw new LineBufferTooLargeException(
+                "Current line length is too long. Please change NEWLINE rules appropriately.");
         }
         return rc;
     }
