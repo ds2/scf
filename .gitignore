@@ -8,3 +8,5 @@ test-output
 out
 dependency-reduced-pom.xml
 delme
+*.log
+
