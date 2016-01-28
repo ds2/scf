@@ -17,12 +17,13 @@
  */
 package com.googlecode.socofo.core.api;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
 import com.googlecode.socofo.core.exceptions.LoadingException;
 import com.googlecode.socofo.rules.api.v1.RuleSet;
+
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * The scheduler. Implementations of this class are scheduling and
@@ -97,4 +98,6 @@ public interface Scheduler {
      * @return the ruleset
      */
     RuleSet getRuleset();
+
+    TranslationJob createLocalJob(Path p, Path baseDir, Path targetDir);
 }

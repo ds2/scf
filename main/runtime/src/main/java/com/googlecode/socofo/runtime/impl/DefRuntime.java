@@ -28,6 +28,7 @@ import org.slf4j.*;
 import javax.inject.*;
 import java.io.*;
 import java.net.*;
+import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -56,6 +57,7 @@ public class DefRuntime implements MainRuntime {
      * The url to the transformation rules.
      */
     private URL rulesUrl;
+    private List<Path> filesList;
     /**
      * The scheduler.
      */
@@ -133,6 +135,15 @@ public class DefRuntime implements MainRuntime {
                     types.add(SourceTypes.XML);
                 }
             }
+        } else if(arg.startsWith(PARAM_ADDFILE)){
+            String seq=arg.substring(PARAM_ADDFILE.length()+1);
+            Path p= Paths.get(seq);
+            if(Files.exists(p)&&Files.isRegularFile(p)&&Files.isReadable(p)){
+                if(filesList==null){
+                    filesList=new ArrayList<Path>(10);
+                }
+                filesList.add(p);
+            }
         }
     }
     
@@ -175,9 +186,22 @@ public class DefRuntime implements MainRuntime {
             return RC_NORULES;
         }
         baseDir = getBaseDirectory();
-        log.info("Using base directory " + baseDir.getAbsolutePath());
-        log.info("Using target directory " + targetDir);
-        jobs = scheduler.createLocalJobs(baseDir, targetDir, types);
+        log.info("Using base directory {}", baseDir.getAbsolutePath());
+        log.info("Using target directory {}", targetDir);
+        if(filesList!=null&&!filesList.isEmpty()){
+            log.info("Using files {}", filesList);
+        }
+        log.info("");
+        log.debug("Creating formatter jobs..");
+        if(filesList!=null&&!filesList.isEmpty()){
+            jobs=new ArrayList<TranslationJob>(filesList.size());
+            for(Path p : filesList){
+                TranslationJob job=scheduler.createLocalJob(p, baseDir.toPath(), targetDir.toPath());
+                jobs.add(job);
+            }
+        } else {
+            jobs = scheduler.createLocalJobs(baseDir, targetDir, types);
+        }
         if (jobs.size() <= 0) {
             log.warn("No source files found!");
             return RC_NOSOURCES;
@@ -287,6 +311,7 @@ public class DefRuntime implements MainRuntime {
         console.println(PARAM_BASEDIR + " = the base directory to scan for source files");
         console.println(PARAM_TARGETDIR + " = the directory to write the results to; default is the base directory");
         console.println(PARAM_TYPES + " = a list of types to transform; Supported types currently: xml");
+        console.println(PARAM_ADDFILE + " = Adds a specific file for transforming; you can repeat this parameter multiple times");
     }
     
     /**
@@ -298,6 +323,7 @@ public class DefRuntime implements MainRuntime {
         targetDir = null;
         showHelp = false;
         rulesUrl = null;
+        filesList = null;
     }
     
     /**
@@ -349,7 +375,15 @@ public class DefRuntime implements MainRuntime {
             this.types.add(detectedType);
         }
     }
-    
+
+    public List<Path> getFilesList() {
+        return filesList;
+    }
+
+    public void setFilesList(List<Path> filesList) {
+        this.filesList = filesList;
+    }
+
     /**
      * {@inheritDoc}
      */

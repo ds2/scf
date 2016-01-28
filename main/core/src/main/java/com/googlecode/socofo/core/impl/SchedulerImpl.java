@@ -25,6 +25,7 @@ import org.slf4j.*;
 import javax.inject.*;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -139,21 +140,10 @@ public class SchedulerImpl implements Scheduler {
         final List<File> sourceFiles = scanner.scan(baseDir, types);
         LOG.debug("Got source files, counting {}", sourceFiles.size());
         for (File sourceFile : sourceFiles) {
-            LOG.debug("Got this source file: {}", sourceFile.getAbsolutePath());
-            final TranslationJob job = translationJob.get();
-            final FileRoot fr = fileProv.get();
-            try {
-                fr.loadFile(sourceFile, "utf-8");
-                job.setSource(fr);
-                final FileDestination fd = destProv.get();
-                fd.setFile(fd.parseDestination(baseDir, targetDir, sourceFile));
-                job.setDestination(fd);
-                job.setRule(ruleSet);
+            TranslationJob job=createLocalJob(sourceFile.toPath(), baseDir.toPath(), targetDir.toPath());
+            if(job!=null){
                 rc.add(job);
-            } catch (final LoadingException e) {
-                LOG.debug("Loader error", e);
             }
-            
         }
         LOG.debug("exiting: {}", rc.size());
         return rc;
@@ -225,5 +215,33 @@ public class SchedulerImpl implements Scheduler {
     public RuleSet getRuleset() {
         return ruleSet;
     }
-    
+
+    @Override
+    public TranslationJob createLocalJob(Path sourceFile, Path baseDir, Path td) {
+        if (baseDir == null) {
+            LOG.warn("No base directory given!");
+            return null;
+        }
+        Path targetDir = td;
+        if (targetDir == null) {
+            LOG.info("Overwriting local files!");
+            targetDir = baseDir;
+        }
+        LOG.debug("Got this source file: {}", sourceFile);
+        final TranslationJob job = translationJob.get();
+        final FileRoot fr = fileProv.get();
+        try {
+            fr.loadFile(sourceFile.toFile(), "utf-8");
+            job.setSource(fr);
+            final FileDestination fd = destProv.get();
+            fd.setFile(fd.parseDestination(baseDir.toFile(), targetDir.toFile(), sourceFile.toFile()));
+            job.setDestination(fd);
+            job.setRule(ruleSet);
+            return job;
+        } catch (final LoadingException e) {
+            LOG.debug("Loader error", e);
+        }
+        return null;
+    }
+
 }

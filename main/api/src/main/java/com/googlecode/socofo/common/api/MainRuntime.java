@@ -50,6 +50,10 @@ public interface MainRuntime {
      */
     String PARAM_TYPES = "--types";
     /**
+     * the types parameter to filter the source code files.
+     */
+    String PARAM_ADDFILE = "--addFile";
+    /**
      * The return code for success.
      */
     int RC_SUCCESS = 0;

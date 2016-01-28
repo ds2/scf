@@ -32,7 +32,7 @@ public interface SourceWriter {
     /**
      * The maximum length of a line (to prevent buffer overflows).
      */
-    int MAX_LINE_LENGTH = 3000;
+    int MAX_LINE_LENGTH = 1000;
     
     /**
      * Adds a new line to the writer, first adding some indents, and then adding the given sequence
