@@ -17,28 +17,15 @@
  */
 package com.googlecode.socofo.core.impl;
 
+import com.googlecode.socofo.core.api.*;
+import com.googlecode.socofo.core.exceptions.*;
+import com.googlecode.socofo.rules.api.v1.*;
+import org.slf4j.*;
+
+import javax.inject.*;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.googlecode.socofo.core.api.FileDestination;
-import com.googlecode.socofo.core.api.FileRoot;
-import com.googlecode.socofo.core.api.Scheduler;
-import com.googlecode.socofo.core.api.SourceTypes;
-import com.googlecode.socofo.core.api.SourcefileScanner;
-import com.googlecode.socofo.core.api.TranslationJob;
-import com.googlecode.socofo.core.exceptions.LoadingException;
-import com.googlecode.socofo.core.exceptions.TranslationException;
-import com.googlecode.socofo.rules.api.v1.RuleSet;
-import com.googlecode.socofo.rules.api.v1.RulesLoader;
+import java.util.*;
 
 /**
  * The scheduler impl.
@@ -191,7 +178,7 @@ public class SchedulerImpl implements Scheduler {
      * {@inheritDoc}
      */
     @Override
-    public void setRules(final URL rulesUrl) {
+    public void setRules(final URL rulesUrl) throws LoadingException {
         LOG.debug("entering: {}", rulesUrl);
         if (rulesUrl == null) {
             LOG.warn("No url given!");
@@ -200,6 +187,10 @@ public class SchedulerImpl implements Scheduler {
         ruleSet = rulesLoader.loadRulesFromUrl(rulesUrl);
         if (ruleSet != null) {
             LOG.info("Rules loaded from " + rulesUrl + ", successful.");
+            //check if valid
+            if(ruleSet.getXmlFormatRules()==null){
+                throw new LoadingException("The given rule set does not contain an xml ruleset!");
+            }
         }
         LOG.debug("exiting {}", ruleSet);
     }

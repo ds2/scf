@@ -17,23 +17,16 @@
  */
 package com.googlecode.socofo.core.impl;
 
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-
-import java.io.File;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
+import com.googlecode.socofo.core.api.*;
+import com.googlecode.socofo.core.exceptions.LoadingException;
+import org.testng.annotations.*;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Guice;
-import org.testng.annotations.Test;
-
-import com.googlecode.socofo.core.api.Scheduler;
-import com.googlecode.socofo.core.api.SourceTypes;
-import com.googlecode.socofo.core.api.TranslationJob;
+import static org.testng.Assert.*;
 
 /**
  * The scheduler impl tests.
@@ -80,7 +73,7 @@ public class SchedulerImplTest {
      * Test for creating a set of jobs.
      */
     @Test
-    public final void testCreateLocalJobs() {
+    public final void testCreateLocalJobs() throws LoadingException {
         final File baseDir = new File("src");
         final File targetDir = new File("target/transformed");
         to.setRules(rulesUrl);
@@ -97,7 +90,7 @@ public class SchedulerImplTest {
      * .
      */
     @Test
-    public final void testSetRules() {
+    public final void testSetRules() throws LoadingException {
         to.setRules(null);
     }
     

@@ -17,22 +17,14 @@
  */
 package com.googlecode.socofo.core.provider;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import com.googlecode.socofo.common.api.IOHelper;
+import com.googlecode.socofo.core.api.*;
+import com.googlecode.socofo.core.exceptions.LoadingException;
+import org.slf4j.*;
 
 import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.googlecode.socofo.common.api.IOHelper;
-import com.googlecode.socofo.core.api.FileRoot;
-import com.googlecode.socofo.core.api.SourceTypeDetector;
-import com.googlecode.socofo.core.api.SourceTypes;
-import com.googlecode.socofo.core.exceptions.LoadingException;
+import java.io.*;
+import java.nio.file.Path;
 
 /**
  * Implementation for a file source root.
@@ -65,6 +57,7 @@ public class FileRootImpl implements FileRoot {
      */
     @Inject
     private IOHelper iohelper;
+    private Path file;
     
     /**
      * Loads the given file.
@@ -83,6 +76,7 @@ public class FileRootImpl implements FileRoot {
         FileReader fr = null;
         BufferedReader br = null;
         try {
+            file=f.toPath();
             fr = new FileReader(f);
             br = new BufferedReader(fr);
             final StringBuffer sb = new StringBuffer();
@@ -123,5 +117,13 @@ public class FileRootImpl implements FileRoot {
     public final SourceTypes getType() {
         return type;
     }
-    
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("FileRootImpl(");
+        sb.append("type=").append(type);
+        sb.append(", file=").append(file);
+        sb.append(')');
+        return sb.toString();
+    }
 }

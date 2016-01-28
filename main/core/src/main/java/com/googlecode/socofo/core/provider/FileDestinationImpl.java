@@ -17,19 +17,13 @@
  */
 package com.googlecode.socofo.core.provider;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.concurrent.locks.ReentrantLock;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.googlecode.socofo.common.api.IOHelper;
 import com.googlecode.socofo.core.api.FileDestination;
+import org.slf4j.*;
+
+import javax.inject.Inject;
+import java.io.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Impl of a FileDestination.
@@ -162,5 +156,12 @@ public class FileDestinationImpl implements FileDestination {
         final File rc = new File(fileDestStr);
         return rc;
     }
-    
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("FileDestinationImpl(");
+        sb.append("dest=").append(dest);
+        sb.append(')');
+        return sb.toString();
+    }
 }

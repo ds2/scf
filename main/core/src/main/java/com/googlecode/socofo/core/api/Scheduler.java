@@ -21,6 +21,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
+import com.googlecode.socofo.core.exceptions.LoadingException;
 import com.googlecode.socofo.rules.api.v1.RuleSet;
 
 /**
@@ -37,7 +38,7 @@ public interface Scheduler {
      * @param formatterXml
      *            the url to the rules
      */
-    void setRules(URL formatterXml);
+    void setRules(URL formatterXml) throws LoadingException;
     
     /**
      * Starts the scheduler. The scheduler will create a separate thread group

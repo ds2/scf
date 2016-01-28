@@ -21,6 +21,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.googlecode.socofo.common.api.MainRuntime;
 import com.googlecode.socofo.runtime.impl.RuntimeInjectionPlan;
+import org.slf4j.*;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * Main program to let the formatter run on in a terminal.
@@ -29,6 +32,7 @@ import com.googlecode.socofo.runtime.impl.RuntimeInjectionPlan;
  * @version 1.0
  */
 public final class Main {
+    private static final Logger LOG= LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     /**
      * The main method.
      * 
@@ -36,11 +40,16 @@ public final class Main {
      *            the runtime arguments.
      */
     public static void main(final String[] args) {
+        LOG.debug("Starting injector..");
         final Injector ij = Guice.createInjector(new RuntimeInjectionPlan());
+        LOG.debug("Getting main runtime..");
         final MainRuntime mr = ij.getInstance(MainRuntime.class);
+        LOG.debug("Starting parse of parameters: {}", args);
         mr.parseParams(args);
+        LOG.debug("Alright, we start");
         final int rc = mr.execute();
-        System.out.println("rc=" + rc);
+        LOG.debug("done with execution. Using return code {}", rc);
+        System.exit(rc);
     }
     
     /**

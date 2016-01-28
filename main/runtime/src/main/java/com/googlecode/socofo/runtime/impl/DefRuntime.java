@@ -20,24 +20,15 @@
  */
 package com.googlecode.socofo.runtime.impl;
 
-import java.io.Console;
-import java.io.File;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.googlecode.socofo.common.api.MainRuntime;
-import com.googlecode.socofo.core.api.Scheduler;
-import com.googlecode.socofo.core.api.SourceTypes;
-import com.googlecode.socofo.core.api.TranslationJob;
+import com.googlecode.socofo.core.api.*;
+import com.googlecode.socofo.core.exceptions.LoadingException;
+import org.slf4j.*;
+
+import javax.inject.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 /**
  * The default implementation of the runtime.
@@ -116,7 +107,7 @@ public class DefRuntime implements MainRuntime {
      * @param arg
      *            the parameter to check
      */
-    private final void checkParam(final String arg) {
+    private void checkParam(final String arg) {
         if (arg.startsWith(PARAM_BASEDIR) && (baseDir == null)) {
             final String argSeq = arg.substring(PARAM_BASEDIR.length() + 1);
             baseDir = new File(argSeq);
@@ -171,8 +162,16 @@ public class DefRuntime implements MainRuntime {
         final Thread currentThread = Thread.currentThread();
         scheduler.addWaiterThreads(currentThread);
         List<TranslationJob> jobs = null;
-        scheduler.setRules(rulesUrl);
+        try {
+            scheduler.setRules(rulesUrl);
+        } catch (LoadingException e) {
+            log.error("Error when loading the rules!",e);
+            return RC_NORULES;
+        }
         if (scheduler.getRuleset() == null) {
+            return RC_NORULES;
+        }
+        if(scheduler.getRuleset().getXmlFormatRules()==null){
             return RC_NORULES;
         }
         baseDir = getBaseDirectory();

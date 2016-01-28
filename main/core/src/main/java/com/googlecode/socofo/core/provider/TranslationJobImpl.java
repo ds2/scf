@@ -17,18 +17,12 @@
  */
 package com.googlecode.socofo.core.provider;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import com.googlecode.socofo.core.api.SourceDestination;
-import com.googlecode.socofo.core.api.SourceRoot;
-import com.googlecode.socofo.core.api.SourceTransformer;
-import com.googlecode.socofo.core.api.TransformerDelegate;
-import com.googlecode.socofo.core.api.TranslationJob;
+import com.googlecode.socofo.core.api.*;
 import com.googlecode.socofo.core.exceptions.TranslationException;
 import com.googlecode.socofo.rules.api.v1.RuleSet;
+
+import javax.inject.Inject;
+import java.util.*;
 
 /**
  * The basic implementation of a translation job.
@@ -121,7 +115,17 @@ public class TranslationJobImpl implements TranslationJob {
             errors.add(new TranslationException(e.getLocalizedMessage(), e));
         }
     }
-    
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("TranslationJobImpl(");
+        sb.append("dest=").append(dest);
+        sb.append(", rules=").append(rules);
+        sb.append(", source=").append(source);
+        sb.append(')');
+        return sb.toString();
+    }
+
     /**
      * {@inheritDoc}
      */
