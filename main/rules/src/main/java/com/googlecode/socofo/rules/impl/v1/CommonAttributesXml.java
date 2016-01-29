@@ -20,10 +20,9 @@
  */
 package com.googlecode.socofo.rules.impl.v1;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
 import com.googlecode.socofo.rules.api.v1.CommonAttributesUpdater;
+
+import javax.xml.bind.annotation.*;
 
 /**
  * The basic implementation of the xml common attributes rules.
@@ -32,6 +31,7 @@ import com.googlecode.socofo.rules.api.v1.CommonAttributesUpdater;
  * @version 1.0
  */
 @XmlType(name = "CommonAttributesType")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CommonAttributesXml implements CommonAttributesUpdater {
     /**
      * the svuid.
@@ -50,14 +50,16 @@ public class CommonAttributesXml implements CommonAttributesUpdater {
     /**
      * the tab size.
      */
-    @XmlElement(required = false, defaultValue = "4")
+    @XmlElement(defaultValue = "4")
     private int tabSize = 4;
     /**
      * the flag to stop on too long lines.
      */
     @XmlElement(defaultValue = "false")
     private Boolean stopOnLongline = false;
-    
+    @XmlElement(defaultValue = "false")
+    private Boolean forcedBreakOnLongLine=Boolean.FALSE;
+
     /**
      * {@inheritDoc}
      */
@@ -89,11 +91,20 @@ public class CommonAttributesXml implements CommonAttributesUpdater {
     public Boolean getStopOnLongline() {
         return stopOnLongline;
     }
-    
+
+    @Override
+    public Boolean getForcedBreakOnLongLine() {
+        return forcedBreakOnLongLine;
+    }
+
+    public void setForcedBreakOnLongLine(Boolean forcedBreakOnLongLine) {
+        this.forcedBreakOnLongLine = forcedBreakOnLongLine;
+    }
+
     /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
+         * (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -111,6 +122,10 @@ public class CommonAttributesXml implements CommonAttributesUpdater {
         if (stopOnLongline != null) {
             builder.append("stopOnLongline=");
             builder.append(stopOnLongline);
+        }
+        if (forcedBreakOnLongLine != null) {
+            builder.append(", forcedBreakOnLongLine=");
+            builder.append(forcedBreakOnLongLine);
         }
         builder.append("]");
         return builder.toString();

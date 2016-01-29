@@ -58,4 +58,10 @@ public interface CommonAttributes extends Serializable {
 	 *         too long, otherwise FALSE
 	 */
 	Boolean getStopOnLongline();
+
+	/**
+	 * If a line commit should be done even when the line is considered too long.
+	 * @return TRUE or FALSE. Default is false.
+     */
+	Boolean getForcedBreakOnLongLine();
 }

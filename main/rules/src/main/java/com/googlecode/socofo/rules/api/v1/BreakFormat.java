@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlType;
 public enum BreakFormat {
     /**
      * basically a BeautyBreak, but when facing too long words, a break is
-     * forced, breaking the word into two words.
+     * forced, breaking the word into two words. This may not be the best solution
+     * but makes the formatting process continue. So, you should not use
+     * this setting in production usually ;)
      */
     BeautyForcedBreak,
     /**

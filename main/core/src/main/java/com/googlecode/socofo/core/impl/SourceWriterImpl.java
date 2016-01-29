@@ -17,16 +17,12 @@
  */
 package com.googlecode.socofo.core.impl;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.googlecode.socofo.core.api.LineHandler;
-import com.googlecode.socofo.core.api.SourceWriter;
-import com.googlecode.socofo.core.exceptions.LineBufferTooLargeException;
-import com.googlecode.socofo.core.exceptions.TranslationException;
+import com.googlecode.socofo.core.api.*;
+import com.googlecode.socofo.core.exceptions.*;
 import com.googlecode.socofo.rules.api.v1.CommonAttributes;
+import org.slf4j.*;
+
+import javax.inject.Inject;
 
 /**
  * The basic impl of the SourceWriter.
@@ -194,19 +190,20 @@ public class SourceWriterImpl implements SourceWriter {
      */
     @Override
     public boolean commitLine(final boolean ignoreLineLength) throws TranslationException {
-        if (!ignoreLineLength && (currentLine.length() > ca.getMaxLinewidth())) {
+        if (!ignoreLineLength && (currentLine.length() > ca.getMaxLinewidth())&&!ca.getForcedBreakOnLongLine()) {
             LOG.warn("line too long to commit: {}", currentLine);
             if (ca.getStopOnLongline()) {
                 throw new TranslationException("Line too long to commit: " + currentLine);
             }
+            //perform a forced break instead?
             return false;
         }
         if (currentLine.length() <= 0) {
             LOG.debug("nothing to commit: line is empty already");
             return true;
         }
-        sb.append(currentLine.toString());
-        LOG.debug("commiting this content: {}", currentLine.toString());
+        sb.append(currentLine);
+        LOG.debug("commiting this content: {}", currentLine);
         sb.append(newline);
         clearBuffer(currentLine);
         return true;

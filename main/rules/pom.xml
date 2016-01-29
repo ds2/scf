@@ -65,6 +65,45 @@
   </build>
   <profiles>
     <profile>
+      <id>genXsd8</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>ds2.oss.maven.plugins</groupId>
+            <artifactId>schemagen-maven-plugin</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <configuration>
+              <classNames>
+                <className>com.googlecode.socofo.rules.impl.v1.RuleSetXml</className>
+              </classNames>
+              <namespaces>
+                <namespace>
+                  <namespace>http://www.ds2/ns/socofo</namespace>
+                  <filename>scf-schema</filename>
+                </namespace>
+                <namespace>
+                  <namespace>http://www.ds2/ns/socofo/api</namespace>
+                  <filename>scf-api-schema</filename>
+                </namespace>
+              </namespaces>
+              <targetXsdDirectory>${project.build.outputDirectory}</targetXsdDirectory>
+            </configuration>
+            <executions>
+              <execution>
+                <id>createXsds</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>genXsd</id>
       <activation>
         <jdk>1.6</jdk>
