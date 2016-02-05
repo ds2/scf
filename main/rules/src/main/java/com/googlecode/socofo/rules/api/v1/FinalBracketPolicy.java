@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlEnum;
 @XmlEnum
 public enum FinalBracketPolicy {
     /**
-     * Never do a break at a final bracket.
+     * Never do a break at a final bracket. Default.
      */
     Never,
     /**

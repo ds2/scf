@@ -66,6 +66,11 @@ public class LineHandlerImplTest {
         assertEqualList(to.breakContent(5, "1234567890", 0, BreakFormat.BeautyForcedBreak), "12345", "67890");
         assertEqualList(to.breakContent(5, "1234567890", 2, BreakFormat.BeautyForcedBreak), "123", "45678", "90");
     }
+
+    @Test
+    public void testLongLineExceptions(){
+        assertEqualList(to.breakContent(10, "123456789012345678", 0, BreakFormat.BeautyBreak), "123456789012345678");
+    }
     
     private void assertEqualList(final List<String> l, final String... elements) {
         if (l == null) {

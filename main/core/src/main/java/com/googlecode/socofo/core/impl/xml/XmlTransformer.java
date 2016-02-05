@@ -125,7 +125,7 @@ public class XmlTransformer implements SourceTransformer {
      */
     @Override
     public void performTranslation() throws TranslationException {
-        LOG.debug("entering");
+        LOG.debug("entering performTranslation()");
         if (sw == null) {
             throw new TranslationException("No source writer has been injected!");
         }
@@ -214,6 +214,10 @@ public class XmlTransformer implements SourceTransformer {
                     currentObject = new Text();
                     currentObject.setInnerContent(token.getText());
                     // insert WS detection here
+                    Text textObj= (Text) currentObject;
+                    if(textObj.hasEmptyInnerContent()){
+                        currentObject.setInnerContent("");
+                    }
                     // if (!currentObject.hasEmptyInnerContent()) {
                     treeHandler.setLevel(currentObject);
                     currentObject.writeElement(lastObject, currentIndent, sw, rules, lh);

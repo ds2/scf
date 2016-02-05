@@ -17,23 +17,6 @@
  */
 package com.googlecode.socofo.core.impl.xml;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
-
-import java.io.File;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Guice;
-import org.testng.annotations.Test;
-
 import com.googlecode.socofo.core.api.FileDestination;
 import com.googlecode.socofo.core.api.StreamRoot;
 import com.googlecode.socofo.core.exceptions.LoadingException;
@@ -43,6 +26,18 @@ import com.googlecode.socofo.rules.api.v1.RuleSet;
 import com.googlecode.socofo.rules.api.v1.RulesLoader;
 import com.googlecode.socofo.rules.api.v1.XmlFormatRules;
 import com.googlecode.socofo.rules.api.v1.XmlFormatRulesUpdater;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Guice;
+import org.testng.annotations.Test;
+
+import javax.inject.Inject;
+import java.io.File;
+
+import static org.testng.Assert.*;
 
 /**
  * class to test the xml transformer.
@@ -461,5 +456,73 @@ public class XmlTransformerTest {
             + "  <commonAttributes>\n" + "    <maxLineWidth>80</maxLineWidth>\n"
             + "    <indentSequence></indentSequence>\n" + "    <tabSize>4</tabSize>\n" + "  </commonAttributes>\n"
             + "</tns:xml-format>\n");
+    }
+
+    @Test(enabled = true)
+    public final void testTranslation14() {
+        String xmlSample =
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                        "<a>\n" +
+                        "  <props>\n" +
+                        "      <adyen.hmacKey>672ba0a360f9aadasdasdasdasdasd93asdbasd73805asd1asd6c86daasdf72a9aasdasd9c0c28aasdsadcc017681f852f280</adyen.hmacKey>\n" +
+                        "      </props>\n" +
+                        "      </a>";
+        assertNotNull(xmlSample);
+        XmlFormatRules rs = to.getRuleSet();
+        XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+        updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+        updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+        updater.getCommentsRulesUpdater().setIndentComment(true);
+        to.parseContent(xmlSample);
+        try {
+            to.performTranslation();
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+        String result = to.getResult();
+        assertNotNull(result);
+        assertEquals(result, "<?xml\n" +
+                "  version=\"1.0\"\n" +
+                "  encoding=\"utf-8\"\n" +
+                "?>\n" +
+                "<a>\n" +
+                "  <props>\n" +
+                "    <adyen.hmacKey>672ba0a360f9aadasdasdasdasdasd93asdbasd73805asd1asd6c86daasdf72a9aasdasd9c0c28aasdsadcc017681f852f280</adyen.hmacKey>\n" +
+                "  </props>\n" +
+                "</a>\n");
+    }
+
+    @Test(enabled = true)
+    public final void testTranslation15() {
+        String xmlSample =
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                        "<a>\n" +
+                        "  <props>\n" +
+                        "      <adyenhmacKey>672ba0a360f9aadasdasdasdasdasd93asdbasd73805asd1asd6c86daasdf72a9aasdasd9c0c28aasdsadcc017681f852f280</adyenhmacKey>\n" +
+                        "      </props>\n" +
+                        "      </a>";
+        assertNotNull(xmlSample);
+        XmlFormatRules rs = to.getRuleSet();
+        XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+        updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+        updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+        updater.getCommentsRulesUpdater().setIndentComment(true);
+        to.parseContent(xmlSample);
+        try {
+            to.performTranslation();
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+        String result = to.getResult();
+        assertNotNull(result);
+        assertEquals(result, "<?xml\n" +
+                "  version=\"1.0\"\n" +
+                "  encoding=\"utf-8\"\n" +
+                "?>\n" +
+                "<a>\n" +
+                "  <props>\n" +
+                "    <adyenhmacKey>672ba0a360f9aadasdasdasdasdasd93asdbasd73805asd1asd6c86daasdf72a9aasdasd9c0c28aasdsadcc017681f852f280</adyenhmacKey>\n" +
+                "  </props>\n" +
+                "</a>\n");
     }
 }

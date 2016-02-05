@@ -33,4 +33,5 @@ public class Text extends BaseXmlObject {
 		startSeq = "";
 		endSeq = "";
 	}
+
 }

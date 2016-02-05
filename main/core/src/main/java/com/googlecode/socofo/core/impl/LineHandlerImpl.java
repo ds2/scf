@@ -59,7 +59,7 @@ public class LineHandlerImpl implements LineHandler {
     @Override
     public List<String> breakContent(final int lineWidth, final String content, final int firstIndent,
         final BreakFormat breakType) {
-        LOG.debug("entering", new Object[] { lineWidth, content, firstIndent, breakType });
+        LOG.debug("entering breakContent() with {}", new Object[] { lineWidth, content, firstIndent, breakType });
         final List<String> rc = new ArrayList<String>();
         if ((content == null) || (content.length() <= 0)) {
             return rc;
@@ -146,7 +146,7 @@ public class LineHandlerImpl implements LineHandler {
                 break;
             }
         }
-        LOG.debug("exiting {}", rc);
+        LOG.debug("exiting breakContent() with {}", rc);
         return rc;
     }
     
@@ -160,7 +160,7 @@ public class LineHandlerImpl implements LineHandler {
      * @see #WORDPATTERN
      */
     protected List<String> getTokens(final String line) {
-        LOG.debug("entering with: {}", line);
+        LOG.debug("entering getTokens() with: {}", line);
         List<String> tokenList = new ArrayList<String>();
         if ((line == null) || (line.length() <= 0)) {
             return tokenList;
@@ -177,7 +177,7 @@ public class LineHandlerImpl implements LineHandler {
             // there is something missing
             tokenList.add(line.substring(lastOffset));
         }
-        LOG.debug("exiting: {}", tokenList);
+        LOG.debug("exiting getTokens(): {}", tokenList);
         return tokenList;
     }
     
@@ -218,7 +218,7 @@ public class LineHandlerImpl implements LineHandler {
      */
     @Override
     public String cleanComment(final String lines) {
-        LOG.debug("entering: {}", lines);
+        LOG.debug("entering cleanComment(): {}", lines);
         StringBuffer rc = new StringBuffer();
         if (lines == null) {
             return "";
@@ -241,7 +241,7 @@ public class LineHandlerImpl implements LineHandler {
         if (rc2.length() > 0) {
             rc2 = rc2.substring(0, rc2.length() - 1);
         }
-        LOG.debug("exiting", rc2);
+        LOG.debug("exiting cleanComment()", rc2);
         return rc2;
     }
     
@@ -274,7 +274,7 @@ public class LineHandlerImpl implements LineHandler {
      */
     @Override
     public int getLineWidth(final int tabSize, final String s) {
-        LOG.debug("entering: {}", s);
+        LOG.debug("entering getLineWidth(): {}", s);
         int rc = 0;
         if ((s == null) || (s.length() <= 0)) {
             return rc;
@@ -286,7 +286,7 @@ public class LineHandlerImpl implements LineHandler {
         while (s.indexOf("\t", startOffset++) >= 0) {
             rc += (tabCharSize - 1);
         }
-        LOG.debug("exiting: {}", rc);
+        LOG.debug("exiting getLineWidth(): {}", rc);
         return rc;
     }
     

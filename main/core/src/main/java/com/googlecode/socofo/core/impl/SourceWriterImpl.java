@@ -38,17 +38,17 @@ public class SourceWriterImpl implements SourceWriter {
     /**
      * The string buffer to store content in.
      */
-    private StringBuffer sb;
+    private StringBuilder sb;
     /**
      * the line buffer.
      */
-    private StringBuffer currentLine;
+    private StringBuilder currentLine;
     /**
      * The common attributes for NEWLINE, maxLineLength and indentSequence.
      */
     private CommonAttributes ca;
     /**
-     * the NewLine terminator.
+     * the NewLine terminator. Should be configurable.
      */
     private String newline = "\n";
     
@@ -62,8 +62,8 @@ public class SourceWriterImpl implements SourceWriter {
      * Inits the source buffer.
      */
     public SourceWriterImpl() {
-        sb = new StringBuffer();
-        currentLine = new StringBuffer();
+        sb = new StringBuilder();
+        currentLine = new StringBuilder();
     }
     
     /**
@@ -111,7 +111,7 @@ public class SourceWriterImpl implements SourceWriter {
             LOG.info("No content given!");
             return false;
         }
-        final StringBuffer tmpBuffer = new StringBuffer();
+        final StringBuilder tmpBuffer = new StringBuilder();
         addIndents(tmpBuffer, currentIndent);
         tmpBuffer.append(s);
         final String insertStr = tmpBuffer.toString();
@@ -122,7 +122,7 @@ public class SourceWriterImpl implements SourceWriter {
             // ok
             currentLine.append(insertStr);
         } else {
-            LOG.debug("Line becomes too long: {}{}", currentLine, insertStr);
+            LOG.debug("Line becomes too long, will not append currLine: {}{}", currentLine, insertStr);
             rc = false;
         }
         if (lineLength >= MAX_LINE_LENGTH) {
@@ -140,7 +140,7 @@ public class SourceWriterImpl implements SourceWriter {
      * @param count
      *            the count of indents to add
      */
-    private void addIndents(final StringBuffer s, final int count) {
+    private void addIndents(final StringBuilder s, final int count) {
         if (count < 0) {
             LOG.warn("Count is too low: {}", count);
             return;
@@ -215,7 +215,7 @@ public class SourceWriterImpl implements SourceWriter {
      * @param s
      *            the buffer to clear
      */
-    private static void clearBuffer(final StringBuffer s) {
+    private static void clearBuffer(final StringBuilder s) {
         if (s == null) {
             LOG.warn("No buffer given!");
             return;

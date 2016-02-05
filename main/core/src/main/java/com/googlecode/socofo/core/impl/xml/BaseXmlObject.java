@@ -238,7 +238,7 @@ public class BaseXmlObject implements XmlObject {
     @Override
     public void writeElement(final XmlObject lastObject, final int indent, final SourceWriter sw,
         final XmlFormatRules rules, final LineHandler lh) throws TranslationException {
-        LOG.debug("entering with params: {} ", new Object[] { indent, this });
+        LOG.debug("entering writeElement() with params: {} ", new Object[] { indent, this });
         NewlineRules nlRules = rules.getNewlineRules();
         if (nlRules == null) {
             LOG.warn("No NL rules found, using defaults");
@@ -251,11 +251,13 @@ public class BaseXmlObject implements XmlObject {
         printObjectBegin(lastObjectLevel, lastObject, sw, rules);
         if (hasAttributes()) {
             printAttributes(rules, nlRules, sw);
+        } else {
+            LOG.debug("No attributes found in this element, ignoring.");
         }
         printInnerText(rules, sw, lh);
         printObjectEnd(lastObject, rules, sw, nlRules);
         
-        LOG.debug("exiting");
+        LOG.debug("exiting writeElement()");
     }
     
     /**
@@ -274,7 +276,7 @@ public class BaseXmlObject implements XmlObject {
      */
     private void printObjectBegin(final int lastObjectLevel, final XmlObject lastObject, final SourceWriter sw,
         final XmlFormatRules rules) throws TranslationException {
-        LOG.debug("entering");
+        LOG.debug("entering printObjectBegin()");
         boolean commitLine = false;
         commitLine |= getLevel() != lastObjectLevel;
         commitLine |= (this instanceof Comment) && (rules.getCommentsRules().getBreakAfterBegin());
@@ -287,17 +289,26 @@ public class BaseXmlObject implements XmlObject {
         if (commitLine) {
             sw.addToLine(getLevel() - 1, "");
         }
-        boolean isElementText = false;
+        boolean isElementText;
         isElementText = (lastObject instanceof StartElement) && (this instanceof Text);
         LOG.debug("isElementText is {}", isElementText);
-        sw.addToLine(0, getStartSequence());
+        String startSeq=getStartSequence();
         if (getElementName() != null) {
-            sw.addToLine(getElementName());
+            startSeq+=getElementName();
+        }
+        boolean success=sw.addToLine(0, startSeq);
+        if(!success){
+            //due to too long line
+            if(lastObject instanceof Text){
+                //we must append the end element?
+                sw.addToLine(startSeq);
+                //sw.commitLine(true);
+            }
         }
         if ((this instanceof Comment) && rules.getCommentsRules().getBreakAfterBegin()) {
             sw.commitLine(false);
         }
-        LOG.debug("exiting");
+        LOG.debug("exiting printObjectBegin()");
     }
     
     /**
@@ -316,7 +327,7 @@ public class BaseXmlObject implements XmlObject {
      */
     private void printObjectEnd(final XmlObject lastObject, final XmlFormatRules rules, final SourceWriter sw,
         final NewlineRules nlRules) throws TranslationException {
-        LOG.debug("entering");
+        LOG.debug("entering printObjectEnd()");
         // align final bracket
         FinalBracketPolicy fbp = rules.getAlignFinalBracketOnNewline();
         if (fbp == null) {
@@ -369,7 +380,7 @@ public class BaseXmlObject implements XmlObject {
         if ((sw.getCurrentLine().trim().length() <= 0) && (this instanceof Text) && hasEmptyInnerContent()) {
             sw.clearCurrentLine();
         }
-        LOG.debug("exiting");
+        LOG.debug("exiting printObjectEnd()");
     }
     
     /**
@@ -386,7 +397,7 @@ public class BaseXmlObject implements XmlObject {
      */
     private void printAttributes(final XmlFormatRules rules, final NewlineRules nlRules, final SourceWriter sw)
         throws TranslationException {
-        LOG.debug("entering");
+        LOG.debug("entering printAttributes()");
         Map<String, String> attrs = getAttributes();
         // order attributes?
         if (rules.getSortAttributes()) {
@@ -410,7 +421,7 @@ public class BaseXmlObject implements XmlObject {
                 sw.addToLine(indentLevel, attributeLine);
             }
         }
-        LOG.debug("exiting");
+        LOG.debug("exiting printAttributes()");
     }
     
     /**
@@ -427,9 +438,9 @@ public class BaseXmlObject implements XmlObject {
      */
     private void printInnerText(final XmlFormatRules rules, final SourceWriter sw, final LineHandler lh)
         throws TranslationException {
-        LOG.debug("entering");
+        LOG.debug("entering printInnerText()");
         if ((innerContent == null) || (innerContent.length() <= 0)) {
-            LOG.debug("exiting: no innerContent");
+            LOG.debug("exiting printInnerText(): no innerContent");
             return;
         }
         // write inner content
@@ -483,7 +494,7 @@ public class BaseXmlObject implements XmlObject {
         if ((this instanceof Comment) && rules.getCommentsRules().getBreakBeforeEnd()) {
             sw.commitLine(false);
         }
-        LOG.debug("exiting");
+        LOG.debug("exiting printInnerText()");
     }
     
     /**

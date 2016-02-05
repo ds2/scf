@@ -56,7 +56,7 @@ public class SourceWriterImplTest {
      */
     @BeforeMethod
     public final void setUp() throws Exception {
-        to.setCommonAttributes(getAttributes());
+        to.setCommonAttributes(getAttributes(false));
         to.prepare();
     }
     
@@ -65,7 +65,7 @@ public class SourceWriterImplTest {
      * 
      * @return the common attributes
      */
-    private CommonAttributes getAttributes() {
+    private CommonAttributes getAttributes(final boolean commitOnLongLine) {
         return new CommonAttributes() {
             
             /**
@@ -91,6 +91,11 @@ public class SourceWriterImplTest {
             @Override
             public Boolean getStopOnLongline() {
                 return false;
+            }
+
+            @Override
+            public Boolean getForcedBreakOnLongLine() {
+                return commitOnLongLine;
             }
         };
     }
@@ -174,6 +179,24 @@ public class SourceWriterImplTest {
             assertEquals("", to.getResult());
             to.addLine(0, "hello this is a longer line");
             assertFalse(to.commitLine(false));
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Test method for {@link com.googlecode.socofo.core.impl.SourceWriterImpl#commitLine(boolean)}
+     * .
+     */
+    @Test
+    public final void testCommitLongLine() {
+        to.setCommonAttributes(getAttributes(true));
+        to.prepare();
+        try {
+            to.commitLine(false);
+            assertEquals("", to.getResult());
+            to.addLine(0, "hello this is a longer line");
+            assertTrue(to.commitLine(false));
         } catch (TranslationException e) {
             fail(e.getLocalizedMessage());
         }
