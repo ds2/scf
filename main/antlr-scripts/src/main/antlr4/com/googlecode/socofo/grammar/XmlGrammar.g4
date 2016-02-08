@@ -27,7 +27,7 @@ PI_STOP: {tagMode}? '?>' {tagMode=false;};
 
 CDATA_SECTION: {!tagMode}? '<![CDATA[' (~']')* ']]>' ;
 
-COMMENT_SECTION:'<!--' (~'-')* '-->';
+COMMENT_SECTION: COMMENT_START (~'-')* COMMENT_END;
 
 DOCTYPE_SECTION: {!tagMode}? '<!DOCTYPE' (~'>')* '>' ;
 
@@ -65,7 +65,9 @@ fragment LETTER
     : 'a'..'z'
     | 'A'..'Z'
     ;
-    
+
+fragment COMMENT_START: '<!--';
+fragment COMMENT_END: '-->';
 
 WS  :  { tagMode }?
        (' '|'\r'|'\t'|'\u000C'|'\n')+ { skip(); }
