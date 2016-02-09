@@ -25,13 +25,13 @@ lexer grammar XmlGrammar;
 PI_START : '<?' { tagMode=true;};
 PI_STOP: {tagMode}? '?>' {tagMode=false;};
 
-CDATA_SECTION: {!tagMode}? '<![CDATA[' (~']')* ']]>' ;
+CDATA_SECTION: {!tagMode}? '<![CDATA[' (.)*? ']]>' ;
 
-COMMENT_SECTION: COMMENT_START (~'-')* COMMENT_END;
+COMMENT_SECTION: {!tagMode}? '<!--' (.)*? '-->';
 
-DOCTYPE_SECTION: {!tagMode}? '<!DOCTYPE' (~'>')* '>' ;
+DOCTYPE_SECTION: {!tagMode}? '<!DOCTYPE' .*? '>' ;
 
-TAG_START_OPEN : '<' { tagMode = true; } ;
+TAG_START_OPEN : {!tagMode}? '<' { tagMode = true; } ;
 TAG_END_OPEN : '</' { tagMode = true; } ;
 TAG_CLOSE : { tagMode }? '>' { tagMode = false; } ;
 TAG_EMPTY_CLOSE : { tagMode }? '/>' { tagMode = false; } ;
@@ -66,8 +66,8 @@ fragment LETTER
     | 'A'..'Z'
     ;
 
-fragment COMMENT_START: '<!--';
-fragment COMMENT_END: '-->';
+//fragment COMMENT_START: '<!--';
+//fragment COMMENT_END: '-->';
 
 WS  :  { tagMode }?
        (' '|'\r'|'\t'|'\u000C'|'\n')+ { skip(); }

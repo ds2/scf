@@ -525,4 +525,37 @@ public class XmlTransformerTest {
                 "  </props>\n" +
                 "</a>\n");
     }
+
+    @Test(enabled = true)
+    public final void testTranslation16() {
+        String xmlSample =
+                "<?xml version=\"1.0\"?>\n" +
+                        "<a>\n" +
+                        "<!-- ehcache-spring-annotations needs version 1.4+ -->\n" +
+                        "  <b>this is a block at level 2</b>\n" +
+                        "</a>";
+        assertNotNull(xmlSample);
+        XmlFormatRules rs = to.getRuleSet();
+        XmlFormatRulesUpdater updater = (XmlFormatRulesUpdater) rs;
+        updater.getCommentsRulesUpdater().setBreakAfterBegin(true);
+        updater.getCommentsRulesUpdater().setBreakBeforeEnd(true);
+        updater.getCommentsRulesUpdater().setIndentComment(true);
+        to.parseContent(xmlSample);
+        try {
+            to.performTranslation();
+        } catch (TranslationException e) {
+            fail(e.getLocalizedMessage());
+        }
+        String result = to.getResult();
+        assertNotNull(result);
+        assertEquals(result, "<?xml\n" +
+                "  version=\"1.0\"\n" +
+                "?>\n" +
+                "<a>\n" +
+                "  <!--\n" +
+                "    ehcache-spring-annotations needs version 1.4+\n" +
+                "  -->\n" +
+                "  <b>this is a block at level 2</b>\n" +
+                "</a>\n");
+    }
 }
