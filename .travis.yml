@@ -1,0 +1,9 @@
+language: java
+git:
+  depth: 3
+branches:
+  only:
+    - develop
+jdk:
+  - oraclejdk8
+  - openjdk8
