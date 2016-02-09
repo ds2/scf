@@ -6,4 +6,5 @@ branches:
     - develop
 jdk:
   - oraclejdk8
-  - openjdk8
+  - openjdk7
+before_install: mvn clean -Pno-repo-man
