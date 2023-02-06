@@ -64,6 +64,6 @@
     </dependency>
   </dependencies>
   <properties>
-    <socofo.mvn.api.version>3.8.7</socofo.mvn.api.version>
+    <socofo.mvn.api.version>3.9.0</socofo.mvn.api.version>
   </properties>
 </project>
