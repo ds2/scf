@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-indent</artifactId>
-            <version>RELEASE67</version>
+            <version>RELEASE210</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
